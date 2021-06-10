@@ -29,9 +29,11 @@ client.on('message', msg => {
       case 'hru':
         msg.channel.send('All my parts seems to be 🙃 non-glitchy for now!\\🐥');
         break;
+      
       case 'all-info':
         msg.channel.send(`\`\`\`json\n${JSON.stringify(msg)}\`\`\``);
         break;
+        
     };
   };
 });
