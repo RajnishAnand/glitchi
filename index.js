@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const {prefix, token} = require('./config.json');
+const http = require('http');
 
 const client = new Discord.Client();
 
@@ -37,3 +38,12 @@ client.on('message', msg => {
     };
   };
 });
+
+http.createServer(server).listen(process.env.PORT || 3000);
+
+function server(req,res){
+  res.writeHead(200,{
+    'Content-Type': 'text/plain',
+  });
+  res.end('No info provided!');
+}
