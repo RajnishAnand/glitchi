@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const {prefix, token} = require('./config.json');
 const http = require('http');
-
+const port = process.env.PORT || 3000;
 const client = new Discord.Client();
 
 
@@ -39,7 +39,7 @@ client.on('message', msg => {
   };
 });
 
-http.createServer(server).listen(process.env.PORT || 3000);
+http.createServer(server).listen(port);
 
 function server(req,res){
   res.writeHead(200,{
