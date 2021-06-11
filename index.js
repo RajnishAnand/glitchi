@@ -47,7 +47,7 @@ client.on('message', msg => {
     case 'guild-info':
     case 'serverinfo':
     case 'guildinfo':
-      if(msg.channel.guild||false)return;
+      if(!msg.channel.guild||true)break;
       msg.channel.send(guildinfo(msg));
       break;
       
