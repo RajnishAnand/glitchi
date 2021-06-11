@@ -2,10 +2,11 @@ const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const http = require('http');
 const fetch = require('node-fetch');
+const fs = require('fs');
 
 const port = process.env.PORT || 3000;
 const client = new Discord.Client();
-
+client.commands = new Discord.Collection();
 
 client.once('ready', () => {
   console.log('Ready!');
@@ -19,8 +20,9 @@ client.on('message', msg => {
 });
 
 client.on('message', msg => {
-  if (!msg.content[0]==prefix||msg.author.bot) return;
-  let command=msg.content.substr(prefix.length).split(' ');
+  if (!msg.content[0]==prefix||msg.author.bot||!msg.channel.hasOwnProperty('guild')) return;
+  
+  let command=msg.content.substr(prefix.length).split(/ +/);
   
   switch (command.shift().toLowerCase()) {
     case 'ping':
@@ -36,7 +38,7 @@ client.on('message', msg => {
       break;
         
     case 'hru':
-      msg.channel.send('All my parts seems to be 🙃 non-glitchy for now!\\🐥');
+      msg.channel.send('Sometime i get bored alone <:emoji_7:852714216057733180> and my system goes idle! but right now I\'m absolutely fine.\\🐥');
       break;
         
     case 'all-info':
@@ -58,18 +60,69 @@ client.on('message', msg => {
     case 'fetch':
       fetchit(command[0],
         (data)=>{
-          msg.channel.send('>>> ```\n'+data.substr(0,500)+'```'+`**full document** : https://cors-fetch-it.herokuapp.com/${command[0]}`);
+          msg.channel.send(embed({
+            'title':'Fetched document :',
+            'description' : '```\n'+data.substr(0,500)+'```',
+            'fields' : [
+              {
+                'name' : 'Full document :',
+                'value': `https://cors-fetch-it.herokuapp.com/${command[0]}`
+              },
+            ],
+          }));
         },
         (err)=>{
-          msg.channel.send('>>> ```\n'+err.message+'```');
+          msg.channel.send(embed({
+            'title':'Failed to fetch',
+            'description':'`'+err.message+'`',
+          }));
         }
-     )
-     break;
+      )
+      break;
+     
+    case 'a':
+    case 'avatar' :
+      //console.log(msg.mentions.users);
+      if(command.length){
+        if(msg.mentions.users.size){
+          msg.channel.send(embed({
+            'title':msg.mentions.users.first().username+'#'+msg.mentions.users.first().discriminator,
+            'image':msg.mentions.users.first().displayAvatarURL({
+                format : 'png',
+                dynamic : 'true',
+              })+'?size=2048',
+          }))
+        };
+      }
+      else{
+        msg.channel.send(embed({
+          'title':msg.author.username+'#'+msg.author.discriminator,
+          'image' : `${msg.author.displayAvatarURL({
+            format:'png',
+            dynamic:true,
+          })}?size=2048`
+        }))
+      };
+      break;
+    
+    case 'bulk-delete':
+      if(msg.author.id==800445583046213663){
+        let amount = parseInt(command[0])
+        if(!isNaN(amount)){
+          msg.channel.bulkDelete(amount,true)
+            .catch(err=>msg.channel.send(err.message));
+        }
+        else{
+          masg.channel.send('unable to resolve integer from string`'+command[0]+'`');
+        };
+      }
+      else{
+        msg.channel.send('Command reserved for devloper!')
+      };
   };
 });
 
 http.createServer(server).listen(port);
-
 //To launch server
 function server(req, res) {
   res.writeHead(200, {
@@ -77,6 +130,8 @@ function server(req, res) {
   });
   res.end('No info provided!');
 }
+
+
 
 //to fetch and call the function
 function fetchit(link, func, error = () => {}) {
@@ -105,4 +160,19 @@ function guildinfo(msg) {
     }\nCreated : ${
       dt.toString()
     }\`\`\``;
+}
+
+function embed(obj){
+  let embd= new Discord.MessageEmbed()
+    .setColor('#00bfff')
+    
+    if('title' in obj)embd.setTitle(obj.title);
+    if('description' in obj)embd.setDescription(obj.description);
+    if('fields' in obj)embd.addFields(obj.fields);
+    if('image' in obj)embd.setImage(obj.image);
+    
+    embd.setTimestamp();
+    embd.setFooter('Glitchi', 'https://cdn.discordapp.com/avatars/852227150455373906/2f06054bcc4e7cea81c975f97849eb91.png')
+    
+  return embd;
 }
