@@ -1,4 +1,11 @@
 {
 	"prefix": "|",
-	"token": "ODUyMjI3MTUwNDU1MzczOTA2.YMDwYg.tpSGitnXKgiW54thUXGpzJXShQs"
+	"token": "ODUyMjI3MTUwNDU1MzczOTA2.YMDwYg.tpSGitnXKgiW54thUXGpzJXShQs",
+	
+	"ownerId":"800445583046213663",
+	
+	"info":{
+	  "text" : "Glitchi",
+    "icon_url" : "https://cdn.discordapp.com/avatars/852227150455373906/2f06054bcc4e7cea81c975f97849eb91.png"
+	}
 }
