@@ -32,7 +32,7 @@ client.once('ready', () => {
 //client on message
 client.on('message', (msg)=> {
   if (!msg.content.startsWith(prefix) || 
-      //msg.author.bot||
+      msg.author.bot||
       !msg.channel.hasOwnProperty('guild')
   ) return;
   const args = msg
