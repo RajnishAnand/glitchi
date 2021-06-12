@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 module.exports = {
   name: 'chatg',
   description: 'Chat with another bot',
+  args: true,
   execute(message, args) {
     if (message.channel.id !== '853117760975142922') {
       return;

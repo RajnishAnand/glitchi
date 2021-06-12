@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const { prefix, token, ownerId } = require('./config.json');
-//const http = require('http');
-//const fetch = require('node-fetch');
+const http = require('http');
 const fs = require('fs');
 
 const port = process.env.PORT || 3000;
@@ -76,12 +75,21 @@ client.on('message', (msg)=> {
         .channel
         .send(`This command requires argument <:emoji_7:852714216057733180> ${msg.author}`);
     }
-    else if ((command.devOnly||false)&&msg.author.id!=ownerID){
+    else if ((command.devOnly||false)&&msg.author.id!=ownerId){
         msg.channel.send('Command reserved for bot owwner only!');
     }
-    else command.execute(msg, args);
+    else command.execute(msg, args, client);
   } catch (error) {
     //console.error(error);
     msg.reply(error.message);
   }
 });
+
+http.createServer(server).listen(port);
+//To launch server
+function server(req, res) {
+  res.writeHead(200, {
+    'Content-Type': 'text/plain',
+  });
+  res.end('No info provided!');
+};
