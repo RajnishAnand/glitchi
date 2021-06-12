@@ -1,11 +1,17 @@
+const ownerId = require('../../config.json').ownerId;
 module.exports = {
   name : 'eval',
   description : 'Evaluate',
-  botOwner : true,
+  devOnly : true,
   args : true,
-  execute(msg,args){
+  execute(msg,args,client){
     try{
-      msg.channel.send(`\`\`\`\n${eval(args.join(' '))}\`\`\``);
+      if(msg.author.id==ownerId){
+        msg.channel.send(`\`\`\`\n${eval(args.join(' '))}\`\`\``);
+      }
+      else{
+        msg.channel.send('You breached level 1 security, level 2 stands Guard! 🛡️');
+      }
     }
     catch (err){
       msg.channel.send(`\`\`\`\n${err.message}\`\`\``);

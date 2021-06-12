@@ -1,6 +1,6 @@
 module.exports = {
   name:'msg',
-  discription : 'message',
+  description : 'message',
   args : true,
   devOnly : true,
   execute(msg,args,client){

@@ -2,7 +2,7 @@ const info = require('../../config.json').info;
 
 module.exports = {
   name : 'avatar',
-  discription : 'User Avatar',
+  description : 'User Avatar',
   args : false,
   execute(msg,args){
     if(args.length){

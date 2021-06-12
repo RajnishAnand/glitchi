@@ -1,6 +1,6 @@
 module.exports = {
   name : 'bulk-delete',
-  discription : 'bulk message delete',
+  description : 'bulk message delete',
   args : true,
   devOnly : true,
   execute(msg,args){

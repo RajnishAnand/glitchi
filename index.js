@@ -75,12 +75,14 @@ client.on('message', (msg)=> {
         .channel
         .send(`This command requires argument <:emoji_7:852714216057733180> ${msg.author}`);
     }
-    else if ((command.devOnly||false)&&msg.author.id!=ownerId){
-        msg.channel.send('Command reserved for bot owwner only!');
+    else if(!((command.devOnly||false)&&msg.author.id==ownerId)){
+      msg.channel.send('This command is reserved for bot owner only!')
     }
-    else command.execute(msg, args, client);
+    else {
+        command.execute(msg, args, client);
+    }
   } catch (error) {
-    //console.error(error);
+    //onsole.error(error);
     msg.reply(error.message);
   }
 });
