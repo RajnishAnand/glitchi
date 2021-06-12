@@ -23,6 +23,7 @@ module.exports = {
                     dynamic : 'true',
                   })+'?size=2048',
             },
+            'timestamp': new Date(),
             'footer':info,
           }});
         };
@@ -37,6 +38,7 @@ module.exports = {
             dynamic:true,
           })}?size=2048`,
         },
+        'timestamp': new Date(),
         'footer':info,
       }});
     };
