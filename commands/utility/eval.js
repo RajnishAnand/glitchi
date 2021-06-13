@@ -7,7 +7,7 @@ module.exports = {
   execute(msg,args,client){
     try{
       if(msg.author.id==ownerId){
-        msg.channel.send(`\`\`\`\n${eval(args.join(' '))}\`\`\``.substr(0,3500));
+        msg.channel.send(`\`\`\`\n${eval(args.join(' '))}\`\`\``.substr(0,1500));
       }
       else{
         msg.channel.send('You breached level 1 security, level 2 stands Guard! 🛡️');
