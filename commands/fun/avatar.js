@@ -2,39 +2,35 @@ const info = require('../../config.json').info;
 
 module.exports = {
   name : 'avatar',
-  aliases:['php','a'],
+  aliases:['pfp','a'],
   description : 'User Avatar',
   args : false,
-  execute(msg,args){
+  execute(msg,args,client){
+    let user;
     if(args.length){
-        if(msg.mentions.users.size){
-          msg.channel.send({embed:{
-            'color': '#00bfff',
-            'title':msg.mentions
-                .users.first().username+'#'+
-              msg.mentions
-                .users.first().discriminator,
-            'image':{
-                url:msg
-                  .mentions
-                  .users
-                  .first()
-                  .displayAvatarURL({
-                    format : 'png',
-                    dynamic : 'true',
-                  })+'?size=2048',
-            },
-            'timestamp': new Date(),
-            'footer':info,
-          }});
+       if(msg.mentions.users.size){
+          user = msg.mentions.users.first();
+        }
+        else{
+          user = msg.author;
+          try{
+            //user = client.users.cache.get(args[0]);
+            //msg.channel.send($;
+            //client.username='Testbot';
+          }
+          catch(err){
+            //msg.channel.send(err.message);
+          }
         };
     }
     else{
-      msg.channel.send({embed:{
+      user = msg.author;
+    };
+    msg.channel.send({embed:{
         'color':'#00bfff',
-        'title':msg.author.username+'#'+msg.author.discriminator,
+        'title':user.username+'#'+user.discriminator,
         'image' :{
-          url: `${msg.author.displayAvatarURL({
+          url: `${user.displayAvatarURL({
             format:'png',
             dynamic:true,
           })}?size=2048`,
@@ -42,6 +38,5 @@ module.exports = {
         'timestamp': new Date(),
         'footer':info,
       }});
-    };
   }
 };
