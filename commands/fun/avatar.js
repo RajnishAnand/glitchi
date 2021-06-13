@@ -2,6 +2,7 @@ const info = require('../../config.json').info;
 
 module.exports = {
   name : 'avatar',
+  aliases:['php','a'],
   description : 'User Avatar',
   args : false,
   execute(msg,args){

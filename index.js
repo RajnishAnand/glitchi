@@ -43,8 +43,10 @@ client.on('message', (msg)=> {
   const commandName = args
     .shift()
     .toLowerCase();
+  const command = client.commands.get(commandName)||
+    client.commands.find(cmnd=>cmnd.aliases&&cmnd.aliases.includes(commandName));
   
-  if (!client.commands.has(commandName)){
+  if (!command){
     switch (commandName){
       case 'ping':
       msg.channel.send('pong!');
@@ -66,16 +68,11 @@ client.on('message', (msg)=> {
   };
   
   try {
-    const command = client
-      .commands
-      .get(commandName);
-    
     if(command.args&&!args.length){
-      msg
-        .channel
-        .send(`This command requires argument <:emoji_7:852714216057733180> ${msg.author}`);
+      msg.channel.send(`This command requires argument <:emoji_7:852714216057733180> ${msg.author}`);
     }
-    else if(!((command.devOnly||false)&&msg.author.id==ownerId)){
+    else if((command.devOnly||false)==true&&
+            (msg.author.id!=ownerId)==true){
       msg.channel.send('This command is reserved for bot owner only!')
     }
     else {
