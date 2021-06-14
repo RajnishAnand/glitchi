@@ -1,1 +1,1 @@
-web: TOKEN=get TOKEN_CRIPT node index.js
+web: TOKEN = config:get TOKEN_CRIPT node index.js
