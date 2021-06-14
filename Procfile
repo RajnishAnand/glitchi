@@ -1,1 +1,1 @@
-worker: TOKEN=$TOKEN_CRIPT node index.js
+web: TOKEN=$TOKEN_CRIPT node index.js
