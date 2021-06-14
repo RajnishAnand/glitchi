@@ -5,7 +5,7 @@ module.exports = {
   aliases:['pfp','a'],
   description : 'User Avatar',
   args : false,
-  execute(msg,args,client){
+  execute(msg,args,content,client){
     let userIDs = new Array;
     if(args.length){args.forEach(arg=>{
         arg = arg.replace(/^<@/,'').replace(/>$/,'');

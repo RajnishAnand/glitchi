@@ -2,7 +2,7 @@ module.exports = {
   name : 'repeat',
   description : 'Repeat',
   args : true,
-  execute(msg,arg){
-    msg.channel.send(msg.content.replace('|repeat ',''));
+  execute(msg,arg, content){
+    msg.channel.send(content);
   }
 }

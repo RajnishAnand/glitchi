@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { prefix, token, ownerId } = require('./config.json');
+const { prefix, ownerId } = require('./config.json');
 const http = require('http');
 const fs = require('fs');
 
@@ -22,10 +22,12 @@ for(const folder of commandFolders){
 };
 
 //login token
-client.login(token);
+client.login(process.env.TOKEN_CRIPT); /*/
+client.login(require('./token.json').token); /*  */
 
 //Client on ready console ready
 client.once('ready', () => {
+  client.user.setActivity("|command", { type: "LISTENING"})
   console.log('Ready!');
 });
 
@@ -43,6 +45,7 @@ client.on('message', (msg)=> {
   const commandName = args
     .shift()
     .toLowerCase();
+  const content = msg.content.replace(prefix+commandName+' ','');
   const command = client.commands.get(commandName)||
     client.commands.find(cmnd=>cmnd.aliases&&cmnd.aliases.includes(commandName));
   
@@ -76,7 +79,7 @@ client.on('message', (msg)=> {
       msg.channel.send('This command is reserved for bot owner only!')
     }
     else {
-        command.execute(msg, args, client);
+        command.execute(msg,args,content,client);
     }
   } catch (error) {
     //onsole.error(error);

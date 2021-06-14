@@ -3,9 +3,7 @@ module.exports = {
   description : 'message',
   args : true,
   devOnly : true,
-  execute(msg,args,client){
-    let content =msg.content
-      .replace(`|msg ${args[0]} `,'');
+  execute(msg,args,content,client){
     args[0]=args[0]
       .replace(/^<#/,'')
       .replace(/>$/,'');
