@@ -1,1 +1,1 @@
-web: TOKEN=config:get TOKEN_CRIPT node index.js
+worker: TOKEN=$TOKEN_CRIPT node index.js
