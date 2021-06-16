@@ -1,11 +1,13 @@
-const info = require('../../config.json').info;
+const {info} = require('../../config.json');
 
 module.exports = {
   name : 'avatar',
   aliases:['pfp','a'],
   description : 'User Avatar',
+  usage : '[optional : @user or userID]',
   args : false,
-  execute(msg,args,content,client){
+  cooldown:3,
+  execute({msg,args,client}){
     let userIDs = new Array;
     if(args.length){args.forEach(arg=>{
         arg = arg.replace(/^<@/,'').replace(/>$/,'');
@@ -18,6 +20,7 @@ module.exports = {
     else{
       userIDs.push(msg.author.id);
     };
+    userIds=userIds.substr(0,2);
     userIDs.forEach(id=>{
       client.users
         .fetch(id)

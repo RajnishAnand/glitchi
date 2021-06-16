@@ -5,7 +5,7 @@ module.exports = {
   description : 'Evaluate',
   devOnly : true,
   args : true,
-  execute(msg,args,content,client){
+  execute({msg,content,client}){
     try{
       if(msg.author.id===config.ownerId){
         msg.channel.send(this.debug(eval(content)), {
@@ -31,10 +31,8 @@ module.exports = {
         evaled=evaled
           .replace(/</g,'<​')
           .replace(/`/g,'`​');
-          if(!evaled.length)return 'length : 0';
       }
-      else return util.inspect(evaled);
-      console.log(evaled);
+      return util.inspect(evaled);
     }
     catch(err){
       return err.message;

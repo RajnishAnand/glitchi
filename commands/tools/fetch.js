@@ -1,11 +1,12 @@
 const fetch = require('node-fetch');
-const info = require('../../config.json').info;
+const {info} = require('../../config.json');
 
 module.exports = {
   name : 'fetch',
   description : 'To fetch any URL.',
+  usage : '[url]',
   args : true ,
-  execute(msg,args){
+  execute({msg,args}){
     fetchit(
       args[0],
       (data)=>{msg.channel.send({embed : {

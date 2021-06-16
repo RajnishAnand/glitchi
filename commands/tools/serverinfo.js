@@ -1,9 +1,10 @@
 module.exports = {
   name : 'serverinfo',
   description : 'server information',
+  usage : 'serverinfo',
   args : false,
   devOnly : false,
-  execute(msg){
+  execute({msg}){
     msg.channel.send(guildinfo(msg));
   }
 };

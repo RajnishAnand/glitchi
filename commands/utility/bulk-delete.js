@@ -3,7 +3,7 @@ module.exports = {
   description : 'bulk message delete',
   args : true,
   devOnly : true,
-  execute(msg,args){
+  execute({msg,args}){
     let amount = parseInt(args[0])
     if(!isNaN(amount)){
       msg.channel.bulkDelete(amount,true)

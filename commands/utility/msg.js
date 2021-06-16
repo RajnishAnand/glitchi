@@ -1,9 +1,9 @@
 module.exports = {
   name:'msg',
-  description : 'message',
+  description : 'message to channel',
   args : true,
   devOnly : true,
-  execute(msg,args,content,client){
+  execute({msg,args,content,client}){
     args[0]=args[0]
       .replace(/^<#/,'')
       .replace(/>$/,'');

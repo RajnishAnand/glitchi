@@ -1,8 +1,9 @@
 module.exports = {
   name : 'repeat',
   description : 'Repeat',
+  usage : '[text]',
   args : true,
-  execute(msg,arg, content){
+  execute({msg,content}){
     msg.channel.send(content);
   }
 }

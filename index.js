@@ -5,7 +5,9 @@ const fs = require('fs');
 
 const port = process.env.PORT || 3000;
 const client = new Discord.Client();
+
 client.commands = new Discord.Collection();
+client.cooldown = new Discord.Collection();
 
 //To get list of commandfolders
 const commandFolders = fs.readdirSync('./commands');
@@ -22,12 +24,11 @@ for(const folder of commandFolders){
 };
 
 //login token
-client.login(process.env.TOKEN_CRIPT); /*/
-client.login(require('./token.json').token); /*  */
+client.login(process.env.TOKEN);
 
 //Client on ready console ready
 client.once('ready', () => {
-  client.user.setActivity("|command", { type: "LISTENING"})
+  client.user.setActivity(`${prefix}command`, { type: "LISTENING"})
   console.log('Ready!');
 });
 
@@ -79,7 +80,7 @@ client.on('message', (msg)=> {
       msg.channel.send('This command is reserved for bot owner only!')
     }
     else {
-        command.execute(msg,args,content,client);
+        command.execute({msg,args,content,client});
     }
   } catch (error) {
     //onsole.error(error);
