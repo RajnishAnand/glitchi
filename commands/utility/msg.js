@@ -7,10 +7,10 @@ module.exports = {
     args[0]=args[0]
       .replace(/^<#/,'')
       .replace(/>$/,'');
-    
+     
     try{
       client.channels.cache.get(args[0]).send(content);
-      msg.channel.send(`your was message successfully sent to ${client.channels.cache.get(args[0])}!`);
+      msg.channel.send(`your was message successfully sent to ${client.channels.cache.get(args[0])}!`); 
     }
     catch (err){
       //console.log(args,parseInt(args[0]));
