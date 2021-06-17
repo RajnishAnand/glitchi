@@ -20,7 +20,7 @@ module.exports = {
     else{
       userIDs.push(msg.author.id);
     };
-    userIDs=userIDs.substr(0,2);
+    userIDs=userIDs.slice(0,2);
     userIDs.forEach(id=>{
       client.users
         .fetch(id)
