@@ -28,7 +28,7 @@ client.login(process.env.TOKEN);
 
 //Client on ready console ready
 client.once('ready', () => {
-  client.user.setActivity(`${prefix}command`, { type: "LISTENING"})
+  client.user.setActivity(`${prefix}commands`, { type: "LISTENING"})
   console.log('Ready!');
 });
 
