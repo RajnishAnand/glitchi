@@ -2,7 +2,7 @@ module.exports = {
   name : 'bulk-delete',
   description : 'bulk message delete',
   args : true,
-  devOnly : true,
+  permissions : 'MANAGE_MESSAGES',
   execute({msg,args}){
     let amount = parseInt(args[0])
     if(!isNaN(amount)){

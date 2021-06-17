@@ -71,16 +71,24 @@ client.on('message', (msg)=> {
     return;
   };
   
+  if(command.permissions){
+    const authorPerms = msg.channel
+      .permissionsFor(msg.author);
+	  if (!authorPerms || 
+	    !authorPerms.has(command.permissions)) {
+		  return msg.reply('<a:cuteness:854833240665227324> You don\' have enough privilege to delete messages!');
+	  }
+  }
   try {
     if(command.args&&!args.length){
-      msg.channel.send(`This command requires argument <:emoji_7:852714216057733180> ${msg.author}`);
+      msg.channel.send(`This command requires argument <:sneakPeek:852714216057733180> ${msg.author}`);
     }
     else if((command.devOnly||false)==true&&
             (msg.author.id!=ownerId)==true){
       msg.channel.send('This command is reserved for bot owner only!')
     }
     else {
-        command.execute({msg,args,content,client});
+      command.execute({msg,args,content,client});
     }
   } catch (error) {
     //onsole.error(error);
