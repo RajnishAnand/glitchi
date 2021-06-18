@@ -1,8 +1,10 @@
+const {prefix} = require('../config.json');
 module.exports = {
   name : 'ready',
   once : true,
-  execute({client}){
+  execute(client){
     console.log('ready!');
-    client.user.setActivity(`${prefix}commands`, { type: "LISTENING"}); 
+    if(process.env.PORT||false)
+      client.user.setActivity(`${prefix}commands`, { type: "LISTENING"}); 
   }
 }

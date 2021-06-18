@@ -1,6 +1,7 @@
+const { prefix, ownerId } = require('../config.json');
 module.exports = {
   name: 'message',
-  execute(msg) {
+  execute(msg,client) {
     if (!msg.content.startsWith(prefix) ||
       msg.author.bot ||
       !msg.channel.hasOwnProperty('guild')
@@ -43,7 +44,7 @@ module.exports = {
         .permissionsFor(msg.author);
       if (!authorPerms ||
         !authorPerms.has(command.permissions)) {
-        return msg.reply('<a:cuteness:854833240665227324> You don\' have enough privilege to delete messages!');
+        return msg.reply(`<a:cuteness:854833240665227324> You don\' have enough privilege to run \` ${commandName} \` command!`);
       }
     }
     try {

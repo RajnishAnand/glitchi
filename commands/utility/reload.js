@@ -23,7 +23,7 @@ module.exports = {
     try{
       const newCommand = require(`../${folderName}/${command.name}`);
       msg.client.commands.set(newCommand.name, newCommand);
-	    msg.channel.send(`Command \`${newCommand.name}\` was successfully reloaded!`);
+	    msg.channel.send(`Command \`${newCommand.name}\` was reloaded successfully!`);
     }
     catch(err){
       msg.channel.send(`there was an error while reloading a command \`${command.name}\`:\n\`${err.message}\``);

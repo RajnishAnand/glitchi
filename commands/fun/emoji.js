@@ -3,7 +3,7 @@ module.exports={
   description: 'sends emoji for you!',
   args: true,
   aliases:['emote','emo'],
-  usage: '[emoji-name]',
+  usage: '[emoji-name] [optional : -id]',
   execute({msg,args,client}){
     let emotes=[];
     try{
@@ -17,8 +17,14 @@ module.exports={
           });
       })
      )
-      if (emotes.length)msg.channel
-        .send(this.emojify(emotes[0]));
+      if (emotes.length){
+        if(args[1]=='-id'){
+          msg.channel
+            .send(`\`id : ${emotes[0].id}\``);
+        }
+        msg.channel
+          .send(this.emojify(emotes[0]));
+      }
       else msg.reply('your specified emoji wasn\'t found!');
     }
     catch(err){
