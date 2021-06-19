@@ -4,7 +4,7 @@ module.exports = {
   usage : '[@user]',
   args : true,
   permissions : 'BAN_MEMBERS',
-  async execute({msg,args,client}){
+  execute({msg,args,client}){
     const userID = args[0]
             .replace(/^<@/,'')
             .replace(/>$/,'');
