@@ -9,7 +9,7 @@ module.exports={
     try{
      client.guilds.cache.forEach(g=>
       g.emojis.cache.forEach(e=>{
-        if(e.name==args[0])
+        if(e.name.toLowerCase()==args[0].toLowerCase())
           emotes.push({
             id:e.id,
             name:e.name,

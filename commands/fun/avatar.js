@@ -34,7 +34,7 @@ function sendEmbedAvatar(user,channel){
   try{
   channel.send({embed:{
         'color':'#00bfff',
-        'title':user.username+'#'+user.discriminator,
+        'title':user.tag,
         'image' :{
           url: `${user.displayAvatarURL({
             format : 'png',
