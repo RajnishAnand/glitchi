@@ -23,7 +23,6 @@ module.exports = {
       let data= process.memoryUsage();
       sysInfo.push(`**Memory** : ${this.formatMemory(data.rss)}MB | ${this.formatMemory(os.totalmem())}MB`);
       sysInfo.push(`**Total Heap** : ${this.formatMemory(data.heapTotal)}MB`);
-      sysInfo.push(`**CPU Usage**`)
       
       let cpu = require("os").cpus()[0].times;
       sysInfo.push(`**CPU Load** : ${(((cpu.user + cpu.nice + cpu.sys) / cpu.idle) * 100).toFixed(2)}%`);
