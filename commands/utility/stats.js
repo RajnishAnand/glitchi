@@ -3,7 +3,7 @@ const os = require('os');
 module.exports = {
   name:'stats',
   description : 'statistics of bot',
-  aliases: ['statistics'],
+  aliases: ['statistics','sts'],
   execute({msg,args,client}){
     let stats = new Array;
     let uptime = new Array;

@@ -56,7 +56,7 @@ module.exports = {
         msg.channel.send('This command is reserved for bot owner only!')
       }
       else {
-        command.execute({ msg, args, content, client });
+        command.execute({ msg, args, content, client,commandName,prefix });
       }
     } catch (error) {
       //onsole.error(error);

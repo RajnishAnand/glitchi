@@ -2,15 +2,18 @@ const util= require('util');
 const config = require('../../config.json');
 module.exports = {
   name : 'eval',
+  aliases : ['ev'],
   description : 'Evaluate',
   devOnly : true,
   args : true,
   execute({msg,content,client}){
     try{
       if(msg.author.id===config.ownerId){
-        msg.channel.send(this.debug(eval(content)), {
+        let evaledStr =this.debug(eval(content));
+        msg.channel.send(`\` ${Math.ceil(evaledStr.length/1924)}m|${evaledStr.length}ch \``);
+        msg.channel.send(evaledStr, {
           code:'javascript',
-          split : true,
+          split : {maxlength:1924},
         }).catch(err=>{
           msg.channel.send(err.message,{code:true});
         })

@@ -1,6 +1,7 @@
 module.exports = {
   name: 'content',
   description: 'content of message',
+  aliases:['c'],
   usage: '[optional:#channel or channelID] [messageID] ',
   args: true,
   execute({ msg, args, client }) {

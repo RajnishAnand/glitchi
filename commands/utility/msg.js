@@ -1,6 +1,7 @@
 module.exports = {
   name:'msg',
   description : 'message to channel',
+  alisaes:['message'],
   args : true,
   devOnly : true,
   execute({msg,args,content,client}){
