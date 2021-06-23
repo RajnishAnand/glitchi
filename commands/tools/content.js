@@ -4,7 +4,7 @@ module.exports = {
   aliases:['c'],
   usage: '[optional:#channel or channelID] [messageID] ',
   args: true,
-  execute({ msg, args, client }) {
+  execute({ msg, args }) {
     msg.react('856818054602948608');
     let channel, messageID;
     if (args.length >= 2) {
@@ -14,7 +14,7 @@ module.exports = {
       if (chID * 1 != chID) return msg
         .reply(`unable to resolve \`${args[0]}\` as channel.`);
       messageID = args[1];
-      channel = client.channels.cache.get(chID);
+      channel = msg.client.channels.cache.get(chID);
     }
     else {
       if(args[0]*1!=args[0]) return msg

@@ -6,7 +6,7 @@ module.exports = {
   description : 'Evaluate',
   devOnly : true,
   args : true,
-  execute({msg,content,client}){
+  execute({msg,content},client=msg.client){
     try{
       if(msg.author.id===config.ownerId){
         let evaledStr =this.debug(eval(content));

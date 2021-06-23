@@ -1,7 +1,7 @@
 const { prefix, ownerId } = require('../config.json');
 module.exports = {
   name: 'message',
-  execute(msg,client) {
+  execute(msg) {
     if (!msg.content.startsWith(prefix) ||
       msg.author.bot ||
       !msg.channel.hasOwnProperty('guild')
@@ -15,8 +15,8 @@ module.exports = {
       .shift()
       .toLowerCase();
     const content = msg.content.replace(prefix + commandName + ' ', '');
-    const command = client.commands.get(commandName) ||
-      client.commands.find(cmnd => cmnd.aliases && cmnd.aliases.includes(commandName));
+    const command = msg.client.commands.get(commandName) ||
+      msg.client.commands.find(cmnd => cmnd.aliases && cmnd.aliases.includes(commandName));
 
     if (!command) {
       switch (commandName) {
@@ -56,7 +56,7 @@ module.exports = {
         msg.channel.send('This command is reserved for bot owner only!')
       }
       else {
-        command.execute({ msg, args, content, client,commandName,prefix });
+        command.execute({ msg, args, content,commandName,prefix });
       }
     } catch (error) {
       //onsole.error(error);

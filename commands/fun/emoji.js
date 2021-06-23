@@ -3,10 +3,10 @@ module.exports={
   description: 'sends emoji for you!',
   aliases:['emote','emo','e'],
   usage: '[optional : emoji-name] [optional : -id]',
-  execute({msg,args,client}){
+  execute({msg,args}){
     let emotes=[];
     try{
-      if(args.length){client.guilds.cache.forEach(g=>
+      if(args.length){msg.client.guilds.cache.forEach(g=>
         g.emojis.cache.forEach(e=>{
         if(e.name.toLowerCase()==args[0].toLowerCase())
           emotes.push({
@@ -17,7 +17,7 @@ module.exports={
         })
       )}
       else{
-       let emos = client.emojis.cache.map(e=>{return{
+       let emos = msg.client.emojis.cache.map(e=>{return{
           id:e.id,
           name:e.name,
           a:e.animated

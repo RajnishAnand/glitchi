@@ -5,7 +5,7 @@ module.exports = {
   usage: '[optional : @user or userID]',
   args: false,
   cooldown: 3,
-  execute({ msg, args, client }) {
+  execute({ msg, args }) {
     msg.react('856818054602948608');
     let userIDs = new Array;
     if (args.length) {
@@ -23,7 +23,7 @@ module.exports = {
     };
     userIDs = userIDs.slice(0, 2);
     userIDs.forEach(id => {
-      client.users
+      msg.client.users
         .fetch(id)
         .then(u =>
           sendEmbedAvatar(u, msg.channel,msg))

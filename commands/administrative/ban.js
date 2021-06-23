@@ -4,7 +4,7 @@ module.exports = {
   usage : '[@user]',
   args : true,
   permissions : 'BAN_MEMBERS',
-  execute({msg,args,client}){
+  execute({msg,args}){
     const userID = args[0]
             .replace(/^<@/,'')
             .replace(/>$/,'');
@@ -12,7 +12,7 @@ module.exports = {
     if(userID*0!==0){
       msg.reply(`can't resolve \`${args[0]}\` as a user!`);
     }
-    else if(userID==client.user.id){
+    else if(userID==msg.client.user.id){
       msg.react('831705934648573982');
       msg.reply('you are trying to make me ban myself.');
     }
