@@ -16,7 +16,10 @@ module.exports = {
           title : 'List of all Commands :',
           description : data.join('\n'),
           timestamp : new Date(),
-          footer : info,
+          footer : {
+            text: 'Requested by '+msg.author.username,
+            icon_url:msg.author.avatarURL({format:'png'})
+          },
       },split:true});
     }
     
@@ -33,10 +36,14 @@ module.exports = {
     
     msg.channel.send({embed:{
       color:'#00bfff',
+      author:info,
       title : `Command : ${command.name}`,
       description : data.join('\n'),
       timestamp: new Date(),
-      footer:info,
+      footer:{
+        text: 'Requested by '+msg.author.username,
+        icon_url:msg.author.avatarURL({format:'png'})
+      },
     },split:true});
   }
 }

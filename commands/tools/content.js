@@ -5,6 +5,7 @@ module.exports = {
   usage: '[optional:#channel or channelID] [messageID] ',
   args: true,
   execute({ msg, args, client }) {
+    msg.react('856818054602948608');
     let channel, messageID;
     if (args.length >= 2) {
       let chID = args[0]
