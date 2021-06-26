@@ -35,7 +35,7 @@ function server(req, res) {
   res.writeHead(200, {
     'Content-Type': 'text/plain',
   });
-  res.end('No info provided!');
+  res.end('Glichi successfully waked up!');
 };
 
 //To login

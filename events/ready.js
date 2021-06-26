@@ -5,6 +5,6 @@ module.exports = {
   execute(client){
     console.log('ready!');
     if(process.env.PORT||false)
-      client.user.setActivity(`${prefix}commands`, { type: "LISTENING"}); 
+      client.user.setActivity(`${prefix}commands in ${client.guilds.cache.size} servers`, { type: "LISTENING"}); 
   }
 }

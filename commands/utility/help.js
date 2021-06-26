@@ -9,7 +9,7 @@ module.exports = {
     const {commands} = msg.client;
     
     if(!args.length){
-      data.push(commands.map(cmnd=>`ꞏ \`${prefix}${cmnd.name}\` ⇨ ${cmnd.description}`).join('\n'));
+      data.push(commands.filter(cmnd=>!cmnd.devOnly).map(cmnd=>`ꞏ \`${prefix}${cmnd.name}\` ⇨ ${cmnd.description}`).join('\n'));
       data.push(`> You can use \`${prefix}help [command-name]\` to get info on a specific command!`);
       return msg.channel.send({embed:{
           color : '#00bfff',

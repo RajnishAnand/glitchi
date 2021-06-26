@@ -38,7 +38,7 @@ module.exports = {
       };
       return;
     };
-
+    this.log(msg);
     if (command.permissions) {
       const authorPerms = msg.channel
         .permissionsFor(msg.author);
@@ -48,12 +48,12 @@ module.exports = {
       }
     }
     try {
-      if (command.args && !args.length) {
-        msg.channel.send(`This command requires argument <:sneakPeek:852714216057733180> ${msg.author}`);
-      }
-      else if ((command.devOnly || false) == true &&
+      if ((command.devOnly || false) == true &&
         (msg.author.id != ownerId) == true) {
-        msg.channel.send('This command is reserved for bot owner only!')
+        return;
+      }
+      else if (command.args && !args.length) {
+        msg.channel.send(`This command requires argument <:sneakPeek:852714216057733180> ${msg.author}`);
       }
       else {
         command.execute({ msg, args, content,commandName,prefix });
@@ -62,5 +62,11 @@ module.exports = {
       //onsole.error(error);
       msg.reply(error.message);
     }
+  },
+  log(msg){
+    msg.client.channels.cache.get('857636203892310090').send(`>>> \` User : ${msg.author.tag
+        } \n Guild : ${msg.guild.name
+        } \n Channel : \`<#${msg.channel.id
+        }>\n\` Command :\` \`${msg.cleanContent}\``);
   }
 }

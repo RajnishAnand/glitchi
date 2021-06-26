@@ -6,11 +6,11 @@ module.exports = {
   description : 'Evaluate',
   devOnly : true,
   args : true,
-  execute({msg,content},client=msg.client){
+  async execute({msg,content},client=msg.client){
     try{
       if(msg.author.id===config.ownerId){
         let evaledStr =this.debug(eval(content));
-        msg.channel.send(`\` ${Math.ceil(evaledStr.length/1924)}m|${evaledStr.length}ch \``);
+        await msg.channel.send(`\` ${Math.ceil(evaledStr.length/1924)}m|${evaledStr.length}ch \``);
         msg.channel.send(evaledStr, {
           code:'javascript',
           split : {maxlength:1924},
