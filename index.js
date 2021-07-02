@@ -1,9 +1,10 @@
+const port = process.env.PORT || 3000;
 const Discord = require('discord.js');
 const http = require('http');
 const fs = require('fs');
 
-const port = process.env.PORT || 3000;
 const client = new Discord.Client();
+const disbut = require('discord-buttons')(client);
 
 client.commands = new Discord.Collection();
 

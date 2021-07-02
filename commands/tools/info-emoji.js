@@ -2,7 +2,7 @@ module.exports = {
   name: 'info-emoji',
   aliases: ['infomoji', 'imo'],
   description: 'emoji image with details',
-  usage : '[id or name or <emoji>]',
+  usage : '[<id> or <querry> or "<name>" or <emoji>]',
   args: true,
   execute({ msg, args }) {
     msg.channel.startTyping();
@@ -21,7 +21,7 @@ module.exports = {
       };
       this.send(msg, emote);
     }
-    else if (args[0] * 0 === 0) {
+    else if (args[0] * 0 === 0 && args[0].length<33) {
       emote.id = args[0];
       let emo = msg.client.emojis.cache.find(e =>
         e.id == args[0]);
@@ -46,9 +46,17 @@ module.exports = {
       else this.send(msg,emote);
       delete emo;
     }
-    else {
-      let emo = msg.client.emojis.cache.find(e =>
-        e.name.toLowerCase() == args[0].toLowerCase());
+    else if(args[0].length<21) {
+      let emo;
+      if(args[0][0]=='"'){
+        args[0] = args[0].replace(/^"/,'').replace(/"$/,'');
+        emo = msg.client.emojis.cache
+          .find(e=>e.name==args[0])
+      }
+      else {
+        emo = msg.client.emojis.cache.find(e =>
+        new RegExp('^'+args[0],'i').test(e.name))
+      };
       if (emo) {
         emote = {
           animated: emo.animated,
@@ -60,6 +68,7 @@ module.exports = {
       }
       this.send(msg, emote)
     }
+    else this.send(msg,emote);
 
   },
   send(msg, emote, status = 200) {

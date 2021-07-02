@@ -4,6 +4,7 @@ module.exports = {
   usage : '[@user]',
   args : true,
   permissions : 'BAN_MEMBERS',
+  permRequired : ['BAN_MEMBERS'],
   execute({msg,args}){
     const userID = args[0]
             .replace(/^<@/,'')

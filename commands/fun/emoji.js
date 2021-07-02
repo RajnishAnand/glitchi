@@ -17,14 +17,31 @@ module.exports={
         })
       )}
       else{
-       let emos = msg.client.emojis.cache.map(e=>{return{
-          id:e.id,
-          name:e.name,
-          a:e.animated
-        }});
-       emotes.push(emos[Math.floor(Math.random()*emos.length)]);
-      };
-      
+       return msg.channel
+        .send(this.emojify(
+            this.getRandomEmo(msg.client)))
+        .then(m=>{
+          m.react('859251872996655115')
+            .then(m.react('859251838736924712'));
+          return m;
+        })
+        .then(m=>{
+          m.awaitReactions((react,user)=>{
+            if('859251872996655115'==react.emoji.id&&user.id==msg.author.id){
+              return m.delete().then(()=>
+                this.execute({msg,args}));
+            }
+            else if('859251838736924712'== react.emoji.id&&user.id==msg.author.id){
+              return m.delete();
+            }; return false;
+          },
+          {
+            max:1,
+            time : 50000,
+            erros : ['time']
+          })
+       });
+      }
       if (emotes.length){
         if(args[1]=='-id'){
           msg.channel
@@ -41,5 +58,13 @@ module.exports={
   },
   emojify(obj){
     return `<${(obj.a)?'a':''}:${obj.name}:${obj.id}>`
+  },
+  getRandomEmo(client){
+    let emos = client.emojis.cache.map(e=>{return{
+      id:e.id,
+      name:e.name,
+      a:e.animated
+    }});
+    return emos[Math.floor(Math.random()*emos.length)];
   }
 }

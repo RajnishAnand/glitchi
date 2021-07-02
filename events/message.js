@@ -2,9 +2,9 @@ const { prefix, ownerId } = require('../config.json');
 module.exports = {
   name: 'message',
   execute(msg) {
-    if (!msg.content.startsWith(prefix) ||
-      msg.author.bot ||
-      !msg.channel.hasOwnProperty('guild')
+    if (!msg.content.startsWith(prefix)
+      ||msg.author.bot 
+      ||!msg.channel.hasOwnProperty('guild')
     ) return;
     const args = msg
       .content
@@ -38,7 +38,7 @@ module.exports = {
       };
       return;
     };
-    this.log(msg);
+    //this.log(msg);
     if (command.permissions) {
       const authorPerms = msg.channel
         .permissionsFor(msg.author);
