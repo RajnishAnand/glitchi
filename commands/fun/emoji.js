@@ -39,7 +39,11 @@ module.exports={
             max:1,
             time : 50000,
             erros : ['time']
-          })
+          });
+          setTimeout(()=>{
+            m.reactions.removeAll()
+            .catch();
+          },180000);
        });
       }
       if (emotes.length){
