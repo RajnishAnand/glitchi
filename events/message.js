@@ -38,7 +38,7 @@ module.exports = {
       };
       return;
     };
-    //this.log(msg);
+    this.log(msg);
     if (command.permissions) {
       const authorPerms = msg.channel
         .permissionsFor(msg.author);
