@@ -2,7 +2,7 @@ const { Collector } = require('discord.js');
 const Collection = require('discord.js').Collection;
 const { Events } = require('discord.js').Constants;
 
-class ButtonCollector extends Collector {
+class MenuCollector extends Collector {
   constructor(data, filter, options = {}) {
     super(data.client, filter, options);
 
@@ -18,38 +18,38 @@ class ButtonCollector extends Collector {
     this._handleMessageDeletion = this._handleMessageDeletion.bind(this);
 
     this.client.incrementMaxListeners();
-    this.client.on('clickButton', this.handleCollect);
+    this.client.on('clickMenu', this.handleCollect);
     this.client.on(Events.MESSAGE_DELETE, this._handleMessageDeletion);
     this.client.on(Events.CHANNEL_DELETE, this._handleChannelDeletion);
     this.client.on(Events.GUILD_DELETE, this._handleGuildDeletion);
 
     this.once('end', () => {
-      this.client.removeListener('clickButton', this.handleCollect);
+      this.client.removeListener('clickMenu', this.handleCollect);
       this.client.removeListener(Events.MESSAGE_DELETE, this._handleMessageDeletion);
       this.client.removeListener(Events.CHANNEL_DELETE, this._handleChannelDeletion);
       this.client.removeListener(Events.GUILD_DELETE, this._handleGuildDeletion);
       this.client.decrementMaxListeners();
     });
 
-    this.on('collect', async (button) => {
+    this.on('collect', async (menu) => {
       this.total++;
-      if (!button.clicker.user) await button.clicker.fetch();
-      this.users.set(button.clicker.user.id, button.clicker.user);
+      if (!menu.clicker.user) await menu.clicker.fetch();
+      this.users.set(menu.clicker.user.id, menu.clicker.user);
     });
   }
 
-  collect(button) {
+  collect(menu) {
     if (this.message) {
-      return button.message.id === this.message.id ? button.discordID : null;
+      return menu.message.id === this.message.id ? menu.discordID : null;
     }
-    return button.channel.id === this.channel.id ? button.discordID : null;
+    return menu.channel.id === this.channel.id ? menu.discordID : null;
   }
 
-  dispose(button) {
+  dispose(menu) {
     if (this.message) {
-      return button.message.id === this.message.id ? button.discordID : null;
+      return menu.message.id === this.message.id ? menu.discordID : null;
     }
-    return button.channel.id === this.channel.id ? button.discordID : null;
+    return menu.channel.id === this.channel.id ? menu.discordID : null;
   }
 
   empty() {
@@ -61,7 +61,7 @@ class ButtonCollector extends Collector {
 
   endReason() {
     if (this.options.max && this.total >= this.options.max) return 'limit';
-    if (this.options.maxButtons && this.collected.size >= this.options.maxButtons) return 'buttonLimit';
+    if (this.options.maxMenus && this.collected.size >= this.options.maxMenus) return 'menuLimit';
     if (this.options.maxUsers && this.users.size >= this.options.maxUsers) return 'userLimit';
     return null;
   }
@@ -85,4 +85,4 @@ class ButtonCollector extends Collector {
   }
 }
 
-module.exports = ButtonCollector;
+module.exports = MenuCollector;
