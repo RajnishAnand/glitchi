@@ -7,7 +7,7 @@ module.exports = {
   permRequired : ['BAN_MEMBERS'],
   execute({msg,args}){
     const userID = args[0]
-            .replace(/^<@/,'')
+            .replace(/^<@!?/,'')
             .replace(/>$/,'');
             
     if(userID*0!==0){

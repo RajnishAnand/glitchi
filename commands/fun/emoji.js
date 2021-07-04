@@ -4,6 +4,7 @@ module.exports={
   aliases:['emote','emo','e'],
   usage: '[optional : emoji-name] [optional : -id]',
   execute({msg,args}){
+    msg.react('856818054602948608');
     let emotes=[];
     try{
       if(args.length){msg.client.guilds.cache.forEach(g=>
@@ -41,9 +42,9 @@ module.exports={
             erros : ['time']
           });
           setTimeout(()=>{
-            m.reactions.removeAll()
-            .catch();
-          },180000);
+            //try{m.reactions.removeAll()}
+            //catch(err){};
+          },50000);
        });
       }
       if (emotes.length){

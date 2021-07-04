@@ -10,7 +10,7 @@ module.exports = {
     let userIDs = new Array;
     if (args.length) {
       args.forEach(arg => {
-        arg = arg.replace(/^<@/, '').replace(/>$/, '');
+        arg = arg.replace(/^<@!?/, '').replace(/>$/, '');
         if (parseInt(arg) == arg) userIDs.push(arg);
         else {
           //userIDs.push(msg.author.id);
