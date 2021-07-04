@@ -28,23 +28,24 @@ module.exports={
         })
         .then(m=>{
           m.awaitReactions((react,user)=>{
-            if('859251872996655115'==react.emoji.id&&user.id==msg.author.id){
-              return m.delete().then(()=>
-                this.execute({msg,args}));
-            }
-            else if('859251838736924712'== react.emoji.id&&user.id==msg.author.id){
-              return m.delete();
+            if(user.id==msg.author.id){
+              if('859251872996655115'==react.emoji.id){
+                m.edit(this.emojify(
+                  this.getRandomEmo(msg.client)))
+              }
+              else if('859251838736924712'== react.emoji.id)return m.delete();
+              try {react.users.remove(msg.author.id);} 
+              catch (err) {};
             }; return false;
-          },
-          {
-            max:1,
-            time : 50000,
+          },{
+            max:999,
+            time : 180000,
             erros : ['time']
           });
           setTimeout(()=>{
-            //try{m.reactions.removeAll()}
-            //catch(err){};
-          },50000);
+            try{m.reactions.removeAll()}
+            catch(err){};
+          },180000);
        });
       }
       if (emotes.length){
