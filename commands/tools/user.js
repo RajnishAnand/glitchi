@@ -35,11 +35,24 @@ function send(msg,user=false,member=false){
       url : `https://discordapp.com/users/${user.id}`,
       description : `>>> **Username** :\` ${user.username
         } \`\n**ID** :\` ${user.id
-        } \`\n**Avatar** : [[Avatar-URL]](${user.displayAvatarURL({
+        } \`\n**Avatar** : [[png]](${user.displayAvatarURL({
             format : 'png',
             dynamic : 'true',
+            size : 4096
           })
-        }?size=2048)\n**Bot** :\` ${user.bot} \``,
+        })\`|\`[[jpg]](${user
+          .displayAvatarURL({
+            format : 'jpg',
+            dynamic : 'true',
+            size : 4096
+          })
+        })\`|\`[[webp]](${user
+          .displayAvatarURL({
+            format : 'webp',
+            dynamic : 'true',
+            size : 4096
+          })
+        })\n**Bot** :\` ${user.bot} \``,
       thumbnail : {
         url : user.displayAvatarURL({
           format : 'png',
@@ -49,7 +62,7 @@ function send(msg,user=false,member=false){
       fields : [
         {
           name : '🎗️| Badges : ',
-          value : `\`\`\`\n${user.flags.toArray().length?user.flags.toArray().join(', '):'NONE'}\`\`\``
+          value : `\`\`\`\n${user.flags.toArray().length?user.flags.toArray().join(', '):'NONE'}\`\`\``,
         },
         {
           name: '⏳| Created : ',
@@ -58,11 +71,12 @@ function send(msg,user=false,member=false){
             .split(" ")
             .slice(0,4)
             .join(' ')
-            }\n${pm(Date.now()-user.createdTimestamp)} ago\`\`\``
+            }\n${pm(Date.now()-user.createdTimestamp)} ago\`\`\``,
+          inline : true,
         }
       ],
       footer : {
-        text: '|Requested by '+msg.author.username,
+        text: '| Requested by '+msg.author.username,
         icon_url:msg.author.avatarURL({format:'png'})
       }
     };
@@ -79,14 +93,15 @@ function send(msg,user=false,member=false){
             .split(" ")
             .slice(0,4)
             .join(' ')
-            }\n${pm(Date.now()-member.joinedTimestamp)} ago\`\`\``
+            }\n${pm(Date.now()-member.joinedTimestamp)} ago\`\`\``,
+      inline : true ,
     },{
       name : `🪃| Roles [${member
         .roles.cache.size-1}]: `,
       value :(member.roles.cache.size-1)?member.roles.cache.filter(r=>r.id!=msg.guild.id).map(r=>r).join(", "):'` NONE `',
     },{
       name : `🥷| Permissions : `,
-      value : '```\n'+(member.permissions.toArray().includes('ADMINISTRATOR')?'ADMINISTRATOR':member.permissions.toArray().join(', '))+'```'
+      value : '```\n'+(member.permissions.toArray().includes('ADMINISTRATOR')?'ADMINISTRATOR':member.permissions.toArray().join(', '))+'```',
     });
   };
   msg.channel.send({embed});

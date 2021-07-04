@@ -42,7 +42,7 @@ function sendEmbedAvatar(user, channel,msg) {
           url: `${user.displayAvatarURL({
             format : 'png',
             dynamic : 'true',
-          })}?size=2048`,
+          })}?size=4096`,
         },
         'timestamp': new Date(),
         'footer':{

@@ -4,6 +4,7 @@ const http = require('http');
 const fs = require('fs');
 
 const client = new Discord.Client();
+require('discord-buttons')(client);
 client.commands = new Discord.Collection();
 
 //command handler
