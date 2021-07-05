@@ -39,13 +39,13 @@ module.exports={
             }; return false;
           },{
             max:999,
-            time : 180000,
+            time : 120000,
             erros : ['time']
           });
           setTimeout(()=>{
             try{m.reactions.removeAll()}
             catch(err){};
-          },180000);
+          },120000);
        });
       }
       if (emotes.length){

@@ -1,23 +1,27 @@
 module.exports = {
   name : 'serverinfo',
   description : 'server information',
+  aliases : ['server'],
   usage : 'serverinfo',
   args : false,
   devOnly : false,
   execute({msg}){
-    msg.channel.send(guildinfo(msg));
+    let embed = getData(msg.guild);
+    msg.channel.send({embed});
   }
 };
 
-function guildinfo(msg) {
-  let dt = new Date(msg.channel.guild.joinedTimestamp);
-  return `>>> **Guild info**\`\`\`md\nName : ${
-    msg.channel.guild.name
-    }\nRegion : ${
-      msg.channel.guild.region
-    }\nMembers : ${
-      msg.channel.guild.memberCount
-    }\nCreated : ${
-      dt.toString()
-    }\`\`\``;
+function getData(guild) {
+  return embed = {
+    color : '#00bfff',
+    title : guild.name,
+    description : '```\n'+
+      `Name : ${guild.name
+      }\nID : ${guild.id
+      }\nRegion : ${guild.region
+      }\nMembers : ${guilds.members
+      }\nOwnerID : ${guild.ownerID
+      }\nVerification Level : ${guild.verificationLevel
+      }`+'```',
+  }
 }

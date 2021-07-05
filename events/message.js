@@ -14,7 +14,6 @@ module.exports = {
     const commandName = args
       .shift()
       .toLowerCase();
-    const content = msg.content.replace(prefix + commandName + ' ', '');
     const command = msg.client.commands.get(commandName) ||
       msg.client.commands.find(cmnd => cmnd.aliases && cmnd.aliases.includes(commandName));
 
@@ -44,7 +43,7 @@ module.exports = {
         .permissionsFor(msg.author);
       if (!authorPerms ||
         !authorPerms.has(command.permissions)) {
-        return msg.reply(`<a:cuteness:854833240665227324> You don\' have enough privilege to run \` ${commandName} \` command!`);
+        return msg.reply(`<a:cuteness:854833240665227324> You require PERMISSION : **\` ${command.permissions} \`** to run \` ${commandName} \` command!`);
       }
     }
     try {
@@ -53,9 +52,12 @@ module.exports = {
         return;
       }
       else if (command.args && !args.length) {
-        msg.channel.send(`This command requires argument <:sneakPeek:852714216057733180> ${msg.author}`);
+        msg.channel.send(`Command : \` ${command.name} \` requires argument! <:sneakPeek:852714216057733180> ${msg.author}`);
       }
       else {
+        const content = msg.content
+          .replace(new RegExp(`${prefix}[\s+]?`), '')
+          .replace(commandName+' ','');
         command.execute({ msg, args, content,commandName,prefix });
       }
     } catch (error) {

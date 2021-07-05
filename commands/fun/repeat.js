@@ -1,10 +1,10 @@
 module.exports = {
   name : 'repeat',
+  aliases : ['re'],
   description : 'Repeat',
   usage : '[text]',
   args : true,
-  execute({msg,commandName, prefix}){
-    let content = msg.cleanContent.replace(prefix+commandName+' ','');
+  execute({msg,content, prefix}){
     msg.channel.send(content);
   }
 }
