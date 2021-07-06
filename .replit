@@ -1,0 +1,2 @@
+language = "bash"
+run = "TOKEN=$TOKEN_CRIPT node index.js"
