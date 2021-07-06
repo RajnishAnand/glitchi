@@ -35,7 +35,9 @@ function server(req, res) {
   res.writeHead(200, {
     'Content-Type': 'text/plain',
   });
-  res.end('Glichi successfully waked up!');
+  res.end(
+    'Glichi successfully waked up!\nGlitchi Support server : https://discord.gg/ZARyCT3a7G \nInvite Bot : https://discord.com/oauth2/authorize?client_id=852227150455373906&scope=bot&permissions=4161666295 '
+    );
 };
 
 //To login
