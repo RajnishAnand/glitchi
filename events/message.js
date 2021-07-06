@@ -2,9 +2,9 @@ const { prefix, ownerId } = require('../config.json');
 module.exports = {
   name: 'message',
   execute(msg) {
-    if (!msg.content.startsWith(prefix)
-      ||msg.author.bot 
-      ||!msg.channel.hasOwnProperty('guild')
+    if (!msg.content.startsWith(prefix) ||
+      msg.author.bot ||
+      !msg.channel.hasOwnProperty('guild')
     ) return;
     const args = msg
       .content
@@ -56,16 +56,17 @@ module.exports = {
       }
       else {
         const content = msg.content
-          .replace(new RegExp(`${prefix}[\s+]?`), '')
-          .replace(commandName+' ','');
-        command.execute({ msg, args, content,commandName,prefix });
+          .substr(prefix.length)
+          .replace(/^[\s+]?/, "")
+          .replace(commandName + ' ', '');
+        command.execute({ msg, args, content, commandName, prefix });
       }
     } catch (error) {
       //onsole.error(error);
       msg.reply(error.message);
     }
   },
-  log(msg){
+  log(msg) {
     msg.client.channels.cache.get('857636203892310090').send(`>>> \` User : ${msg.author.tag
         } \n Guild : ${msg.guild.name
         } \n Channel : \`<#${msg.channel.id
