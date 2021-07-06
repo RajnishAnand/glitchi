@@ -36,7 +36,7 @@ function server(req, res) {
     'Content-Type': 'text/plain',
   });
   res.end(
-    'An Open Source Discord bot!\n\nGithub :https://github.com/RajnishAnand/discord-bot-glitchi\nGlitchi Support server : https://discord.gg/ZARyCT3a7G \n\nInvite Bot : https://discord.com/oauth2/authorize?client_id=852227150455373906&scope=bot&permissions=4161666295 '
+    'An Open Source Discord bot!\n\nGithub : https://github.com/RajnishAnand/discord-bot-glitchi\nGlitchi Support server : https://discord.gg/ZARyCT3a7G \n\nInvite Bot : https://discord.com/oauth2/authorize?client_id=852227150455373906&scope=bot&permissions=4161666295 '
     );
 };
 
