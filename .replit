@@ -1,2 +1,2 @@
 language = "bash"
-run = "TOKEN=$TOKEN_CRIPT node index.js"
+run = "PORT=$PORT&&TOKEN=$TOKEN_CRIPT node index.js"
