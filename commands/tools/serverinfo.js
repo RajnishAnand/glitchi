@@ -19,7 +19,7 @@ function getData(guild) {
       `Name : ${guild.name
       }\nID : ${guild.id
       }\nRegion : ${guild.region
-      }\nMembers : ${guilds.members
+      }\nMembers : ${guild.memberCount
       }\nOwnerID : ${guild.ownerID
       }\nVerification Level : ${guild.verificationLevel
       }`+'```',
