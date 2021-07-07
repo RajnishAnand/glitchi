@@ -12,7 +12,7 @@ module.exports = {
 };
 
 function getData(guild) {
-  return embed = {
+  return {
     color : '#00bfff',
     title : guild.name,
     description : '```\n'+
