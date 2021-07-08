@@ -9,15 +9,21 @@ module.exports={
     const channelID = "856907506612830241";
     
     //check for empty feedbacks
-    let embed = new Discord.msgEmbed()    
-      .setTitle("Feedback")
-      .setColor("Green")
-      .setDescription(content)
-      .addField('Author : ', msg.author)
-      .addField('From server : ', msg.guild.name)
-      .setTimestamp(new Date())
-    msg.delete();
+    let embed = {
+      title : `📮| Feedback : `,
+      color : '#1ac95d',
+      description : '```\n'+content+'```',
+      fields : [{
+        name : '🥷| Userinfo : ',
+        value : '```\n'+`Username : ${msg.author.tag
+          }\nID : ${msg.author.id
+          }\nGuild : ${msg.guild.name
+          }`+'```',
+      }],
+      timestamp : new Date(),
+    }
+    //msg.delete();
+    msg.client.channels.cache.get(channelID).send({embed});
     msg.channel.send("Feedback sent ✅!") ;
-    msg.client.channels.get(channelID).send(embed);
   },
 }
