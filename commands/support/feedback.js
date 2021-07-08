@@ -3,6 +3,7 @@ module.exports={
   description: 'Send your feedback directly to the developer',
   aliases: ['fd', 'suggest'],
   usage: '[give feedback]',
+  args: true,
   execute(client, message, args) {
     
     //support server and feedback channel respectively
