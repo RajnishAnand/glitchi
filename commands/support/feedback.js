@@ -1,5 +1,3 @@
-const { RichEmbed } = require('discord.js');
-
 module.exports={  
   name: 'feedback',
   description: 'Send your feedback directly to the developer',
@@ -15,7 +13,7 @@ module.exports={
     if(!args.join(" ")) return message.channel.send("Specify a feedback please!");
     let feedback = args.join(" ");
     
-    let embed = new RichEmbed()
+    let embed = new Discord.MessageEmbed()    
     .setTitle("Feedback")
     .setColor("Green")
     .setDescription(args.join(" "))
