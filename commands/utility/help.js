@@ -7,9 +7,10 @@ module.exports = {
   execute({msg,args}){
     const data = [];
     const {commands} = msg.client;
+    const listIndex = "‣";
     
     if(!args.length){
-      data.push(commands.filter(cmnd=>!cmnd.devOnly).map(cmnd=>`ꞏ \`${prefix}${cmnd.name}\` ⇨ ${cmnd.description}`).join('\n'));
+      data.push(commands.filter(cmnd=>!cmnd.devOnly).map(cmnd=>`${listIndex} \`${prefix}${cmnd.name}\` ⇨ ${cmnd.description}`).join('\n'));
       data.push(`> You can use \`${prefix}help [command-name]\` to get info on a specific command!`);
       return msg.channel.send({embed:{
           color : '#00bfff',
@@ -30,9 +31,9 @@ module.exports = {
     if(!command){
       return msg.reply(`<a:sadThink:854286456041242645> there are no such command as \`${name}\``).catch(err=>console.log(err));
     }
-    if(command.aliases)data.push(`ꞏ **Aliases** ⇨ ${command.aliases.join(', ')}`);
-    if(command.description)data.push(`ꞏ **Description** ⇨ ${command.description}`);
-    if(command.usage)data.push(`ꞏ **Usage** ⇨ ${prefix}${command.name} ${command.usage}`);
+    if(command.aliases)data.push(`${listIndex} **Aliases** ⇨ ${command.aliases.join(', ')}`);
+    if(command.description)data.push(`${listIndex} **Description** ⇨ ${command.description}`);
+    if(command.usage)data.push(`${listIndex} **Usage** ⇨ ${prefix}${command.name} ${command.usage}`);
     
     msg.channel.send({embed:{
       color:'#00bfff',
