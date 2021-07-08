@@ -1,4 +1,4 @@
-const { prefix, ownerId } = require('../config.json');
+const { prefix, ownerId ,errorLog} = require('../config.json');
 module.exports = {
   name: 'message',
   execute(msg) {
@@ -37,7 +37,7 @@ module.exports = {
       };
       return;
     };
-    //this.log(msg);
+    
     if (command.permissions) {
       const authorPerms = msg.channel
         .permissionsFor(msg.author);
@@ -59,17 +59,17 @@ module.exports = {
           .substr(prefix.length)
           .replace(/^[\s+]?/, "")
           .replace(commandName + ' ', '');
-        command.execute({ msg, args, content, commandName, prefix });
+        command.execute({ msg, args, content, commandName, prefix, error:this.err });
       }
     } catch (error) {
-      //onsole.error(error);
       msg.reply(error.message);
     }
   },
-  log(msg) {
-    msg.client.channels.cache.get('857636203892310090').send(`>>> \` User : ${msg.author.tag
+  err(msg,err) {
+    msg.client.channels.cache.get(errorLog).send(`>>> \` User : ${msg.author.tag
         } \n Guild : ${msg.guild.name
         } \n Channel : \`<#${msg.channel.id
-        }>\n\` Command :\` \`${msg.cleanContent}\``);
+        }>\n\` error : ${err.message
+        } \n Command :\` \`${msg.cleanContent}\``);
   }
 }

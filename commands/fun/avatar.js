@@ -5,7 +5,7 @@ module.exports = {
   usage: '[optional : @user or userID]',
   args: false,
   cooldown: 3,
-  execute({ msg, args }) {
+  execute({msg,args,error}) {
     msg.react('856818054602948608');
     let userIDs = new Array;
     if (args.length) {
@@ -26,13 +26,16 @@ module.exports = {
       msg.client.users
         .fetch(id)
         .then(u =>
-          sendEmbedAvatar(u, msg.channel,msg))
-        .catch(err => msg.channel.send(`can't resolve \`${id}\` as a User!`));
+          sendEmbedAvatar(u, msg.channel,msg,error))
+        .catch(err => {
+          error(msg,err);
+          msg.channel.send(`can't resolve \`${id}\` as a User!`)
+        });
     });
   }
 };
 
-function sendEmbedAvatar(user, channel,msg) {
+function sendEmbedAvatar(user, channel,msg,error) {
   try {
     channel.send({
       embed: {
@@ -52,5 +55,8 @@ function sendEmbedAvatar(user, channel,msg) {
       }
     });
   }
-  catch (err) { channel.send(err.message) };
+  catch (err) { 
+    error(msg,err);
+    channel.send(err.message);
+  };
 }
