@@ -24,6 +24,6 @@ module.exports={
     .setTimestamp(new Date())
     message.delete()
     message.channel.send("Feedback sent ✅!")
-    client.guilds.get("856090036998635520").channels.get("856907506612830241").send(embed);
+    client.guilds.get(serverID).channels.get(channelID).send(embed);
   },
 }
