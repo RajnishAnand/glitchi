@@ -12,7 +12,7 @@ module.exports = {
       (data)=>{msg.channel.send({embed : {
         'color' : '#00bfff',
         'title':'Fetched document : ',
-        'description' : '```\n'+data.substr(0,500)+'```',
+        'description' : '```html\n'+data.substr(0,500)+'```',
         'fields' : [
           {
             'name' : 'Full document :',
