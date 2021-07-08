@@ -24,11 +24,11 @@ module.exports={
     }
     //msg.delete();
     msg.client.channels.cache.get(channelID).send({embed})
-      .then(message => {
+      .then(msg => {
         msg.react("👍")
         msg.react("👎")
     }).catch(() => {
-        console.log("error");
+        console.log("error while reacting to message");
      });
     msg.channel.send("Feedback sent ✅!") ;
   },
