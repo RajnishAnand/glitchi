@@ -23,7 +23,13 @@ module.exports={
       timestamp : new Date(),
     }
     //msg.delete();
-    msg.client.channels.cache.get(channelID).send({embed});
+    msg.client.channels.cache.get(channelID).send({embed})
+      .then(message => {
+        msg.react("👍")
+        msg.react("👎")
+    }).catch(() => {
+        console.log("error");
+     });
     msg.channel.send("Feedback sent ✅!") ;
   },
 }
