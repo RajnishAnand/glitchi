@@ -29,8 +29,15 @@ module.exports = {
     let messages = channel.messages;
     if(messages){
       messages.fetch(messageID)
-        .then(m=>
-          msg.channel.send(m.content,{code:true}))
+        .then(m0=>
+          msg.channel.send(m0.content,{code:true})
+            .then(m1=>{if('```\n'+m0.content+'\n```'!==m1.content){
+              m1.edit(
+                m0.content.replace(/</g,'<­'),
+                {code:true}
+              )
+            }})
+        )
         .catch(err=>msg.reply(err.message));
     }
     else{
