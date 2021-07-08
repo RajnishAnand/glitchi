@@ -23,7 +23,7 @@ for(const folder of commandFolders){
   }
 };
 
-//login token
+//login token 
 client.login(process.env.TOKEN);
 
 //Client on ready console ready
@@ -103,4 +103,4 @@ function server(req, res) {
     'Content-Type': 'text/plain',
   });
   res.end('No info provided!');
-};
+};   //test
