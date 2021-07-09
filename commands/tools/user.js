@@ -1,4 +1,9 @@
 const pm= require('pretty-ms')
+const keyPerms = ['KICK_MEMBERS', 'BAN_MEMBERS', 'MANAGE_CHANNELS', 'MANAGE_GUILD', 'VIEW_AUDIT_LOG', 'MANAGE_MESSAGES', 'MENTION_EVERYONE', 'MANAGE_NICKNAMES', 'MANAGE_ROLES', 'MANAGE_WEBHOOKS', 'MANAGE_EMOJIS'];
+const textForm = (txt) =>{
+  return txt.toUpperCase()
+  }
+
 module.exports = {
   name : 'user',
   aliases : ['whois', 'userinfo'],
@@ -99,10 +104,26 @@ function send(msg,user=false,member=false){
       name : `🪃| Roles [${member
         .roles.cache.size-1}]: `,
       value :(member.roles.cache.size-1)?member.roles.cache.filter(r=>r.id!=msg.guild.id).map(r=>r).join(", "):'` NONE `',
-    },{
-      name : `🥷| Permissions : `,
-      value : '```\n'+(member.permissions.toArray().includes('ADMINISTRATOR')?'ADMINISTRATOR':member.permissions.toArray().join(', '))+'```',
     });
+    let userKeyPerms;
+    if(keyPerms.some(p => member.hasPermission(p))){
+      userKeyPerms = `\`${keyPerms.filter(p => targetMember.hasPermission(p)).join('`,` ').replace(/_/g,' ').toLowerCase().replace(/\s\w/g, textForm)}\``;
+    }
+    if(keyPerms.every(p => targetMember.hasPermission(p))){
+      userKeyPerms = `\`Moderation Privilege\``
+    }
+    if(targetMember.hasPermission('ADMINISTRATOR') || message.guild.ownerID === targetUser.id){
+      userKeyPerms = `\`All Permissions\``
+    }
+
+    if(userKeyPerms){
+      embed.fields.push({
+        name : `🥷| Permissions : `,
+        value : '```\n'+userKeyPerms+'```',
+      })
+    }
+  
+
   };
   msg.channel.send({embed});
 } 
