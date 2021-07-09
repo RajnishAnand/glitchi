@@ -88,11 +88,10 @@ function send(msg,user=false,member=false){
   if(member){
     const keyPerms = [
       'KICK_MEMBERS',     'BAN_MEMBERS',
-      'MANAGE_CHANNELS',  'MANAGE_GUILD', 
-      'VIEW_AUDIT_LOG',   'MANAGE_MESSAGES', 
-      'MENTION_EVERYONE', 'MANAGE_NICKNAMES', 
-      'MANAGE_ROLES',     'MANAGE_WEBHOOKS', 
-      'MANAGE_EMOJIS'
+      'MANAGE_CHANNELS',  'MANAGE_GUILD',  
+      'MANAGE_MESSAGES',  'MENTION_EVERYONE',
+      'MANAGE_NICKNAMES', 'MANAGE_ROLES',     
+      'MANAGE_WEBHOOKS',  'MANAGE_EMOJIS'
     ];
     
     embed.fields.push({
@@ -114,11 +113,11 @@ function send(msg,user=false,member=false){
     let userKeyPerms = '';
     
     if(permKeys.includes('ADMINISTRATOR')){
-      userKeyPerms = 'All Permissions'
+      userKeyPerms = 'ALL_PERMISSIONS'
     }
     else if(keyPerms.every(p => 
       permKeys.includes(p))){
-        userKeyPerms = 'Moderation Privilege'
+        userKeyPerms = 'MODERATION_PRIVILEGE'
     }
     else if(keyPerms.some(p => permKeys.includes(p))){
       userKeyPerms = permKeys
