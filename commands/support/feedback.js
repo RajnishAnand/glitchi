@@ -8,7 +8,8 @@ module.exports={
   execute({msg, args ,error}){
     //Feedback
     const feedback = args.join(" ")
-      .replace(/\n\n+/,'\n');
+      //.replace(/\n+/,'\n');
+      .replace(/\n{2,}/g, '\n');
     //Embed object
     let embed = {
       title : `📮| Feedback : `,
