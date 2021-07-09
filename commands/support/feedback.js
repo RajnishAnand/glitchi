@@ -1,14 +1,12 @@
+const {channels,emojis}= require('../../config.json');
 module.exports={  
   name: 'feedback',
   description: 'Send feedback',
   aliases: ['fd', 'suggest'],
   usage: '[feedback]',
   args : true,
-  execute({msg, args, content}){
-    //support server and feedback channel respectively
-    const channelID = "856907506612830241";
-    
-    //check for empty feedbacks
+  execute({msg, args, content,error}){
+    //Embed object
     let embed = {
       title : `📮| Feedback : `,
       color : '#1ac95d',
@@ -21,15 +19,17 @@ module.exports={
           }`+'```',
       }],
       timestamp : new Date(),
-    }
+    };
     //msg.delete();
-    msg.client.channels.cache.get(channelID).send({embed})
+    msg.client.channels.cache.get(channels.feedback).send({embed})
       .then(msg => {
-        msg.react("👍")
-        msg.react("👎")
-    }).catch(() => {
-        console.log("error while reacting to message");
-     });
-    msg.channel.send("Feedback sent ✅!") ;
+        msg.react(emojis.thumbsup);
+        msg.react(emojis.thumbsdown);
+    }).catch((err) => {
+        msg.channel.send('There was an error while sending your Feedback!')
+        error(msg,err);
+    }).then(()=>
+      msg.channel.send('Thank you for your Feedback! Your feedback was successfully sent to support server.\😊') 
+    );
   },
 }

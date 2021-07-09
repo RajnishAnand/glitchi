@@ -1,4 +1,4 @@
-const { prefix, ownerId ,errorLog} = require('../config.json');
+const { prefix, ownerId ,channels} = require('../config.json');
 module.exports = {
   name: 'message',
   execute(msg) {
@@ -66,7 +66,7 @@ module.exports = {
     }
   },
   err(msg,err) {
-    msg.client.channels.cache.get(errorLog).send(`>>> \` User : ${msg.author.tag
+    msg.client.channels.cache.get(channels.errorLog).send(`>>> \` User : ${msg.author.tag
         } \n Guild : ${msg.guild.name
         } \n Channel : \`<#${msg.channel.id
         }>\n\` error : ${err.message
