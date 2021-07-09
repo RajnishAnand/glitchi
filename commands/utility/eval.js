@@ -6,7 +6,7 @@ module.exports = {
   description: 'Evaluate',
   devOnly: true,
   args: true,
-  async execute({ msg, content }, client = msg.client) {
+  async execute({ msg,args,content,error, prefix }, client = msg.client) {
     try {
       if (msg.author.id === config.ownerId) {
         this.send(eval(content),msg);
