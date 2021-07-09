@@ -1,9 +1,4 @@
-const pm= require('pretty-ms')
-const keyPerms = ['KICK_MEMBERS', 'BAN_MEMBERS', 'MANAGE_CHANNELS', 'MANAGE_GUILD', 'VIEW_AUDIT_LOG', 'MANAGE_MESSAGES', 'MENTION_EVERYONE', 'MANAGE_NICKNAMES', 'MANAGE_ROLES', 'MANAGE_WEBHOOKS', 'MANAGE_EMOJIS'];
-const textForm = (txt) =>{
-  return txt.toUpperCase()
-  }
-
+const pm= require('pretty-ms');
 module.exports = {
   name : 'user',
   aliases : ['whois', 'userinfo'],
@@ -91,6 +86,15 @@ function send(msg,user=false,member=false){
     return msg.reply('your specified user wasn\'t found!')
   }
   if(member){
+    const keyPerms = [
+      'KICK_MEMBERS',     'BAN_MEMBERS',
+      'MANAGE_CHANNELS',  'MANAGE_GUILD', 
+      'VIEW_AUDIT_LOG',   'MANAGE_MESSAGES', 
+      'MENTION_EVERYONE', 'MANAGE_NICKNAMES', 
+      'MANAGE_ROLES',     'MANAGE_WEBHOOKS', 
+      'MANAGE_EMOJIS'
+    ];
+    
     embed.fields.push({
       name : '🍻| Joined : ',
       value :`\`\`\`\n${new Date(member.joinedTimestamp)
@@ -105,20 +109,30 @@ function send(msg,user=false,member=false){
         .roles.cache.size-1}]: `,
       value :(member.roles.cache.size-1)?member.roles.cache.filter(r=>r.id!=msg.guild.id).map(r=>r).join(", "):'` NONE `',
     });
-    let userKeyPerms;
-    if(keyPerms.some(p => member.hasPermission(p))){
-      userKeyPerms = `\`${keyPerms.filter(p => targetMember.hasPermission(p)).join('`,` ').replace(/_/g,' ').toLowerCase().replace(/\s\w/g, textForm)}\``;
+    
+    const permKeys = member.permissions.toArray();
+    let userKeyPerms = '';
+    
+    if(permKeys.includes('ADMINISTRATOR')){
+      userKeyPerms = 'All Permissions'
     }
-    if(keyPerms.every(p => targetMember.hasPermission(p))){
-      userKeyPerms = `\`Moderation Privilege\``
+    else if(keyPerms.every(p => 
+      permKeys.includes(p))){
+        userKeyPerms = 'Moderation Privilege'
     }
-    if(targetMember.hasPermission('ADMINISTRATOR') || message.guild.ownerID === targetUser.id){
-      userKeyPerms = `\`All Permissions\``
+    else if(keyPerms.some(p => permKeys.includes(p))){
+      userKeyPerms = permKeys
+        .filter(perm=>keyPerms.includes(perm))
+        .join(', ');
+    }
+    else{
+      userKeyPerms = permKeys.length?permKeys
+        .join(", "):'NONE';
     }
 
     if(userKeyPerms){
       embed.fields.push({
-        name : `🥷| Permissions : `,
+        name : `🥷| Key Permissions : `,
         value : '```\n'+userKeyPerms+'```',
       })
     }
