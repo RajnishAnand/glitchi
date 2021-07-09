@@ -5,12 +5,15 @@ module.exports={
   aliases: ['fd', 'suggest'],
   usage: '[feedback]',
   args : true,
-  execute({msg, args, content,error}){
+  execute({msg, args ,error}){
+    //Feedback
+    const feedback = args.join(" ")
+      .replace(/\n\n+/,'\n');
     //Embed object
     let embed = {
       title : `📮| Feedback : `,
       color : '#1ac95d',
-      description : '```\n'+content+'```',
+      description : '>>> '+feedback,
       fields : [{
         name : '🥷| Userinfo : ',
         value : '```\n'+`Username : ${msg.author.tag
