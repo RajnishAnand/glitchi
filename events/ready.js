@@ -3,9 +3,9 @@ module.exports = {
   name : 'ready',
   once : true,
   execute(client){
-    const port = process.env.PORT||false;
-    console.log('ready! port :',port);
-    if(port)
+    const test = process.env.NODE||false ;
+    console.log('ready! Logged in as :',client.user.tag);
+    if(!test)
       client.user.setActivity(`${prefix}commands in ${client.guilds.cache.size} servers`, { type: "LISTENING"}); 
   }
 }

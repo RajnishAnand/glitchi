@@ -19,7 +19,7 @@ for(const folder of commandFolders){
   }; 
 };
 
-//event handler
+//event handler  
 const eventFiles = fs.readdirSync('./events').filter(file=>file.endsWith('.js'));
 for (const file of eventFiles){
   const event = require(`./events/${file}`);
