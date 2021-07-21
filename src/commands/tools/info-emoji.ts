@@ -52,8 +52,8 @@ module.exports = {
         emo = msg.client.emojis.cache
           .find((e:emoji)=>e.name==args[0])
       }
-      else {
-        emo = msg.client.emojis.cache.find((e:any) =>
+      else { 
+        emo = msg.client.emojis.cache.find((e:emoji) =>
         new RegExp('^'+args[0],'i').test(e.name))
       };
       if (emo) {
@@ -88,8 +88,8 @@ module.exports = {
 }
 
 interface emoji {
-  name : string|undefined,
-  id : string|undefined,
+  name : string,
+  id : string,
   animated : boolean,
   guild?:string
 }

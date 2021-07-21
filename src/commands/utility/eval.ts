@@ -1,15 +1,17 @@
 import util from 'util';
 import config from '../../config.js';
+
 module.exports = {
   name: 'eval',
   aliases: ['ev'],
   description: 'Evaluate',
   devOnly: true,
   args: true,
-  async execute({ msg,args,content,error, prefix }:any, client = msg.client) {
+  execute({ msg,args,content,error, prefix }:any, client = msg.client) {
     try {
       if (msg.author.id === config.ownerId) {
-        this.send(eval(content),msg);
+        const send = (txt:string)=>this.send(txt,msg);
+        send(eval(content));
       }
       else {
         msg.channel.send('You breached level 1 security, level 2 stands Guard! 🛡️');
@@ -18,11 +20,11 @@ module.exports = {
     catch (err) {
       msg.channel.send(err.message, { code: true });
     };
-
   },
+  
+  //To replace '<' & '`' character
   debug(evaled:string) {
     try {
-      //console.log(type);
       if (typeof(evaled) === 'string') {
         evaled = evaled
           .replace(/</g, '<​')
@@ -34,6 +36,8 @@ module.exports = {
       return err.message;
     }
   },
+  
+  //To send string with navigation buttons
   async send (txt:string,msg:any) {
     if(!msg)return;
     txt = this.debug(txt);
@@ -57,8 +61,7 @@ module.exports = {
           .indexOf(react.emoji.name) - 1;
         if (!pgChange) {
           mssg.delete();
-          infoM.edit(`\` ${evArr.length}m|${evLength
-            }ch \``)
+          infoM.delete();
         }
         else if (pgChange + page >= 0 && pgChange + page < evArr.length) {
           page += pgChange;

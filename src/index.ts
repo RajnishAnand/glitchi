@@ -42,4 +42,8 @@ function server(req:any, res:any) {
 };
 
 //To login
-client.login(process.env.TOKEN);
+if(process.env.TOKEN){
+  client.login(process.env.TOKEN);
+}else{
+  throw new Error('⚠️ TOKEN NOT FOUND ⚠️: expected token returned undefined. \nif you are running locally use `npm run dev`\n')
+};

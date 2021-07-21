@@ -29,7 +29,7 @@ module.exports = {
       commands.find((cmnd:any)=>
         cmnd.aliases&&cmnd.aliases.includes(name));
     if(!command){
-      return msg.reply(`<a:sadThink:854286456041242645> there are no such command as \`${name}\``).catch((err:any)=>console.log(err));
+      return msg.reply(`<a:sadThink:854286456041242645> there is no such command as \`${name}\``).catch((err:any)=>console.log(err));
     }
     if(command.aliases)data.push(`${listIndex} **Aliases** ⇨ ${command.aliases.join(', ')}`);
     if(command.description)data.push(`${listIndex} **Description** ⇨ ${command.description}`);
