@@ -10,8 +10,8 @@ const config: conf = {
   prefix: "g.",
 
   ownerId: "800445583046213663",
-
-	},
+  
+  channels : {
     errorLog: "857648123676459058",
     feedback: "856907506612830241"
   },
