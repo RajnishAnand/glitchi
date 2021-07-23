@@ -7,8 +7,8 @@ export type conf = {
 }
 
 const config: conf = {
-  prefix: "g.",
-
+  prefix:"g.",
+  
   ownerId: "800445583046213663",
   
   channels : {

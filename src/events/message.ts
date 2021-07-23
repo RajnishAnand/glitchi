@@ -1,15 +1,19 @@
 import conf from '../config';
+const {prefix,ownerId,channels} = conf ;
 
 module.exports = {
   name: 'message',
   execute(msg:any) {
-    if (!msg.content.startsWith(conf.prefix) ||
+    if (msg.content.startsWith(`<@${msg.client.user.id}>`)){
+      msg.channel.send(`Hi there ${msg.author.username}. My prefix is \`${prefix}\`. Type \`${prefix}help\` for help. `);
+    }
+    else if(!msg.content.startsWith(prefix) ||
       msg.author.bot ||
       !msg.channel.hasOwnProperty('guild')
     ) return;
     const args = msg
       .content
-      .slice(conf.prefix.length)
+      .slice(prefix.length)
       .trim()
       .split(/ +/);
     const commandName = args
@@ -49,7 +53,7 @@ module.exports = {
     }
     try {
       if ((command.devOnly || false) == true &&
-        (msg.author.id != conf.ownerId) == true) {
+        (msg.author.id != ownerId) == true) {
         return;
       }
       else if (command.args && !args.length) {
@@ -57,17 +61,17 @@ module.exports = {
       }
       else {
         const content = msg.content
-          .substr(conf.prefix.length)
+          .substr(prefix.length)
           .replace(/^[\s+]?/, "")
           .replace(commandName + ' ', '');
-        command.execute({ msg, args, content, commandName, prefix:conf.prefix, error:this.err });
+        command.execute({ msg, args, content, commandName, prefix, error:this.err });
       }
     } catch (error) {
       msg.reply(error.message);
     }
   },
   err(msg:any,err:{message:string}) {
-    msg.client.channels.cache.get(conf.channels.errorLog).send(`>>> \` User : ${msg.author.tag
+    msg.client.channels.cache.get(channels.errorLog).send(`>>> \` User : ${msg.author.tag
         } \n Guild : ${msg.guild.name
         } \n Channel : \`<#${msg.channel.id
         }>\n\` error : ${err.message
