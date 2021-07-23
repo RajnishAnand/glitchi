@@ -5,7 +5,7 @@ module.exports = {
   name: 'message',
   execute(msg:any) {
     if (msg.content.startsWith(`<@${msg.client.user.id}>`)){
-      msg.channel.send(`Hi there ${msg.author.username}. My prefix is \`${prefix}\`. Type \`${prefix}help\` for help. `);
+      msg.channel.send(`Hi there ${msg.author.username}. My prefix is \`${prefix}\` , Type \`${prefix}help\` for help. `);
     }
     else if(!msg.content.startsWith(prefix) ||
       msg.author.bot ||
