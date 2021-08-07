@@ -1,1 +1,1 @@
-node: TOKEN=$TOKEN_CRIPT node index.js
+node: npm i&&npm start
