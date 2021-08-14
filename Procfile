@@ -1,1 +1,2 @@
-node: npm i&&npm start
+
+node: npm start
