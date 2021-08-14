@@ -1,1 +1,1 @@
-web: TOKEN=$TOKEN_CRIPT node index.js
+node: npm start
