@@ -21,7 +21,7 @@ class run{
       stats.push(`**Discord.js** : v${require("../../../package.json").dependencies["discord.js"].substr(1)}`);
       stats.push(`**Servers** : ${this.msg.client.guilds.cache.size}`);
       stats.push(`**Channels** : ${this.msg.client.channels.cache.size}`);
-      stats.push(`**Users** : ${this.msg.client.users.cache.size}`)
+      stats.push(`**Users** : ${this.msg.client.guilds.cache.reduce((s, g) => s + g.memberCount, 0)}`)
       
       uptime.push(`**Client** : ${prettyMs(this.msg.client.uptime??0)}`);
       uptime.push(`**Host** : ${prettyMs(os.uptime())}`);
