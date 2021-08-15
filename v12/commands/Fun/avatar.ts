@@ -8,7 +8,7 @@ class run{
   declare error :(a:message,b:Error)=>null;
   constructor ({msg,args,error}: argumentObjectType){
     this.msg = msg;
-    // this.error = error;
+    this.error = error;
     this.main(args)
   }
   
