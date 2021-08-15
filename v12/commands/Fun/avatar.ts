@@ -48,9 +48,9 @@ class run{
             'timestamp': new Date(),
           });
         })
-        .catch((err) => {
-          this.error(this.msg,err);
-          this.msg.channel.send(`can't resolve \`${id}\` as a User!`)
+        .catch(() => {
+          // this.error(this.msg,err);
+          this.msg.channel.send(`${global.config.emojis.sad} Opps! can't resolve \`${id}\` as a User!`)
         });
     }
     pageView(this.msg,userL);
