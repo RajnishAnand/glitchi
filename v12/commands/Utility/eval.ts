@@ -47,7 +47,7 @@ class run{
   }
   
   async del(){
-    if(!this.msg.refrence)return;
+    if(!this.msg.reference)return;
     const m = await this.msg.channel.messages.fetch(this.msg.reference?.messageID);
     return m.delete();
   }
