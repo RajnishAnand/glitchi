@@ -45,6 +45,12 @@ class run{
       return err.message;
     }
   }
+  
+  async del(){
+    if(!this.msg.refrence)return;
+    const m = await this.msg.channel.messages.fetch(this.msg.reference?.messageID);
+    return m.delete();
+  }
 }
 
 export default {
