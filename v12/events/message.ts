@@ -51,8 +51,7 @@ module.exports = {
           break;
         case 'ok':
         case '0k':
-          msg.channel.send('0k');
-        
+          msg.channel.send(global.config.emojis.ok); 
       };
       return;
     };
