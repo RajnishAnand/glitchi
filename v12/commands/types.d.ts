@@ -30,5 +30,4 @@ export interface commandTemplate {
   devOnly ? : boolean;
   examples: string[];
   run :class;
-  clones ? : {[key:string]:commandTemplate};
 }
