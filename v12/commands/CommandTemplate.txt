@@ -20,5 +20,6 @@ export default {
   permissions : string,
   devOnly : boolean,
   permRequired : [string],
+  examples : [string],
   run
 }

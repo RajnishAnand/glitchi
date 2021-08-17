@@ -67,14 +67,4 @@ export default{
   // devOnly : boolean,
   // permRequired : [string],
   run,
-  clones : {
-    'suggest':{
-      name : 'suggest',
-      description:'Send Suggestions',
-      examples : ['add this cool command'],
-      usage : '[,suggestions]',
-      args : true,
-      run
-    },
-  }
 }

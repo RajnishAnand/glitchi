@@ -32,13 +32,13 @@ class run{
   customHelp(commandName:string){
     const command :commandTemplate = commands.get(commandName) 
     ||commands.find((cmnd:commandTemplate) => 
-      (cmnd.aliases && cmnd.aliases.includes(commandName))
-      ||(cmnd.clones
-        &&(cmnd.clones[commandName]
-          ||Object.values(cmnd.clones)
-            .find((cmd:commandTemplate)=>
-              cmd.aliases
-              &&cmd.aliases.includes(commandName)))));
+      (cmnd.aliases && cmnd.aliases.includes(commandName)));
+      // ||(cmnd.clones
+      //   &&(cmnd.clones[commandName]
+      //     ||Object.values(cmnd.clones)
+      //       .find((cmd:commandTemplate)=>
+      //         cmd.aliases
+      //         &&cmd.aliases.includes(commandName)))));
     if(!command)return {content:global.config.emojis.sad+'There is no such command as `'+commandName+'`'}
     
     let embed:EmbedObject={
@@ -54,7 +54,7 @@ class run{
     if(command.devOnly)embed.description+='\n‣ **Bot Devlopers Only** : true';
     if(command.examples)embed.fields?.push({
       name:'**Examples** :',
-      value : '```\n'+(!command.args?global.config.prefix+command.name+'\n':'')+global.config.prefix+command.name+' '+command.examples.join('\n'+global.config.prefix+command.name+' ')+(command.aliases?('\n'+command.aliases?.map((c:string)=>command.examples.map(e=>global.config.prefix+c+' '+e).join('\n')).join('\n')):'')+' ```',
+      value : '>>> *'+(!command.args?global.config.prefix+command.name+'\n':'')+global.config.prefix+command.name+' '+command.examples.join('\n'+global.config.prefix+command.name+' ')+(command.aliases?('\n'+command.aliases?.map((c:string)=>command.examples.map(e=>global.config.prefix+c+' '+e).join('\n')).join('\n')):'')+'*',
       inline :false
     });
     return {embed};

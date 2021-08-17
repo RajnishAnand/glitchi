@@ -24,13 +24,13 @@ module.exports = {
     let commandName = args.shift()?.toLowerCase() as string;
     const command: commandTemplate = commands.get(commandName) 
     ||commands.find((cmnd:commandTemplate) => 
-      (cmnd.aliases && cmnd.aliases.includes(commandName))
-      ||(cmnd.clones
-        &&(cmnd.clones[commandName]
-          ||Object.values(cmnd.clones)
-            .find((cmd:commandTemplate)=>
-              cmd.aliases
-              &&cmd.aliases.includes(commandName)))));
+      (cmnd.aliases && cmnd.aliases.includes(commandName)));
+      // ||(cmnd.clones
+      //   &&(cmnd.clones[commandName]
+      //     ||Object.values(cmnd.clones)
+      //       .find((cmd:commandTemplate)=>
+      //         cmd.aliases
+      //         &&cmd.aliases.includes(commandName)))));
       
       
     
