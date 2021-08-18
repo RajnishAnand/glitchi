@@ -22,7 +22,7 @@ class run{
           iconURL:'https://developer.mozilla.org/favicon-48x48.97046865.png',
         },
         title:r.title,
-        url:'https://developer.mozilla.org/'+r.mdn_url,
+        url:'https://developer.mozilla.org'+r.mdn_url,
         color:'#000000',
         description:r.summary,
         timestamp:new Date()
