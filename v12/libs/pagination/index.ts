@@ -140,7 +140,7 @@ class embedHandler{
   render(i:number){
     this.embeds[i]=this.embeds[i];
       if(!(this.pages==1))this.embeds[i]
-        .setFooter(`${i+1}/${this.pages}`);
+        .setFooter(`Page : ${i+1}/${this.pages}`);
     return {embed:this.embeds[i]};
   }
 }
