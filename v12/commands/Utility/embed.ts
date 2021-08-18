@@ -9,10 +9,9 @@ class run{
   }
   async main(args:string[]){
     let txt = args.join(' ')
-      .replace(/­/g,'')
-      .replace(/ /g,' ');
+      .replace(/[­ ]/g,'')
     if(txt.slice(0,7)=='```json' && txt.substr(-3)=='```'){
-      let json = args.join(' ').slice(7,-3);
+      let json = txt.slice(7,-3);
       try{
         let obj = JSON.parse(json);
         if(Array.isArray(obj))pageView(this.msg,obj);
