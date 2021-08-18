@@ -13,8 +13,9 @@ class run{
     this.msg.react(global.config.emojis.quick);
     try{
       if(args[0]){
-        let regEx =new RegExp((args[0][0]=='"')?('\^'+args[0].replace(/^"|"$/g,'').substr(0,20)):(args[0].substr(0,20)),'i');
-        let e=this.msg.client.emojis.cache.find((e:Emoji)=>regEx.test(e.name))
+        let regEx =new RegExp((args[0][0]=='"')?('\^'+args[0].replace(/^"|"$/g,'').substr(0,20))+'\$':(args[0].substr(0,20)),'i');
+        let e=this.msg.client.emojis.cache.find((e:Emoji)=> new RegExp('\^'+args[0].substr(0,20)).test(e.name));
+        if(!e)e=this.msg.client.emojis.cache.find((e:Emoji)=>regEx.test(e.name))
         if(e){
           if(args[1]=='-id')
             this.msg.channel.send(`\`id : ${e.id}\``);
