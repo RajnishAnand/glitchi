@@ -8,7 +8,9 @@ class run{
     this.main(args)
   }
   async main(args:string[]){
-    let txt = args.join(' ').replace(/­/g,'');
+    let txt = args.join(' ')
+      .replace(/­/g,'')
+      .replace(/ /g,' ');
     if(txt.slice(0,7)=='```json' && txt.substr(-3)=='```'){
       let json = args.join(' ').slice(7,-3);
       try{
