@@ -44,8 +44,8 @@ class run{
           name:'About :',
           value:`‣ **Version :** ${r.package.version
             }\n‣ **Last Publish :** <t:${Math.floor(+new Date(r.package.date)/1000)
-            }:R>\n‣ **Author :** ${r.package.author.username?`[${r.package.author.name}](https://www.npmjs.com/~${r.package.author.username})`:r.package.author.name
-            }\n‣ **Publisher :** [${r.package.publisher.username}](https://www.npmjs.com/~${r.package.publisher.username
+            }:R>${r.package.author?`\n‣ **Author :** ${r.package.author.username?`[${r.package.author.name}](https://www.npmjs.com/~${r.package.author.username})`:r.package.author.name
+            }`:''}\n‣ **Publisher :** [${r.package.publisher.username}](https://www.npmjs.com/~${r.package.publisher.username
             })\n‣ **Maintainer(s) :** \n${r.package.maintainers.map((m:any)=>`    ⌙ [${m.username}](https://www.npmjs.com/~${m.username})`).join('\n')
             }${r.package.keywords?`\n>>> **Keywords :** ${r.package.keywords.join(', ')}`:''}`
         }],
@@ -54,6 +54,7 @@ class run{
       pageView(this.msg,resp);
     }
     }catch(err){
+      console.log(err);
       this.send('Unknown error Occured!')
       console.log(err);
     }
