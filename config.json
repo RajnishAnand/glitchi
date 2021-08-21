@@ -1,5 +1,5 @@
 {
-  "prefix": "g>",
+  "prefix": ["g>", ">"],
   "ownerId": "800445583046213663",
 
   "channels": {
@@ -12,6 +12,7 @@
   "emojis": {
     "thumbsup": "<:thumbsup:862862241136115732>",
     "thumbsdown": "<:thumbsdown:862862298556399656>",
+    "think": "<:chadThink:862312026608369695>",
     "sad": "<:sed:860576595039354931>",
     "ok": "<:ok:861456928184860672>",
     "cry": "<a:sadGuitar:869172267869949962>",
@@ -26,6 +27,5 @@
     "quick": "<:quick:856818054602948608>"
   },
 
-  "local": false,
   "block": {}
 }

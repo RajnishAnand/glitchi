@@ -6,8 +6,11 @@ if (!process.env.TOKEN){
   log(33,'Please declare TOKEN=<your token> in .env file at the root of your directory or in SECRET');
   return;
 }
-log(32,'success!');
-log(34,'logging in...');
 global.config = require('./config.json');
+log(32,'success!');
+let i = (process.env.LOC&&delete process.env.LOC)||false;
+config.local=i;
+config.prefix = config.prefix[+i];
+log(34,'logging in...');
 require('./build/index.js');
 process.on('unhandledRejection', console.log);

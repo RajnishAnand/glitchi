@@ -54,7 +54,6 @@ class run{
       pageView(this.msg,resp);
     }
     }catch(err){
-      console.log(err);
       this.send('Unknown error Occured!')
       console.log(err);
     }

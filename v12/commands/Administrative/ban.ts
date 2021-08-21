@@ -31,6 +31,8 @@ class run {
           })
           .catch((err)=>this.msg.reply('Unable to ban this user. `code : '+err.code+'`'));
       }
+    }).catch((err)=>{
+      if(err.code==10013)this.msg.reply(`Are you sure user with id \`${userID}\` is a valid member of this guild! `+global.config.emojis.think)
     });
   }
 }
