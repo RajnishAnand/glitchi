@@ -72,7 +72,7 @@ class run{
   async pipe(txt:string){
     txt= txt.replace(/\\/g,'');
     try{
-    const url = `http://api.brainshop.ai/get?bid=158528&key=${process.env.ACOKEY}&uid=${this.msg.author.id}&msg=${txt}`;
+    const url = `http://api.brainshop.ai/get?bid=158846&key=${process.env.ACOKEY}&uid=${this.msg.author.id}&msg=${txt}`;
     
     const data = await fetch(url).then(r=>r.json()||r.text())
     return data.cnt.replace(/"/g, '" ')||data;
@@ -82,7 +82,7 @@ class run{
   
   async train(inp:string,out:string){
     try{
-      const url =  `http://api.brainshop.ai/set?bid=158528&key=${process.env.ACOKEY}&uid=${this.msg.author.id}&in=${inp}&out=${out}`;
+      const url =  `http://api.brainshop.ai/set?bid=158846&key=${process.env.ACOKEY}&uid=${this.msg.author.id}&in=${inp}&out=${out}`;
       
       const data = await fetch(url).then(r=>r.text())
       return data;
