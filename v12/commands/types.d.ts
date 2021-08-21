@@ -15,6 +15,7 @@ export interface argumentObjectType {
   msg: message;
   args: string[];
   content: string;
+  cleanContent:string;
   commandName: string;
   error: (message: message, err: { message: string }) => null;
 }

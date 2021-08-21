@@ -3,12 +3,12 @@ import { argumentObjectType, message } from '../types';
 
 class run{
   declare msg: message;
-  constructor ({msg,content}: argumentObjectType){
+  constructor ({msg,cleanContent}: argumentObjectType){
     this.msg = msg;
-    this.main(content)
+    this.main(cleanContent)
   }
-  main(content:string){
-    this.msg.channel.send(content);
+  main(txt:string){
+    this.msg.channel.send(txt);
   }
 }
 

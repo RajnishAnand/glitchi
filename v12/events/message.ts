@@ -79,7 +79,11 @@ module.exports = {
           .substr(global.config.prefix.length)
           .replace(/^[\s+]?/, "")
           .replace(commandName + ' ', '');
-        new command.run({msg,args,content,commandName,error:this.err});
+        const cleanContent = msg.cleanContent
+          .substr(global.config.prefix.length)
+          .replace(/^[\s+]?/, "")
+          .replace(commandName + ' ', '');
+        new command.run({msg,args,content,cleanContent,commandName,error:this.err});
       }
     } catch (error) {
       msg.reply(error.message);
