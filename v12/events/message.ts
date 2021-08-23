@@ -1,6 +1,6 @@
 import {message, commandTemplate} from '../commands/types';
 import {commands} from '../libs/handler.js';
-import {Message, TextChannel} from 'discord.js';
+import {Message, TextChannel,GuildMember} from 'discord.js';
 
 module.exports = {
   name: 'message',
@@ -50,14 +50,14 @@ module.exports = {
     
     if (command.permissions) {
       const authorPerms = msg.channel.permissionsFor(msg.author);
-      const myPerms= msg.channel.permissionsFor(msg.guild.me);
+      const myPerms= msg.channel.permissionsFor((msg as message).guild.me as GuildMember);
       if (!authorPerms ||command.permissions.every((c)=>!authorPerms.has(c))) {
         return msg.reply(` Permission(s) required to run this command : \n  └⊳ \` ${command.permissions.join('\`\n  └⊳ \`')} \``);
       }
       else if (!myPerms ||command.permissions.every((c)=>!myPerms.has(c))) {
         return msg.reply(`Permission(s) i require to run this command : \n  └⊳ \` ${command.permissions.join('\`\n  └⊳ \`')} \``);
       }
-    }
+    } 
     
     try {
       if ((command.devOnly || false) == true &&
