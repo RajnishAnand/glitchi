@@ -29,7 +29,6 @@ export default{
   description : 'unban a user',
   usage : '[userID]',
   args : true,
-  permissions : 'BAN_MEMBERS',
-  // permRequired : [string],
+  permissions : ['BAN_MEMBERS'],
   run
 }

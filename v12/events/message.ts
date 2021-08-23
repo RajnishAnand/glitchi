@@ -25,14 +25,6 @@ module.exports = {
     const command: commandTemplate = commands.get(commandName) 
     ||commands.find((cmnd:commandTemplate) => 
       (cmnd.aliases && cmnd.aliases.includes(commandName)));
-      // ||(cmnd.clones
-      //   &&(cmnd.clones[commandName]
-      //     ||Object.values(cmnd.clones)
-      //       .find((cmd:commandTemplate)=>
-      //         cmd.aliases
-      //         &&cmd.aliases.includes(commandName)))));
-      
-      
     
     if (!command) {
       switch (commandName) {
@@ -57,11 +49,13 @@ module.exports = {
     };
     
     if (command.permissions) {
-      const authorPerms = msg.channel
-        .permissionsFor(msg.author);
-      if (!authorPerms ||
-        !authorPerms.has(command.permissions)) {
-        return msg.reply(`🥲 You require PERMISSION : **\` ${command.permissions} \`** to run \` ${commandName} \` command!`);
+      const authorPerms = msg.channel.permissionsFor(msg.author);
+      const myPerms= msg.channel.permissionsFor(msg.guild.me);
+      if (!authorPerms ||command.permissions.every((c)=>!authorPerms.has(c))) {
+        return msg.reply(` Permission(s) required to run this command : \n  └⊳ \` ${command.permissions.join('\`\n  └⊳ \`')} \``);
+      }
+      else if (!myPerms ||command.permissions.every((c)=>!myPerms.has(c))) {
+        return msg.reply(`Permission(s) i require to run this command : \n  └⊳ \` ${command.permissions.join('\`\n  └⊳ \`')} \``);
       }
     }
     

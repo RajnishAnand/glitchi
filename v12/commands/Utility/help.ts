@@ -11,14 +11,13 @@ class run{
   async main(args:string[]){
     if(!args.length){
       let data:{[key:string]:string}= {};
-      let cmnds = commands.filter((cmd:any)=>!cmd.devOnly).sort();
+      let cmnds = commands.filter((cmd:any)=>!cmd.devOnly);
       for (let cmd of cmnds){
         if(!data[cmd[1].category])data[cmd[1].category]='';
         
         data[cmd[1].category]+=`‣ ${global.config.prefix}${cmd[1].name} ⇨ ${cmd[1].description}\n`
         
         if(cmd[1].clones){
-          // console.log(cmd[1].clones)
           for(let c in cmd[1].clones)data[cmd[1].category]+=`‣ ${global.config.prefix}${c} ⇨ ${cmd[1].clones[c].description}\n`
         }
       }
@@ -33,12 +32,6 @@ class run{
     const command :commandTemplate = commands.get(commandName) 
     ||commands.find((cmnd:commandTemplate) => 
       (cmnd.aliases && cmnd.aliases.includes(commandName)));
-      // ||(cmnd.clones
-      //   &&(cmnd.clones[commandName]
-      //     ||Object.values(cmnd.clones)
-      //       .find((cmd:commandTemplate)=>
-      //         cmd.aliases
-      //         &&cmd.aliases.includes(commandName)))));
     if(!command)return {content:global.config.emojis.sad+'There is no such command as `'+commandName+'`'}
     
     let embed:EmbedObject={

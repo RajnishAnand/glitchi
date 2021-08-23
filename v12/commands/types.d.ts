@@ -27,7 +27,6 @@ export interface commandTemplate {
   usage ? : string;
   args ? : true;
   permissions ? : PermissionResolvable[];
-  permRequired ? : string[];
   devOnly ? : boolean;
   examples: string[];
   run :class;

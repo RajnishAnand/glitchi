@@ -15,21 +15,21 @@ class run {
       this.msg.reply(`can't resolve \`${args[0]}\` as a user!`);
     else if(userID==this.msg.client.user?.id){
       this.msg.react(global.config.emojis.nono).catch(()=>null);
-      this.msg.reply('you are trying to make me ban myself ‽');
+      this.msg.reply('you are trying to make me kick myself ‽');
     }
     
     else this.msg.guild?.members.fetch(userID).then((user:GuildMember)=>{
-      if(!user.bannable){
-        this.msg.reply(`Unable to ban ${user.user.tag}, has permissions same or greater than me.`);
+      if(!user.kickable){
+        this.msg.reply(`Unable to kick ${user.user.tag}, has permissions same or greater than me.`);
       }
       else{
-        user.ban()
+        user.kick()
           .then(()=>{
             this.msg.react(global.config.emojis.evilLaugh);
             this.msg.channel.send(global.config.emojis.evilAttack);
-            this.msg.channel.send(`${user.user.tag}, was successfully banned!`);
+            this.msg.channel.send(`${user.user.tag}, was successfully kicked out of the server!`);
           })
-          .catch((err)=>this.msg.reply('Unable to ban this user. `code : '+err.code+'`'));
+          .catch((err)=>this.msg.reply('Unable to kick this user. `code : '+err.code+'`'));
       }
     }).catch((err)=>{
       if(err.code==10013)this.msg.reply(`Are you sure user with id \`${userID}\` is a valid member of this guild! `+global.config.emojis.think)
@@ -38,10 +38,10 @@ class run {
 }
 
 export default {
-  name : 'ban',
-  description : 'ban a user',
+  name : 'kick',
+  description : 'kick a user',
   usage : '[@user || id]',
   args : true,
-  permissions : ['BAN_MEMBERS'],
+  permissions : ['KICK_MEMBERS','test'],
   run
 }

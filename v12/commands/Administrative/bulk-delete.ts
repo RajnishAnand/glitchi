@@ -39,8 +39,8 @@ export default{
   description : 'bulk message delete',
   aliases : ['prune','purge'],
   args : true,
-  permissions : 'MANAGE_MESSAGES',
-  // usage : string,
-  // permRequired : [string],
+  permissions : ['MANAGE_MESSAGES'],
+  usage : '[<number>]',
+  examples : ['5'],
   run
 }
