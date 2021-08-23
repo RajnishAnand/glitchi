@@ -42,6 +42,6 @@ export default {
   description : 'kick a user',
   usage : '[@user || id]',
   args : true,
-  permissions : ['KICK_MEMBERS','test'],
+  permissions : ['KICK_MEMBERS'],
   run
 }

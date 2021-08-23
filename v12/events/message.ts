@@ -51,7 +51,7 @@ module.exports = {
     if (command.permissions) {
       const authorPerms = msg.channel.permissionsFor(msg.author);
       const myPerms= msg.channel.permissionsFor((msg as message).guild.me as GuildMember);
-      if (!authorPerms ||command.permissions.every((c)=>!authorPerms.has(c))) {
+      if (!authorPerms ||!command.permissions.every((c)=>authorPerms.has(c))) {
         return msg.reply(` Permission(s) required to run this command : \n  └⊳ \` ${command.permissions.join('\`\n  └⊳ \`')} \``);
       }
       else if (!myPerms ||command.permissions.every((c)=>!myPerms.has(c))) {
