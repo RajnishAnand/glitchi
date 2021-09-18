@@ -1,18 +1,14 @@
 import { Client, Intents } from 'discord.js';
-
-const client = new Client({ 
-    intents: [
+import eventHandler from './libs/event-handler';
+const client = new Client({
+  intents: [
       Intents.FLAGS.GUILDS,
-      Intents.FLAGS.GUILD_MESSAGES
-    ] 
-  });
+      Intents.FLAGS.GUILD_MESSAGES,
+      Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+    ]
+});
 
-// client.once('ready', () => {
-// 	console.log('Ready!');
-// });
-
-// client.on('interactionCreate', async interaction=>{
-//   console.log(interaction);
-// })
+//Handlers
+eventHandler(client);
 
 client.login(process.env.TOKEN);
