@@ -1,5 +1,5 @@
 {
-  "prefix": ["g>", ">"],
+  "prefix": ["g>", ">>"],
   "ownerId": "800445583046213663",
 
   "channels": {
@@ -26,6 +26,8 @@
     "evilAttack": "<:voldyAttack:853598830632763432>",
     "quick": "<:quick:856818054602948608>"
   },
-
+  
+  "HTTPserver" : false,
+  "local" : true,
   "block": {}
 }

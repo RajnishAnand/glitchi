@@ -5,19 +5,16 @@ import {
   TextBasedChannel
 } from 'discord.js';
 
-export interface message extends Message {
-  guild: Guild;
-  client: Client;
-  channel: TextBasedChannel;
-}
+
+// if (Message.guild){
+  
 
 export interface argumentObjectType {
-  msg: message;
+  msg: Message;
   args: string[];
-  content: string;
-  cleanContent:string;
+  content: ()=>string;
   commandName: string;
-  error: (message: message, err: { message: string }) => null;
+  error?: (message: message, err: { message: string }) => null;
 }
 
 export interface commandTemplate {
@@ -29,5 +26,5 @@ export interface commandTemplate {
   permissions ? : PermissionResolvable[];
   devOnly ? : boolean;
   examples: string[];
-  run :class;
+  run :(a:argumentObjectType)=>null;
 }

@@ -1,14 +1,14 @@
 import {GuildMember} from 'discord.js';
-import {argumentObjectType, message} from '../types';
+import {argumentObjectType} from '../types';
 
-class run {
-  declare msg: message;
-  constructor({msg,args}: argumentObjectType){
-    this.msg = msg;
-    this.main(args);
-  };
+export default {
+  name : 'ban',
+  description : 'ban a user',
+  usage : '[@user || id]',
+  args : true,
+  permissions : ['BAN_MEMBERS'],
   
-  main(args:String[]){
+  run({msg,args}:argumentObjectType){
     const userID=args[0].replace(/^<@!?/,'').replace(/>$/,'');
             
     if(!/^\d+$/.test(userID))
@@ -35,13 +35,5 @@ class run {
       if(err.code==10013)this.msg.reply(`Are you sure user with id \`${userID}\` is a valid member of this guild! `+global.config.emojis.think)
     });
   }
-}
 
-export default {
-  name : 'ban',
-  description : 'ban a user',
-  usage : '[@user || id]',
-  args : true,
-  permissions : ['BAN_MEMBERS'],
-  run
 }

@@ -21,5 +21,5 @@ export default{
   // permissions : string,
   // devOnly : boolean,
   // permRequired : [string],
-  run
+  run : ({msg})=>{msg.reply('pomg')}
 }
