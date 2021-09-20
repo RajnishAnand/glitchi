@@ -1,7 +1,7 @@
 import { argumentObjectType} from '../types';
 import pageView from '../../libs/pagination';
 import codeBlockParcer from '../../libs/codeBlock-parser';
-import {Util} from 'discord.js';
+import {Util, MessageEmbed} from 'discord.js';
 
 
 export default {
@@ -15,9 +15,11 @@ export default {
   run({msg,args}:argumentObjectType){
     let txt = args.join(' ')
       .replace(/[­ ]/g,'')
-    txt = codeBlockParcer(txt).content??txt;
+    txt = codeBlockParcer(txt).code??txt;
+    console.log(txt);
     try{
       let obj = JSON.parse(txt);
+      obj = new MessageEmbed(obj)
       if(Array.isArray(obj))new pageView(msg,obj);
       else new pageView(msg,[obj]);
     }
@@ -28,5 +30,3 @@ export default {
     //msg.channel.send('Your message is far beyond my pasing limit. Try sending it in a  **"code-block"**');
   }
 }
-
-// /(\`\`\`)(?<code>\w+\s*)?\n(?<text>((?!\1).*\n*)+)\1/
