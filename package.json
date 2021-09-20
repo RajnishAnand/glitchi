@@ -7,8 +7,7 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node setup.js",
-    "dev" : "node setup.js",
-    "repl": "npm i node@16&&npm config set prefix=$(pwd)/node_modules/node&&export PATH=$(pwd)/node_modules/node/bin:$PATH"
+    "dev" : "node setup.js"
   },
   "repository": {
     "type": "git",
