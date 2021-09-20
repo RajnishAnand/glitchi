@@ -42,11 +42,14 @@ export default class pagination <T extends string | MessageEmbed[]>{
         options?.page
       );
     }
-    if(Array.isArray(argument)){
+    else if(Array.isArray(argument)){
       this.handler = new embedHandler(
         argument,
         // option?.page
       )
+    }
+    else if(typeof argument == 'object'){
+      
     }
     if(options?.reply)message.reply(this.handler.value).then((m0)=>{
       this.msg=m0;
@@ -54,7 +57,7 @@ export default class pagination <T extends string | MessageEmbed[]>{
     });
     else message.channel.send(this.handler.value).then((m0)=>{
       this.msg=m0;
-      this.main();
+      this.main();  
     });
     
     this.author = message.author.id;
@@ -172,3 +175,4 @@ class embedHandler {
 
   get value(){ return{embeds:[ this.chunks[this.page-1]]}; }
 }
+
