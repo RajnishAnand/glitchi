@@ -84,7 +84,7 @@ export default {
         });
       }
     } 
-    catch (error) {
+    catch (error :any) {
       msg.reply(error.message);
       // this.err(msg,error);
     

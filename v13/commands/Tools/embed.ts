@@ -23,7 +23,7 @@ export default {
       if(Array.isArray(obj))new pageView(msg,obj);
       else new pageView(msg,[obj]);
     }
-    catch(err){
+    catch(err:any){
       new pageView(msg,err.message,{code:'JSON_ERROR'});
     }
     

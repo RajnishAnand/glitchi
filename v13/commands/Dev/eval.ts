@@ -32,7 +32,7 @@ export default {
         msg.channel.send('You breached level 1 security, level 2 stands Guard! 🛡️');
       }
     }
-    catch (err) {
+    catch (err:any) {
       msg.channel.send('```\n'+err.message+'```');
     };
   },
@@ -47,7 +47,7 @@ export default {
       }
       return util.inspect(evaled);
     }
-    catch (err) {
+    catch (err:any) {
       return err.message;
     }
   },
