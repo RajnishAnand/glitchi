@@ -1,2 +1,2 @@
 language = "bash"
-run = "bash replit.sh"
+run = "npm config set prefix=$(pwd)/node_modules/node&&export PATH=$(pwd)/node_modules/node/bin:$PATH&&npm start"
