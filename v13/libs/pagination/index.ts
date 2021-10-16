@@ -1,13 +1,14 @@
 import {
+  CommandInteraction,
   Message,
   MessageEmbed,
   MessageReaction,
   User,
   Snowflake
 } from 'discord.js';
+/////////////////////////////////////////////////////
 
 interface paginationOption<T extends 'S'|'E'>{
-  reply ?: boolean;
   page ?:number;
   initialPage ?: number ;
   
@@ -20,12 +21,12 @@ interface paginationOption<T extends 'S'|'E'>{
 
 // MAIN exported Class
 export default class pagination <T extends string | MessageEmbed[]>{
-  declare msg : Message;
+  declare msg : Message ;
   declare author : Snowflake;
   declare handler : stringHandler|embedHandler;
   public buttons = ['🔢', '⏮️','◀️', '▶️', '⏭️' ,'🗑️'];
   constructor (
-    message: Message,
+    message: Message|CommandInteraction,
     argument: T,
     options ?: T extends string 
     ? paginationOption<'S'>
@@ -33,6 +34,7 @@ export default class pagination <T extends string | MessageEmbed[]>{
       ? paginationOption<'E'>
       : never
   ) {
+    
     if(typeof argument =='string'){
       this.handler = new stringHandler(
         argument,
@@ -46,21 +48,46 @@ export default class pagination <T extends string | MessageEmbed[]>{
       this.handler = new embedHandler(
         argument,
         // option?.page
+        //TODO : Add page option in embed
       )
     }
-    else if(typeof argument == 'object'){
-      
-    }
-    if(options?.reply)message.reply(this.handler.value).then((m0)=>{
-      this.msg=m0;
-      this.main();
-    });
-    else message.channel.send(this.handler.value).then((m0)=>{
-      this.msg=m0;
-      this.main();  
-    });
     
-    this.author = message.author.id;
+    if (message instanceof Message){
+      message.channel.send(this.handler.value)
+      .then((m0)=>{
+        this.msg=m0;
+        this.main();  
+      });
+      this.author = message.author.id;
+    }
+    
+    //TODO : check of this works
+    //TODO : Add options for differ reply
+    
+    else if(message instanceof CommandInteraction ){
+      if(typeof this.handler.value =='string')
+        message.reply({
+          content:this.handler.value,
+          fetchReply:true
+        }).then((m0)=>{
+          if(! (m0 instanceof Message))
+            return new Error('Invalid instance if message');
+          this.msg=m0;
+          this.main();
+        });
+      else if(Array.isArray(argument))
+        message.reply({
+          embeds:this.handler.value.embeds,
+          fetchReply:true
+        }).then((m0)=>{
+          if(! (m0 instanceof Message))
+            return new Error('Invalid instance if message');
+          this.msg=m0;
+          this.main();
+        });
+      this.author = message.user.id;
+    };
+    
   }
   private async main(){
     if(this.handler.length>2)await this.msg.react(this.buttons[0]);
@@ -122,6 +149,23 @@ export default class pagination <T extends string | MessageEmbed[]>{
   render(){this.msg.edit(this.handler.value).catch(()=>null);}
 }
 
+class embedHandler {
+  public page = 1;
+  public length:number;
+  private chunks : MessageEmbed[];
+  constructor(chunks: MessageEmbed[]){
+    this.length = chunks.length;
+    this.chunks=chunks.map((e,i)=>{
+      const embed=new MessageEmbed(e)
+      if(chunks.length>1)
+        embed.setFooter(`Page : ${i+1}/${chunks.length}`);
+      return embed;
+    });
+  }
+
+  get value(){ return{embeds:[ this.chunks[this.page-1]]}; }
+}
+
 
 class stringHandler {
   public page = 1;
@@ -158,21 +202,3 @@ class stringHandler {
   
   get value(){ return this.chunks[this.page-1]; }
 }
-
-class embedHandler {
-  public page = 1;
-  public length:number;
-  private chunks : MessageEmbed[];
-  constructor(chunks: MessageEmbed[]){
-    this.length = chunks.length;
-    this.chunks=chunks.map((e,i)=>{
-      const embed=new MessageEmbed(e)
-      if(chunks.length>1)
-        embed.setFooter(`Page : ${i+1}/${chunks.length}`);
-      return embed;
-    });
-  }
-
-  get value(){ return{embeds:[ this.chunks[this.page-1]]}; }
-}
-
