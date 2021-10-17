@@ -42,7 +42,7 @@ async function run ({msg,args, content}:argumentObjectType){
       .catch(err=>msg.reply('```\n'+err.message+'```'));
   }
 
-  const langGuess = (response.startsWith('<!'))?'html':(response.startsWith('{')&&response.endsWith('}'))?'json':' ';
+  const langGuess = (response.startsWith('<!'))?'html':(response.startsWith('{'))?'json':' ';
   new pageView(msg,response,{code:langGuess});
 }
 
