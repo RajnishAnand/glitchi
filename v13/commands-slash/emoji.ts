@@ -14,6 +14,8 @@ export default{
   run(interaction:CommandInteraction){
     const q=interaction.options.getString('query') as string;
     let e = interaction.client.emojis.cache.find(f=> 
+      new RegExp(`^${q}$`,'i').test(f.name||''));
+    if(!e) e = interaction.client.emojis.cache.find(f=>
       new RegExp(`^${q}`,'i').test(f.name||''));
     if(!e) e = interaction.client.emojis.cache.find(f=>
       new RegExp(q,'i').test(f.name||''));
