@@ -14,7 +14,7 @@ export default {
   // devOnly : boolean,
   run({msg,args}:argumentObjectType){
     let txt = args.join(' ')
-      .replace(/[­ ]/g,'')
+      .replace(/[­ ]/g,'');
     txt = codeBlockParcer(txt).code??txt;
     console.log(txt);
     try{
