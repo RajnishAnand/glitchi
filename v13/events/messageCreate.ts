@@ -24,7 +24,8 @@ export default {
     const command = (commands.get(commandName) 
     ||commands.find((cmnd:any) => 
       (cmnd.aliases && cmnd.aliases.includes(commandName))) ) as commandTemplate;
-    
+      
+    //TODO : MODE these cases to saperate file
     if (!command) {
       switch (commandName) {
         case 'beep':
@@ -57,7 +58,7 @@ export default {
         return msg.reply(`Permission(s) i require to run this command:\n  └⊳ \` ${command.permissions.join('\`\n  └⊳ \`')} \``);
       }
     } 
-    
+     
     try {
       if ((command.devOnly || false) == true &&
         (msg.author.id != global.config.ownerId) == true) {

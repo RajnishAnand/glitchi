@@ -42,7 +42,7 @@ async function run ({msg,args, content}:argumentObjectType){
       .catch(err=>msg.reply('```\n'+err.message+'```'));
   }
 
-  const langGuess = (response.startsWith('<!'))?'html':(response.startsWith('{'))?'json':' ';
+  const langGuess = (response.startsWith('<!'))?'html':(response.startsWith('{'))?'json':'';
   new pageView(msg,response,{code:langGuess});
 }
 
@@ -51,8 +51,9 @@ async function run ({msg,args, content}:argumentObjectType){
 
 async function GET(url:string) {
   const response = await fetch(url)
+    .then(r=>r.text())
     .catch(err=>err.message);
-  return response.text();
+  return response
 }
 
 async function POST(url:string, json:string) {
@@ -62,8 +63,9 @@ async function POST(url:string, json:string) {
     redirect: 'follow', 
     body: json
   })
+    .then(r=>r.text())
     .catch(err=>err.message);
-  return response.text();
+  return response;
 }
 
 

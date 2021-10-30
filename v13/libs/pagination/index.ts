@@ -193,12 +193,12 @@ class stringHandler {
   }
     
   private decorate(str:string,page:number){
-    return "```"+this.code+"\n"+str+' ```'
-      +'` ⚡ `|'
-      +(this.code!=''?`\` ${this.code.toUpperCase()} \`|`:'')
-      +(this.length>1?(`\` Page : ${page+1}/${this.length} \`|`):'')
-      +(this.timestamp?` <t:${this.timestamp}:R> |`:'');
+    return "```"+this.code+"\n"
+      +(str==''?'empty':str)+'```'
+      +(this.length>1?(`\` ⛬ Page : ${page+1}/${this.length} \` `):'')
+      +(this.code!=''?`\` ${this.code.toUpperCase()} \` `:'')
+      +(this.timestamp?` <t:${this.timestamp}:R>  `:'');
   }
   
   get value(){ return this.chunks[this.page-1]; }
-}
+} 
