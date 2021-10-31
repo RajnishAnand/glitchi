@@ -14,6 +14,7 @@ interface paginationOption<T extends 'S'|'E'>{
   
   // string options
   code ?: T extends 'S' ? string : never;
+  title ?: T extends 'S' ? string : never;
   chunkSize ?: T extends 'S' ? number : never;
   timestamp ?: T extends 'S' ? number : never;
 }
@@ -39,6 +40,7 @@ export default class pagination <T extends string | MessageEmbed[]>{
       this.handler = new stringHandler(
         argument,
         options?.chunkSize,
+        options?.title,
         options?.code,
         options?.timestamp,
         options?.page
@@ -173,15 +175,18 @@ class stringHandler {
   private declare chunks:string[];
   private declare timestamp ?: number;
   private declare code :string;
+  private declare title : string|undefined;
   constructor(
     str : string,
     chunkSize:number=800,
+    title:string|undefined,
     code:string='',
     timestamp?:number,
     page:number = 1,
   ){
     this.length= Math.ceil(str.length/chunkSize);
     this.code = code;
+    this.title = title;
     this.timestamp = timestamp?Math.floor(timestamp/1000):undefined;
     this.page = (0<page&&page<=this.length)?page:1;
     
@@ -196,7 +201,7 @@ class stringHandler {
     return "```"+this.code+"\n"
       +(str==''?'empty':str)+'```'
       +(this.length>1?(`\` ⛬ Page : ${page+1}/${this.length} \` `):'')
-      +(this.code!=''?`\` ${this.code.toUpperCase()} \` `:'')
+      +(this.title?`\` ${this.title} \` `:'')
       +(this.timestamp?` <t:${this.timestamp}:R>  `:'');
   }
   
