@@ -201,7 +201,7 @@ class stringHandler {
     return "```"+this.code+"\n"
       +(str==''?'empty':str)+'```'
       +(this.length>1?(`\` ⛬ Page : ${page+1}/${this.length} \` `):'')
-      +(this.title?`\` ${this.title} \` `:'')
+      +(this.title?`\`‣ ${this.title} \` `:'')
       +(this.timestamp?` <t:${this.timestamp}:R>  `:'');
   }
   
