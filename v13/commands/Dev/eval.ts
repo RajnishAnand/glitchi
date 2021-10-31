@@ -21,9 +21,8 @@ export default {
           else new pageView(msg,this.debug(text),
           {
             code:'javascript',
-            title:'JS_OUTPUT',
+            title:'JS-OUTPUT',
             timestamp:Date.now(),
-            chunkSize : 700
           });
           return '<pagination>';
         }
