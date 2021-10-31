@@ -21,6 +21,7 @@ export default {
           else new pageView(msg,this.debug(text),
           {
             code:'javascript',
+            title:'JS_OUTPUT',
             timestamp:Date.now(),
             chunkSize : 700
           });
