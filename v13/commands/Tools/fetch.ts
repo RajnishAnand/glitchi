@@ -1,6 +1,7 @@
 import { argumentObjectType,} from '../types';
 import fetch from 'node-fetch';
 import {inspect} from 'util';
+import {parse} from 'content-type';
 import pageView from '../../libs/pagination/index';
 import codeBlockParser from '../../libs/codeBlock-parser';
 
@@ -17,11 +18,14 @@ export default {
 }
 
 async function run ({msg,args, content}:argumentObjectType){
+  let raw = args.includes('raw') &&
+    args.splice(args.indexOf('raw',1));
   let response = '';
+  let title:string|undefined;
   args[1]=args[1]?args[1].toLocaleLowerCase():'-g';
   
   if(args[1]=='-g'||args[1]=='--get') {
-    response = await GET(args[0])
+    [response,title]= await GET(args[0])
   }
   
   else if(args[1]=='-p'||args[1]=='--post'){
@@ -30,28 +34,31 @@ async function run ({msg,args, content}:argumentObjectType){
     try{JSON.parse(json)}
     catch(err:any){return msg.reply(err.message)};
     
-    response = await POST(args[0],json)
+    [response,title] = await POST(args[0],json)
   }
 
   else if(args[1]=='-h'||args[1]=='--headers'){
-    return fetch(args[0])
-      .then(resp=>resp.headers)
-      .then(obj => inspect(obj))
-      .then(txt=>
-        new pageView(msg,txt,{code:'javascript'}))
-      .catch(err=>msg.reply('```\n'+err.message+'```'));
+    [response,title] = await Headers(args[0]);
   }
-
-  const langGuess = (response.startsWith('<!'))?'html':(response.startsWith('{'))?'json':'';
-  new pageView(msg,response,{code:langGuess});
+  
+  const langGuess = parse(title??'').type.split('/')[1];
+  new pageView(msg,response,{code:langGuess,title});
 }
 
 
 /////////////////////////////////////////////////
 
+async function Headers(url:string) {
+  const response = await fetch(url)
+    .then(resp=>resp.headers)
+    .then(obj => inspect(obj))
+    .catch(err=>err.message);
+  return [response,'application/javascript'];
+}
+
 async function GET(url:string) {
   const response = await fetch(url)
-    .then(r=>r.text())
+    .then(async r=>[await r.text(),r.headers.get('content-type')])
     .catch(err=>err.message);
   return response
 }
@@ -63,7 +70,7 @@ async function POST(url:string, json:string) {
     redirect: 'follow', 
     body: json
   })
-    .then(r=>r.text())
+    .then(async r=>[await r.text(),r.headers.get('content-type')])
     .catch(err=>err.message);
   return response;
 }
