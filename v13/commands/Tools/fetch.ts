@@ -22,12 +22,11 @@ export default {
 const types = ['text','xml','json','script'];
 
 async function run ({msg,args, content}:argumentObjectType){
-  const raw = args.includes('raw') ;
-  if(raw)args = args.filter(e=>e!='raw');
+  const raw = (args[1]=='raw' && args.splice(1,1)) || args[2]=='raw';
   
   let response = '';
   let title:string|undefined;
-  args[1]=args[1]?args[1].toLocaleLowerCase():'-g';
+  if(!args[1].startsWith('-'))args.splice(1,0,'-g');
   
   if(args[1]=='-g'||args[1]=='--get') {
     [response,title]= await GET(args[0])
@@ -62,13 +61,16 @@ async function run ({msg,args, content}:argumentObjectType){
   else if(args[1]=='-h'||args[1]=='--headers'){
     [response,title] = await Headers(args[0]);
   }
+  else{
+    return msg.reply(`*__${args[1].replace(/([\*\`\~\_])/g,'\\$1')}__* isn't a valid flag. Currently it only supports :\n   • \`[ -p ]\` or \`[ --post ]\` : POST REQUEST\n   • \`[ -g ]\` or \`[ --get ]\` : GET REQUEST (Default)`)
+  }
   
   const langGuess = parse(title??'').type.split('/')[1];
   if(raw){
     Util.splitMessage('```'+langGuess+'\n'+(response.replace(/```/g,'``­`' ))+' ```',{
       prepend:'```'+langGuess+'\n',
       append : '```',
-      char : ' ',
+      char : '',
       maxLength : 1950
     }).forEach(e=>msg.channel.send(e));
   }
