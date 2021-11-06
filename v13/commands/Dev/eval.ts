@@ -3,7 +3,6 @@ import util from 'util';
 import pageView from '../../libs/pagination';
 import {commands} from '../../libs/command-handler.js';
 
-
 export default {
   name: 'eval',
   aliases: ['ev'],

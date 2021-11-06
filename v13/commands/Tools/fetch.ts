@@ -2,6 +2,8 @@ import { argumentObjectType,} from '../types';
 import fetch from 'node-fetch';
 import {inspect} from 'util';
 import {parse} from 'content-type';
+import {Util} from 'discord.js';
+import select from '../../libs/selection'
 import pageView from '../../libs/pagination/index';
 import codeBlockParser from '../../libs/codeBlock-parser';
 
@@ -17,9 +19,12 @@ export default {
   run
 }
 
+const types = ['text','xml','json','script'];
+
 async function run ({msg,args, content}:argumentObjectType){
-  let raw = args.includes('raw') &&
-    args.splice(args.indexOf('raw',1));
+  const raw = args.includes('raw') ;
+  if(raw)args = args.filter(e=>e!='raw');
+  
   let response = '';
   let title:string|undefined;
   args[1]=args[1]?args[1].toLocaleLowerCase():'-g';
@@ -29,12 +34,29 @@ async function run ({msg,args, content}:argumentObjectType){
   }
   
   else if(args[1]=='-p'||args[1]=='--post'){
-    const json = codeBlockParser(content().replace(/[­ ]/g,'')).code;
-    if(!json) return msg.reply('Please also include JSON you wanna POST in a codeBlock!');
-    try{JSON.parse(json)}
-    catch(err:any){return msg.reply(err.message)};
+      let {code,lang}= codeBlockParser(content().replace(/[­ ]/g,''));
+    if(!code){
+      return msg.reply('Please also include body/text you wanna POST in a codeBlock !')
+    }
+    if(lang == 'json'){
+      try{JSON.parse(code)}
+      catch(err:any){return msg.reply(err.message)};
+    }
+    else if(!lang || !types.includes(lang)){
+      try{
+        lang = await select(msg,{
+          content :'Please pick a supported content type:',
+          title : 'Select content-type',
+          options : types.map(z=>{return {
+            label : `application/${z}`,
+            description :`set request body format as ${z}`,
+            value : z
+          }})
+        });
+      } catch(err:any){ return msg.reply(err.message) };
+    };
     
-    [response,title] = await POST(args[0],json)
+    [response,title] = await POST(args[0],code,lang)
   }
 
   else if(args[1]=='-h'||args[1]=='--headers'){
@@ -42,7 +64,15 @@ async function run ({msg,args, content}:argumentObjectType){
   }
   
   const langGuess = parse(title??'').type.split('/')[1];
-  new pageView(msg,response,{code:langGuess,title});
+  if(raw){
+    Util.splitMessage('```'+langGuess+'\n'+(response.replace(/```/g,'``­`' ))+' ```',{
+      prepend:'```'+langGuess+'\n',
+      append : '```',
+      char : ' ',
+      maxLength : 1950
+    }).forEach(e=>msg.channel.send(e));
+  }
+  else new pageView(msg,response,{code:langGuess,title});
 }
 
 
@@ -59,19 +89,19 @@ async function Headers(url:string) {
 async function GET(url:string) {
   const response = await fetch(url)
     .then(async r=>[await r.text(),r.headers.get('content-type')])
-    .catch(err=>err.message);
+    .catch(err=>[err.message,'plain/text']);
   return response
 }
 
-async function POST(url:string, json:string) {
+async function POST(url:string,data:string,type:string) {
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE,
-    headers: {'Content-Type': 'application/json'},
+    headers: {'Content-Type': 'application/'+type},
     redirect: 'follow', 
-    body: json
+    body: data
   })
     .then(async r=>[await r.text(),r.headers.get('content-type')])
-    .catch(err=>err.message);
+    .catch(err=>[err.message,'plain/text']);
   return response;
 }
 
