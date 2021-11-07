@@ -26,7 +26,7 @@ async function run ({msg,args, content}:argumentObjectType){
   
   let response = '';
   let title:string|undefined;
-  if(!args[1].startsWith('-'))args.splice(1,0,'-g');
+  if(!args[1]||!args[1].startsWith('-'))args.splice(1,0,'-g');
   
   if(args[1]=='-g'||args[1]=='--get') {
     [response,title]= await GET(args[0])
