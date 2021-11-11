@@ -65,7 +65,13 @@ async function run ({msg,args, content}:argumentObjectType){
     return msg.reply(`*__${args[1].replace(/([\*\`\~\_])/g,'\\$1')}__* isn't a valid flag. Currently it only supports :\n   • \`[ -p ]\` or \`[ --post ]\` : POST REQUEST\n   • \`[ -g ]\` or \`[ --get ]\` : GET REQUEST (Default)`)
   }
   
-  const langGuess = parse(title??'').type.split('/')[1];
+  let langGuess = parse(title??'').type.split('/')[1];
+  if(!raw && langGuess=='json') {
+    try{
+      response = inspect(JSON.parse(response));
+      langGuess= 'js';
+    }catch(err){}
+  }
   if(raw){
     Util.splitMessage('```'+langGuess+'\n'+(response.replace(/```/g,'``­`' ))+' ```',{
       prepend:'```'+langGuess+'\n',
