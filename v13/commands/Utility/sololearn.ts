@@ -1,11 +1,15 @@
 import { argumentObjectType} from '../types';
 import pageView from '../../libs/pagination';
 import hotToday from '../../APIs/@sololearn/hotToday';
+import trending from '../../APIs/@sololearn/trending';
 
-function run({msg}:argumentObjectType){
-  hotToday()
+function run({msg,args}:argumentObjectType){
+  if(args[0]=='hot')hotToday()
     .then(t=>new pageView(msg,t))
-    .catch(()=>msg.reply('An Unknown Error Occured while getting hotToday codes!'))
+    .catch(()=>msg.reply('An Unknown Error Occured while getting hotToday codes!'));
+  else trending()
+    .then(t => new pageView(msg, t))
+    .catch(() => msg.reply('An Unknown Error Occured while getting trending codes!'));
 }
 
 export default {
@@ -13,7 +17,7 @@ export default {
   description : 'sololearn',
   aliases : ['sl'],
   usage : '[...query]',
-  args : false,
+  args : true,
   // permissions : string,
   // devOnly : true,
   // permRequired : [string],

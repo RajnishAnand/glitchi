@@ -18,7 +18,7 @@ export default async function (){
     },
     title:'Hot Today',
     url:'https://www.sololearn.com/Codes',
-    color:'#000000',
+    color:'#1f1e28',
     description:'‣ '+obj.map((o)=>`[${o.codeName}](${o.codeLink})`).join('\n‣ '),
     timestamp:new Date()
   })]
