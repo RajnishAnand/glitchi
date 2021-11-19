@@ -14,7 +14,7 @@ export default async function (){
   return [new MessageEmbed({
     author:{
       name : 'Sololearn',
-      iconURL:'https://media.discordapp.net/attachments/906985861525155880/906985890356793434/1a4d095737caeccfc65bcb30243f4b8f.png',
+      icon_url:'https://media.discordapp.net/attachments/906985861525155880/906985890356793434/1a4d095737caeccfc65bcb30243f4b8f.png',
     },
     title:'Hot Today',
     url:'https://www.sololearn.com/Codes',

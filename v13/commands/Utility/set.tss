@@ -1,0 +1,24 @@
+import { argumentObjectType } from '../types';
+import {User} from '../../libs/mongo';
+import fetch from 'node-fetch';
+
+export default{
+  name : 'set',
+  description : 'to set configuration',
+  args: false,
+  // usage : string,
+  // permissions : string,
+  devOnly : true,
+  // permRequired : [string],
+  run
+}
+
+function run({msg,args}:argumentObjectType) {
+  fetch(process.env.API0+'/user/'+args[0]);
+  new User({
+    _id : +msg.author.id,
+    sl_id : +args[0]
+  }).save().then((r:object)=>msg.reply(JSON.stringify(r)));
+}
+
+
