@@ -1,7 +1,7 @@
 import { argumentObjectType } from '../types';
 import cp from 'child_process';
 import util from 'util';
-import pageView from '../../libs/pagination/index';
+import pageView from '#libs/pagination';
 
 function run({msg,content}:argumentObjectType){
   if(!msg.author.id===global.config.ownerID)return;

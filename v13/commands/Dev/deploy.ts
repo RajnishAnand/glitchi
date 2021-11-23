@@ -1,6 +1,6 @@
 import { argumentObjectType } from '../types';
-import slashDeploy from '../../libs/slash-deploy';
-import slashCommands from '../../libs/slash-handler';
+import slashDeploy from '#libs/slash-deploy.js';
+import slashCommands from '#libs/slash-handler.js';
 import {User,Guild } from 'discord.js';
 
 export default {

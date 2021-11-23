@@ -3,9 +3,9 @@ import fetch from 'node-fetch';
 import {inspect} from 'util';
 import {parse} from 'content-type';
 import {Util} from 'discord.js';
-import select from '../../libs/selection'
-import pageView from '../../libs/pagination/index';
-import codeBlockParser from '../../libs/codeBlock-parser';
+import select from '#libs/selection.js'
+import pageView from '#libs/pagination';
+import codeBlockParser from '#libs/codeBlock-parser.js';
 
 export default {
   name : 'fetch',

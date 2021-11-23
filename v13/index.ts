@@ -1,5 +1,5 @@
 import { Client, Intents } from 'discord.js';
-import eventHandler from './libs/event-handler';
+import eventHandler from '#libs/event-handler.js';
 const client = new Client({
   intents: [
       Intents.FLAGS.GUILDS,

@@ -1,6 +1,6 @@
 import { argumentObjectType} from '../types';
-import pageView from '../../libs/pagination';
-import codeBlockParcer from '../../libs/codeBlock-parser';
+import pageView from '#libs/pagination';
+import codeBlockParcer from '#libs/codeBlock-parser.js';
 import {Util, MessageEmbed} from 'discord.js';
 
 

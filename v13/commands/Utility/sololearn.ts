@@ -1,6 +1,6 @@
 import { argumentObjectType} from '../types';
-import pageView from '../../libs/pagination';
-import {hotToday, trending, user} from '../../APIs/@sololearn';
+import pageView from '#libs/pagination';
+import {hotToday, trending, user} from '#api/@sololearn';
 
 function run({msg,args}:argumentObjectType){
   

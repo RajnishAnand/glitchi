@@ -1,6 +1,6 @@
 import { argumentObjectType} from '../types';
-import pageView from '../../libs/pagination';
-import mdnSearch from '../../APIs/mdn';
+import pageView from '#libs/pagination';
+import mdnSearch from '#api/mdn';
 
 function run({msg, content}:argumentObjectType){
   mdnSearch(content())

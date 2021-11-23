@@ -1,5 +1,4 @@
 import { argumentObjectType } from '../types';
-import pageView from '../../libs/pagination'
 
 export default{
   name : 'ping',
