@@ -8,7 +8,7 @@ export default {
     if(msg.author.bot ||msg.channel.type=='DM'||!msg.guild)return;
     if(msg.channel.id in global.config.block && global.config.block[msg.channel.id]==msg.author.id)return;
     if (msg.content.startsWith(`<@${msg.client.user?.id}>`)){
-      msg.channel.send(`Hi there ${msg.author.username}. My prefix is \`${global.config.prefix}\` , Type \`${global.config.prefix}help\` for help. `);
+      msg.reply(`Hi there ${msg.author.username}. My prefix is \`${global.config.prefix}\` , Type \`${global.config.prefix}help\` for help. `);
       return;
     }
     
@@ -65,7 +65,7 @@ export default {
         return;
       }
       else if (command.args && !args.length) {
-        msg.channel.send(`Command : \` ${command.name} \` requires argument! ${global.config.emojis.sneak} ${msg.author}. Type \`${global.config.prefix}help ${command.name}\` to get help on it.`);
+        msg.reply(`Command : \` ${command.name} \` requires argument! ${global.config.emojis.sneak}.\nType \`${global.config.prefix}help ${command.name}\` to get help on it.`);
       }
       else {
         const content =()=> msg.content
