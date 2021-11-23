@@ -1,6 +1,6 @@
 import { argumentObjectType} from '../types';
 import pageView from '#libs/pagination';
-import npmSearch from '#api/npm';
+import npmSearch from '#api/npm.js';
 
 function run({msg, content}:argumentObjectType){
   npmSearch(content())
