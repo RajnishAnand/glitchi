@@ -4,8 +4,16 @@ import { commandTemplate} from '../commands/types';
 
 export default {
   name : 'messageCreate',
-  execute (msg: Message){
+  async execute (msg: Message){
     if(msg.author.bot ||msg.channel.type=='DM'||!msg.guild)return;
+    if(global.config.beta){
+      let betaTester= await msg
+        .client.guilds.fetch("856090036998635520")
+        .then(async g=>g.members.fetch(msg.author.id))
+        .then(m=>m.roles.cache.has("903716928391094332"))
+        .catch(()=>false);
+      if(!betaTester)return;
+    }
     if(msg.channel.id in global.config.block && global.config.block[msg.channel.id]==msg.author.id)return;
     if (msg.content.startsWith(`<@${msg.client.user?.id}>`)){
       msg.reply(`Hi there ${msg.author.username}. My prefix is \`${global.config.prefix}\` , Type \`${global.config.prefix}help\` for help. `);
@@ -25,7 +33,7 @@ export default {
     ||commands.find((cmnd:any) => 
       (cmnd.aliases && cmnd.aliases.includes(commandName))) ) as commandTemplate;
       
-    //TODO : MODE these cases to saperate file
+    //TODO : MOVE these cases to saperate file
     if (!command) {
       switch (commandName) {
         case 'beep':
@@ -48,16 +56,21 @@ export default {
       return;
     };
     
-    if (command.permissions) {
-      const authorPerms = msg.channel.permissionsFor(msg.author);
+    // My permissions required
+    if (command.requiredPerms) {
       const myPerms= msg.channel.permissionsFor(msg.guild.me as GuildMember);
-      if (!authorPerms ||!command.permissions.every((c)=>authorPerms.has(c))) {
-        return msg.reply(` Permission(s) required to run this command :\n  └⊳ \` ${command.permissions.join('\`\n  └⊳ \`')} \``);
+      if (!myPerms ||!command.requiredPerms.every((c)=>myPerms.has(c))) {
+        return msg.reply(`Permission(s) i require to run this command:\n  └⊳ \` ${command.requiredPerms.join('\`\n  └⊳ \`')} \``);
       }
-      else if (!myPerms ||!command.permissions.every((c)=>myPerms.has(c))) {
-        return msg.reply(`Permission(s) i require to run this command:\n  └⊳ \` ${command.permissions.join('\`\n  └⊳ \`')} \``);
+    }
+    
+    //User perms required
+    if(command.userPerms && (msg.author.id!=global.config.ownerId)){
+      const authorPerms = msg.channel.permissionsFor(msg.author);
+      if (!authorPerms ||!command.userPerms.every((c)=>authorPerms.has(c))) {
+        return msg.reply(` Permission(s) required to run this command :\n  └⊳ \` ${command.userPerms.join('\`\n  └⊳ \`')} \``);
       }
-    } 
+    }
      
     try {
       if ((command.devOnly || false) == true &&
@@ -72,10 +85,6 @@ export default {
           .substr(global.config.prefix.length)
           .replace(/^[\s+]?/, "")
           .replace(commandName + ' ', '');
-        // const cleanContent = msg.cleanContent
-          // .substr(global.config.prefix.length)
-          // .replace(/^[\s+]?/, "")
-          // .replace(commandName + ' ', '');
         command.run({
           msg,
           args,

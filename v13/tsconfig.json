@@ -9,6 +9,7 @@
     "paths": {
       "#api/*": ["APIs/*"],
       "#libs/*": ["libs/*"],
+      "#types/*": ["typings/*"]
     }
   },
   //"include":["./*"],

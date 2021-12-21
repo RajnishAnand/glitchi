@@ -17,13 +17,15 @@ export interface argumentObjectType {
   error?: (message: message, err: { message: string }) => null;
 }
 
+
 export interface commandTemplate {
   name: string;
   description ? : string;
   aliases ? : string[];
   usage ? : string;
   args ? : true;
-  permissions ? : PermissionResolvable[];
+  userPerms ? : PermissionResolvable[];
+  requiredPerms ? : PermissionResolvable[];
   devOnly ? : boolean;
   examples: string[];
   run :(a:argumentObjectType)=>null;

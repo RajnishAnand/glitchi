@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {slashCmnds} from '../typings';
+import {slashCmnds} from '#types/slash';
 import { Collection } from 'discord.js';
 
 const slashCommands = new Collection();

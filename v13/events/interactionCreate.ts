@@ -1,6 +1,6 @@
 import slashCommands from '../libs/slash-handler';
 import {Interaction,Client} from 'discord.js';
-import {slashCmnds} from '../typings';
+import {slashCmnds} from '#types/slash';
 import slashDeploy from '../libs/slash-deploy';
 
 export default {

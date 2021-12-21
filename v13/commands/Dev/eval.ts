@@ -2,6 +2,8 @@ import {argumentObjectType} from '../types';
 import util from 'util';
 import pageView from '#libs/pagination';
 import {commands} from '#libs/command-handler.js';
+import userdb from '#libs/firebase.js';
+import {Snowflake} from 'discord.js';
 
 export default {
   name: 'eval',
@@ -50,11 +52,5 @@ export default {
       return err.message;
     }
   },
-  
-  // async del(){
-  //   if(!this.msg.reference)return;
-  //   const m = await this.msg.channel.messages.fetch(this.msg.reference?.messageID);
-  //   return m.delete();
-  // }
-
+  userdb(){return userdb},
 }

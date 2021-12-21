@@ -137,7 +137,7 @@ export default class pagination <T extends string | MessageEmbed[]>{
           m0.delete().catch(()=>null);
           if( 
             !/^\d+$/.test(c?.first()?.content??'')
-            ||parseInt(c?.first()?.content??'')<0
+            ||parseInt(c?.first()?.content??'')<1
             ||parseInt(c?.first()?.content??'')>this.handler.length
           )return;
           this.handler.page = parseInt(c?.first()?.content??'2');

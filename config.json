@@ -28,6 +28,6 @@
   },
   
   "HTTPserver" : false,
-  "local" : true,
+  "beta" : true,
   "block": {}
 }

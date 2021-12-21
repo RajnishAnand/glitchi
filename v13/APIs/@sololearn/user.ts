@@ -12,7 +12,7 @@ export default async function (id:number){
   if(!user.getProfile)
     throw new Error('User not Found !');
   
-  const badges = user.getProfile.userDetails.badges?user.getProfile.userDetails.badges.map(b=>'`['+b.name+']`').join(' ')+'\n':'';
+  const badges = user.getProfile.userDetails.badges!=null?user.getProfile.userDetails.badges.map(b=>'`['+b.name+']`').join(' ')+'\n':'';
   
   const levelxp = '‣ level :'+user.getProfile.userDetails.level+'\n‣ xp : '+user.getProfile.userDetails.xp+'\n';
   
@@ -20,7 +20,7 @@ export default async function (id:number){
   
   const country = '‣ Country : '+user.getProfile.userDetails.countryCode+' :flag_'+user.getProfile.userDetails.countryCode.toLocaleLowerCase()+':\n';
   
-  const bio = user.getProfile.userDetails.id?`‣ Bio : ${user.getProfile.userDetails.bio}`:'';
+  const bio = user.getProfile.userDetails.bio?`‣ Bio : ${user.getProfile.userDetails.bio}`:'';
   
   return [ 
     new MessageEmbed({

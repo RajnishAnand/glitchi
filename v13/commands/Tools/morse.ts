@@ -1,10 +1,27 @@
 import { argumentObjectType} from '../types';
 import pageView from '#libs/pagination';
-import {encode,decode} from 'xmorse';
+import morseNode from 'morse-node';
+
+const morse = morseNode.create('ITU');
 
 function run({msg, args, content}:argumentObjectType){
-  msg.reply(args.shift()??'F');
-  msg.reply(content());
+  let text : string;
+  
+  if(args[0].toLowerCase()=='en'||
+    args[0].toLowerCase()=='de'||
+    args[0].toLowerCase()=='decode'||
+    args[0].toLowerCase()== 'encode')
+    text = content().replace(args[0].toLowerCase(),'');
+  else text = content();
+  
+  if(args[0].toLowerCase()=='decode'||
+    args[0].toLowerCase()=='de')
+    new pageView(msg,morse.decode(text));
+  else new pageView(msg,morse.encode(text),
+    {
+      code:'morse',
+      title:'MORSE [ITU Standard]',
+    })
 }
 
 export default {

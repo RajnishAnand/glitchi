@@ -6,20 +6,31 @@ import {User,Guild } from 'discord.js';
 export default {
   name : 'deploy',
   description : 'to deploy slash commands',
-  devOnly : true,
+  //requiredPerms : string[],
+  userPerms : ['ADMINISTRATOR'],
+  //devOnly : true,
+  
   run({msg,args}:argumentObjectType){
     let json :Array<any>;
     if(!args.length)json=slashCommands.map(c=>c.data);
     else {
-      if(!slashCommands.get(args[0]))return msg.reply(args[0]+' not found!');
-      json = [(slashCommands.get(args[0]) as any).data];
+      // if(!slashCommands.get(args[0]))
+      json=slashCommands
+        .filter((_,i)=>args.includes(i))
+        .map(c=>c.data);
+      if(!json.length)return msg.reply('`'+args.join(', ')+'` not found!');
+      // json = [(slashCommands.get(args[0]) as any).data];
+      
     };
     slashDeploy(
         (msg.client.user as User).id,
         (msg.guild as Guild).id
         ,json).then(m=>{
       if(m==200){
-        msg.reply('successfully deployed!');
+        msg.reply('Slash commands successfully deployed!');
+      }
+      else{
+        msg.reply('Something went wrong!');
       }
     })
   }
