@@ -18,7 +18,7 @@ export default async function (id:number){
   
   const follow = '‣ Followers : '+user.getProfile.userDetails.followers+'\n‣ Following : '+user.getProfile.userDetails.following+'\n';
   
-  const country = '‣ Country : '+user.getProfile.userDetails.countryCode+' :flag_'+user.getProfile.userDetails.countryCode.toLocaleLowerCase()+':\n';
+  const country = user.getProfile.userDetails.countryCode?'‣ Country : '+user.getProfile.userDetails.countryCode+' :flag_'+user.getProfile.userDetails.countryCode.toLocaleLowerCase()+':\n':'';
   
   const bio = user.getProfile.userDetails.bio?`‣ Bio : ${user.getProfile.userDetails.bio}`:'';
   
