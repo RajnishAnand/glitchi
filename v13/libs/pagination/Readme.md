@@ -14,7 +14,7 @@ Arguments   |required?
 ErrorCallback Function | `optional`
 WarningCallback Function | `optional`
 
-## Exemples :
+## Examples :
 > Assuming `message` is message object 
 ```typescript
 import sendPages from "../pagination/index"

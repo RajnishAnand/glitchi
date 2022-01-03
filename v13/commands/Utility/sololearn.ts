@@ -8,7 +8,7 @@ async function run({msg,args}:argumentObjectType){
   args[0]?.toLowerCase() =='profile'){
     if(!args[1]) await userdb.child(msg.author.id+'/sololearn').once('value',d=>{args[1]=d.val()});
     if(!args[1]|| !/^\d*$/.test(args[1]))
-      return msg.reply('Please enter a vaild user id');
+      return msg.reply('Your sololearn id not found. Please configure it using \n`'+global.config.prefix+'set sololearn <id>`');
     return user(+args[1])
       .then(t=>new pageView(msg,t))
       .catch(err=>msg.reply(err.message));

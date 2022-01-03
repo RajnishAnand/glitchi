@@ -20,7 +20,18 @@ export default async function (id:number){
   
   const country = user.getProfile.userDetails.countryCode?'‣ Country : '+user.getProfile.userDetails.countryCode+' :flag_'+user.getProfile.userDetails.countryCode.toLocaleLowerCase()+':\n':'';
   
-  const bio = user.getProfile.userDetails.bio?`‣ Bio : ${user.getProfile.userDetails.bio}`:'';
+  const bio = user.getProfile.userDetails.bio?`‣ Bio : ${user.getProfile.userDetails.bio}\n`:'';
+
+  const coursesCompleted ={
+    name : `Courses Completed : \`[${user.getProfile.certificates.length}]\``,
+    value : (user.getProfile.certificates.map(e=> '\n`  ‣` ['+e.name+']('+e.imageUrl+')').join('')+'\n').substr(0,1024),
+    inline: true,
+  }
+  const coursesProgress = {
+    name :`Courses Progress : \`[${user.getProfile.coursesProgress.length}]\``,
+    value : user.getProfile.coursesProgress.map(e=>`\n \`‣\` ${e.courseName}\n   \`${("█".repeat(Math.ceil(e.progress*20))+"░".repeat(20)).substr(0,20)+`[${e.progress*100}%]`}\``) .join('').substr(0,1024),
+    inline: true
+  }
   
   return [ 
     new MessageEmbed({
@@ -34,7 +45,8 @@ export default async function (id:number){
       },
       color:'#1f1e28',
       url : 'https://www.sololearn.com/Profile/'+user.getProfile.userDetails.id,
-      description : badges+levelxp+follow+country+bio
+      description : badges+levelxp+follow+country+bio,
+      fields : [ coursesCompleted,coursesProgress ]
     }),
   ];
 }
