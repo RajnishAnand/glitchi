@@ -1,12 +1,15 @@
 import {
   MessageActionRow,
   MessageSelectMenu,
-  Message
+  Message,
+  Interaction
 } from 'discord.js';
 
 export default async function select(
     message : Message,
-    input : SelectionType
+    input : SelectionType,
+    filter: (interaction:Interaction)=>boolean = (interaction)=>interaction.user.id == message.author.id
+
   ){
   const id = ''+Date.now()+Math.random();
   const row = new MessageActionRow()
@@ -19,14 +22,14 @@ export default async function select(
   
   const msg = await message.reply({
       content:input.content??'Please select any :',
-      components:[row]
+      components:[row],
+      failIfNotExists :false
     });
   return await msg.awaitMessageComponent({
     componentType:'SELECT_MENU',
     time : 120000,
     filter(interaction){
-      return interaction.customId==id && 
-        interaction.user.id == message.author.id;
+      return interaction.customId==id && filter(interaction);
     }
   }).then(i=>{
     msg.delete()

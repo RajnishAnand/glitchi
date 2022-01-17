@@ -1,23 +1,23 @@
-import { argumentObjectType} from '../types';
 import pageView from '#libs/pagination';
 import imgs from '#api/unsplash.js';
+import {Command} from 'Interfaces';
 
-export default {
+export const command : Command = {
   name : 'image',
   description : 'search for image from unplash',
   aliases : ['img'],
-  usage : '[...query]',
+  usage : '...<query>',
   args : true,
   // permissions : string,
   devOnly : true,
   // permRequired : [string],
-  // examples : [''],
-  run
+  examples : ['clock'],
+  run({msg,content }){
+    imgs(content())
+      .then(t=>new pageView(msg,t))
+      .catch(()=>msg.reply(msg.client.config.emojis.sad+' Any relevant search result not found!'))
+   }
+
 }
 
-function run({msg, content}:argumentObjectType){
-  imgs(content())
-    .then(t=>new pageView(msg,t))
-    .catch(()=>msg.reply(global.config.emojis.sad+' Any relevant search result not found!'))
-}
-
+ 

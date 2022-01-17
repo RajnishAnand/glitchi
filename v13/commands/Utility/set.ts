@@ -1,34 +1,79 @@
-import { argumentObjectType } from '../types';
+import {Command} from 'Interfaces';
 import userdb from '#libs/firebase.js';
+import select from '#libs/selection.js';
+import ask from '#libs/ask.js';
 import fetch from 'node-fetch';
 
-export default{
+export const command: Command = {
   name : 'set',
   description : 'to set configuration',
-  args: false,
-  // usage : string,
+  usage : '?<sololearn> ?<sololearn_ID>',
   // permissions : string,
   // devOnly : true,
   // permRequired : [string],
-  run
+  async run({msg,args}){
+    if(!args.length){
+      try{
+        args[0] = await select(msg,{
+          title:'Select option you want to configure.',
+          options : [{
+            label : 'Sololearn',
+            description : 'set sololearn ID',
+            value : 'sololearn'
+          }]
+        });
+      }catch(err:any){
+        if('message' in err)msg.reply({
+          content : err.message,
+          failIfNotExists:false
+        });
+        return;
+      }
+    }
+
+    if(args[0]=='sololearn'){
+      if(!args[1]){
+        const answer = await ask(msg,'Please enter your Sololearn id :')
+        if(!answer)return msg.reply({
+          content : '⛔ Command Cancelled!',
+          failIfNotExists : false
+        });
+        args[1]=answer;
+      };
+      if(await verifySololearnUser(args[1])){
+        userdb.child(msg.author.id+'/sololearn')
+         .set(args[1])
+         .then(()=>msg.reply({
+           content : 'Suscessfully saved your sololearn id.',
+           failIfNotExists : false
+         }))
+
+         .catch(()=>msg.reply({
+           content :'Err while saving ur sololearn id.',
+           failIfNotExists:false
+         }));
+      }
+      else{
+        msg.reply({
+          content:'Invalid ID',
+          failIfNotExists : false
+        });
+      }
+    }
+    else msg.reply({
+      content:`Unknown command argument. Type \`${msg.client.config.prefix}help set\` to get help on it.`,
+          failIfNotExists : false
+    });
+
+  }
 }
 
-function run({msg,args}:argumentObjectType) {
-  if(args[0]=='sololearn'){
-    if(!args[1] || !/^\d*$/.test(args[1])) 
-      return msg.reply('Invalid ID');
-    fetch(process.env.API0+'/user/'+args[1])
-      .then(r=>r.json())
-      .then(obj=>{
-        if(!obj.getProfile)return msg.reply('Invalid ID');
-        userdb.child(msg.author.id+'/sololearn')
-          .set(args[1])
-          .then(()=>msg.reply('Suscessfully saved your sololearn id.'))
-          .catch(()=>msg.reply('Err while saving ur sololearn id.'))
-      })
-      .catch(()=>msg.reply('An Unknown Error Occurred!'))
-  }
-  
+
+async function verifySololearnUser(id:string){
+  if(!/^\d*$/.test(id))return false;
+  else return await fetch(process.env.API0+'/user/'+id)
+    .then(r=>r.json())
+    .then(obj=>!!obj.getProfile);
 }
 
 

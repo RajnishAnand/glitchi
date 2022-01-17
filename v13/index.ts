@@ -1,15 +1,12 @@
-import { Client, Intents } from 'discord.js';
-import eventHandler from '#libs/event-handler.js';
-const client = new Client({
-  intents: [
-      Intents.FLAGS.GUILDS,
-      Intents.FLAGS.GUILD_MESSAGES,
-      Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-      Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS
-    ]
-});
+import validate from './validate';
+import Client from "./client"
 
-//Handlers
-eventHandler(client);
+// import eventHandler from '#libs/event-handler.js';
+const client = new Client();
 
-client.login(process.env.TOKEN);
+validate().then(()=>{
+  client.init();
+})
+
+
+

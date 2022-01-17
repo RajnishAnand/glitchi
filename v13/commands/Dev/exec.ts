@@ -1,17 +1,10 @@
-import { argumentObjectType } from '../types';
 import cp from 'child_process';
 import util from 'util';
 import pageView from '#libs/pagination';
+import {Command} from 'Interfaces';
 
-function run({msg,content}:argumentObjectType){
-  if(!msg.author.id===global.config.ownerID)return;
-    cp.exec (content(),(...d)=>{
-      let tx = d[0]?util.inspect(d[0]):d[1]?d[1]:d[2];
-      new pageView(msg,tx,{code:'bash',title:'BASH-OUTPUT'})
-  }) 
-}
 
-export default {
+export const command: Command = {
   name : 'exec',
   description : 'execute command directly to bash',
   aliases : ['ex'],
@@ -21,5 +14,11 @@ export default {
   devOnly : true,
   // permRequired : [string],
   // examples : [string],
-  run
+  run({msg, content}){
+    if(!(msg.author.id===msg.client.config.ownerId))return;
+      cp.exec (content(),(...d)=>{
+        let tx = d[0]?util.inspect(d[0]):d[1]?d[1]:d[2];
+        new pageView(msg,tx,{code:'bash',title:'BASH-OUTPUT'})
+    }) 
+  }
 }

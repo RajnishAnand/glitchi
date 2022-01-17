@@ -2,7 +2,7 @@
   "name": "discord-bot-glitchi",
   "version": "1.0.0",
   "description": "An open source Discord bot",
-  "main": "setup.js",
+  "main": "build/index.js",
   "imports": {
     "#libs/*.js": "./build/libs/*.js",
     "#libs/pagination": "./build/libs/pagination/index.js",
@@ -12,8 +12,8 @@
   "scripts": {
     "build": "tsc -b v13",
     "prestart": "npm run build",
-    "start": "node setup.js",
-    "dev": "node setup.js"
+    "start": "node build/index.js",
+    "dev": "node build/index.js"
   },
   "repository": {
     "type": "git",

@@ -1,9 +1,8 @@
-import {argumentObjectType} from '../types';
-import fetch from 'node-fetch';
-import {MessageCollector,TextChannel,PartialDMChannel} from 'discord.js';
+import {Message, MessageCollector, TextChannel} from 'discord.js';
+import {Command, CommandArgument} from 'Interfaces';
 //import pageView from '../../libs/pagination/index';
 
-export default {
+export const command : Command = {
   name: 'connect',
   description: 'connect to a channel.',
   aliases : ['msg'],
@@ -15,12 +14,12 @@ export default {
   run
 }
 
-async function run({msg,args,content}:argumentObjectType){
+async function run({msg,args,content}:CommandArgument){
   const id = args[0]
     .replace(/^<#/,'')
     .replace(/>$/,'');
   const channel=await msg.client.channels.fetch(id)
-    .catch((err)=>msg.reply(err.message));
+    .catch((err:any)=>msg.reply(err.message));
   
   if(!channel ||!(channel instanceof TextChannel ))
     return msg.reply('Channel is not a TextChannel!');
@@ -31,10 +30,9 @@ async function run({msg,args,content}:argumentObjectType){
       return channel.send(contents);
     else channel.send('This Channel is Directly Connected to my Devloper.')
   }
-  if(msg.channel.id in global.config.block)
+  if(msg.channel.id in msg.client.config.block)
     return msg.reply('This channel is already connected to a channel!');
-  
-  const collector0 = channel.createMessageCollector({
+  const collector0:MessageCollector = channel.createMessageCollector({
     filter:(m)=>m.author?.id!=msg.client.user?.id
   });
   
@@ -67,8 +65,8 @@ async function run({msg,args,content}:argumentObjectType){
     }
   });
   
-  const collector1 = msg.channel.createMessageCollector({
-    filter:(m)=>m.author?.id==msg.author.id
+  const collector1: MessageCollector = msg.channel.createMessageCollector({
+    filter:(m: Message)=>m.author?.id==msg.author.id
   });
   
   collector1.on('collect',(m)=>{
@@ -86,13 +84,13 @@ async function run({msg,args,content}:argumentObjectType){
   
   collector1.on('end',()=>{
     collector0.stop();
-    delete global.config.block[msg.channel.id];
+    delete msg.client.config.block[msg.channel.id];
     msg.channel.send('Channel disconnected!');
     channel.send('Channel disconnected!');
   })
   
   
-  global.config.block[msg.channel.id]=msg.author.id;
+  msg.client.config.block[msg.channel.id]=msg.author.id;
   msg.reply(`Connected to channel <#${id}>. Use '-s' to stop`);
   
 }

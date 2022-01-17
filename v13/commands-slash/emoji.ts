@@ -1,17 +1,16 @@
-import { CommandInteraction, Emoji } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import {SlashCommand} from 'Interfaces';
 
-export default{
-  data : new SlashCommandBuilder()
-    .setName('emoji')
-    .setDescription('sends emoji for you!')
-    .addStringOption((opt)=>
-      opt.setName('query')
-        .setDescription('emoji name to query')
-        .setRequired(true))
-    .toJSON(),
+export const command : SlashCommand= {
+  name : 'emoji',
+  description : 'sends emoji for you!',
+  options : [{
+    name : 'query',
+    description : 'emoji name to query',
+    type : 'STRING',
+    required : true
+  }],
     
-  run(interaction:CommandInteraction){
+  run({interaction}){
     const q=interaction.options.getString('query') as string;
     let e = interaction.client.emojis.cache.find(f=> 
       new RegExp(`^${q}$`,'i').test(f.name||''));
@@ -25,11 +24,4 @@ export default{
     })
     interaction.reply(e.toString());
   }
-}
-
-
-interface emote{
-  id:string,
-  name:string,
-  a:boolean
 }

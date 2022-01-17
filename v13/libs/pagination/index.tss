@@ -1,200 +1,211 @@
 import {
+  CommandInteraction,
   Message,
-  ReactionCollector,
-  
   MessageEmbed,
-  MessageEmbedAuthor,
-  EmbedField,
-  MessageAttachment,
-  FileOptions,
-  MessageEmbedImage,
-  MessageEmbedProvider,
-  MessageEmbedThumbnail,
-  
   MessageReaction,
-  User
+  User,
+  Snowflake
 } from 'discord.js';
+/////////////////////////////////////////////////////
 
-
-// page navigation handler aka Pagination
-class pagination {
-  declare pages : number;
-  declare uid : string;
-  declare error: (err:customError)=>null;
-  declare warn : (err:customError)=>null;
-  declare handler : embedHandler|stringHandler;
-  declare msg : Message;
-  public page = 0;
-  private btns = [
-    '🔢', '⏮️','◀️', '▶️', '⏭️' ,'🗑️'
-    // '🔢', '⏪', '⬅️','➡️','⏩','🆗'
-  ];
+interface paginationOption<T extends 'S'|'E'>{
+  page ?:number;
+  initialPage ?: number ;
   
-  private readonly reactionFilter = (
-    react:MessageReaction,
-    user:User,
-    message:Message
-  ) => this.btns.includes(react.emoji.name) &&
-      user.id===message.author.id;
-  
-  private readonly gotoPageFilter = (f:Message) => 
-    parseInt(f.content) > 0 &&
-    parseInt(f.content) <= this.pages;
+  // string options
+  code ?: T extends 'S' ? string : never;
+  title ?: T extends 'S' ? string : never;
+  chunkSize ?: T extends 'S' ? number : never;
+  timestamp ?: T extends 'S' ? number : never;
+}
 
-  constructor(
-    message:Message,
-    arg: string|EmbedObject[]|MessageEmbed[],
-    error: (err:customError)=>null,
-    warn : (err:customError)=>null,
-    code : string=' ',
-  ){
-    this.uid = message.author.id;
-    this.error = error;
-    this.warn = warn;
+
+// MAIN exported Class
+export default class pagination <T extends string | MessageEmbed[]>{
+  declare msg : Message ;
+  declare author : Snowflake;
+  declare handler : stringHandler|embedHandler;
+  public buttons = ['🔢', '⏮️','◀️', '▶️', '⏭️' ,'🗑️'];
+  constructor (
+    message: Message|CommandInteraction,
+    argument: T,
+    options ?: T extends string 
+    ? paginationOption<'S'>
+    : T extends MessageEmbed[]
+      ? paginationOption<'E'>
+      : never
+  ) {
     
-    if(typeof arg === 'string'){
-      const stringArr:string[]=[];
-      for (let i = 0; i < arg.length; i += 700) 
-        stringArr.push(arg.substr(i, 700));
-      this.handler = new stringHandler(stringArr,code);
-    } 
-    else this.handler = new embedHandler(arg);
-    this.pages = this.handler.pages;
-    this.main(message)
+    if(typeof argument =='string'){
+      this.handler = new stringHandler(
+        argument,
+        options?.chunkSize,
+        options?.title,
+        options?.code,
+        options?.timestamp,
+        options?.page
+      );
+    }
+    else if(Array.isArray(argument)){
+      this.handler = new embedHandler(
+        argument,
+        // option?.page
+        //TODO : Add page option in embed
+      )
+    }
+    
+    if (message instanceof Message){
+      message.channel.send(this.handler.value)
+      .then((m0)=>{
+        this.msg=m0;
+        this.main();  
+      });
+      this.author = message.author.id;
+    }
+    
+    //TODO : check of this works
+    //TODO : Add options for differ reply
+    
+    else if(message instanceof CommandInteraction ){
+      if(typeof this.handler.value =='string')
+        message.reply({
+          content:this.handler.value,
+          fetchReply:true
+        }).then((m0)=>{
+          if(! (m0 instanceof Message))
+            return new Error('Invalid instance if message');
+          this.msg=m0;
+          this.main();
+        });
+      else if(Array.isArray(argument))
+        message.reply({
+          embeds:this.handler.value.embeds,
+          fetchReply:true
+        }).then((m0)=>{
+          if(! (m0 instanceof Message))
+            return new Error('Invalid instance if message');
+          this.msg=m0;
+          this.main();
+        });
+      this.author = message.user.id;
+    };
+    
   }
-  
-  async main(message:Message){
-    this.msg = await message.channel
-      .send(this.handler.render(0));
-
-    const reactionCollector:ReactionCollector = this.msg.createReactionCollector((react,user)=>this.reactionFilter(react,user,message),{idle:120000,max:999});
+  private async main(){
+    if(this.handler.length>2)await this.msg.react(this.buttons[0]);
+    if(this.handler.length>2)await this.msg.react(this.buttons[1]);
+    if(this.handler.length>1)await this.msg.react(this.buttons[2]);
+    if(this.handler.length>1)await this.msg.react(this.buttons[3]);
+    if(this.handler.length>2)await this.msg.react(this.buttons[4]);
+    this.msg.react(this.buttons[5]);
     
-    reactionCollector.on('collect',(react)=>{
-      react.users.remove(message.author.id).catch(()=>null);
-      let pg=this.page;
-      [ 
-        ()=>{ //Goto page
-          this.msg.channel.send('👁️ |Enter the page index you wanna jump to!')
-            .then(m0=>{
-              return m0.channel.awaitMessages(
-                this.gotoPageFilter,
-                {max:1,time:18000,errors:['time']}
-              ).then((c)=>{
-                if(isNaN(parseInt(c.first()?.content as string)))return;
-                this.page = parseInt(c.first()?.content as string)-1;
-                c.first()?.delete().catch(()=>null);
-                m0.delete().catch(()=>null);
-                this.render();
-              }).catch(()=>m0.delete().catch(()=>null))
-            })
-        },
-        ()=>pg=0, // First page
-        ()=>--pg, // Previous page1
-        ()=>++pg, // Next page
-        ()=>pg=this.pages-1, // Last page
-        ()=>this.msg.delete().catch(()=>null),  // page delete
-      ][this.btns.indexOf(react.emoji.name)]();
-      
-      pg=(pg>=this.pages)?this.pages-1:(pg<0)?0:pg;
-      if(pg!==this.page){
-        this.page=pg;
+    const reactionCollector=this.msg.createReactionCollector({
+      filter : (react, user)=>user.id==this.author&&this.buttons.includes(decodeURI(react.emoji.identifier)),
+      idle:120000,
+    });
+    
+    reactionCollector.on('end',()=>{
+      this.msg.reactions.removeAll().catch(()=>null);
+    })
+    
+    reactionCollector.on('collect',async (react)=>{
+      react.users.remove(this.author).catch(()=>null);
+      let pg = this.handler.page;
+      const func = [
+        ()=>{this.goToPage()},
+        ()=>{pg = 1},
+        ()=>{pg -= +(pg>1)},
+        ()=>{pg += +(pg<this.handler.length);},
+        ()=>{pg = this.handler.length},
+        ()=>{this.msg.delete().catch(()=>null)}
+        // .catch() : in case its already deleted
+      ][this.buttons.indexOf(decodeURI(react.emoji.identifier))]();
+      if(!(pg==this.handler.page)){
+        this.handler.page=pg;
         this.render();
-      }
-    });
-    
-    if(this.pages>1)
-      await this.msg.react(this.btns[0]).catch(()=>null);
-    if(this.pages>2)
-      await this.msg.react(this.btns[1]).catch(()=>null);
-    if(this.pages>1)
-      await this.msg.react(this.btns[2]).catch(()=>null);
-    if(this.pages>1)
-      await this.msg.react(this.btns[3]).catch(()=>null);
-    if(this.pages>2)
-      await this.msg.react(this.btns[4]).catch(()=>null);
-    await this.msg.react(this.btns[5]).catch(e=>
-      this.error({code:e.code,message:e.message}));
-    
-    reactionCollector.on('end',()=>
-      this.msg.reactions.removeAll().catch(()=>null)
-    );
+      };
+    })
   }
   
-  render(){
-    this.msg.edit(this.handler.render(this.page))
-      .catch(()=>null);//failsafe
+  async goToPage(){
+    this.msg.channel.send("\\⚡ Page! You wanna jump to ?")
+      .then(m0=>{
+        return m0.channel.awaitMessages({
+          filter:(f:Message)=>f.author.id==this.author,
+          max:1
+        }).then((c)=>{
+          m0.delete().catch(()=>null);
+          if( 
+            !/^\d+$/.test(c?.first()?.content??'')
+            ||parseInt(c?.first()?.content??'')<1
+            ||parseInt(c?.first()?.content??'')>this.handler.length
+          )return;
+          this.handler.page = parseInt(c?.first()?.content??'2');
+          c.first()?.delete().catch(()=>null);
+          this.render();
+        // .catch in case its already deleted
+        }).catch(()=>m0.delete().catch(()=>null))
+      })
   }
+  // .catch in case its already deleted
+  render(){this.msg.edit(this.handler.value).catch(()=>null);}
 }
 
-class embedHandler{
-  pages : number;
-  embeds : MessageEmbed[];
-  constructor(embeds:EmbedObject[]|MessageEmbed[]){
-    this.pages = embeds.length;
-    this.embeds = []
-    embeds.forEach((e,i)=>{
-      if(!i)return this.embeds=[new MessageEmbed(e)];
-      this.embeds.push(new MessageEmbed(e))
+class embedHandler {
+  public page = 1;
+  public length:number;
+  private chunks : MessageEmbed[];
+  constructor(chunks: MessageEmbed[]){
+    this.length = chunks.length;
+    this.chunks=chunks.map((e,i)=>{
+      const embed=new MessageEmbed(e)
+      if(chunks.length>1)
+        embed.setFooter({
+          text : `Page : ${i+1}/${chunks.length}`
+        });
+      return embed;
     });
   }
-  render(i:number){
-    this.embeds[i]=this.embeds[i];
-      if(!(this.pages==1))this.embeds[i]
-        .setFooter(`Page : ${i+1}/${this.pages}`);
-    return {embed:this.embeds[i]};
-  }
+
+  get value(){ return{embeds:[ this.chunks[this.page-1]]}; }
 }
 
-class stringHandler{
-  declare pages : number;
-  declare array : string[];
-  declare code : string;
-  constructor(array : string[],code:string){
-    this.pages = array.length;
-    this.array = array;
-    this.code = code;
-  }
-  render(i:number){
-    return {content:`\` ${i+1}/${this.pages} \``+'```'+this.code+'\n'+this.array[i]+'```'};
-  }
-}
 
-//Main Exported Function
-export default function main (
-  message : Message, 
-  arg: EmbedObject[]|MessageEmbed[]|{text:string,code:string}|string,
-  error:(err:customError)=>null = ()=>null,
-  warning:(err:customError)=>null = ()=>null,
+class stringHandler {
+  public page = 1;
+  public declare length : number;
+  private declare chunks:string[];
+  private declare timestamp ?: number;
+  private declare code :string;
+  private declare title : string|undefined;
+  constructor(
+    str : string,
+    chunkSize:number=800,
+    title:string|undefined,
+    code:string='',
+    timestamp?:number,
+    page:number = 1,
   ){
-  if(Object.values(arg).length===0){return error({
-    code : 'EMPTY',
-    message:'Can\'t send Empty Messages',
-  })}
-  if(typeof arg=='object' && !Array.isArray(arg))
-    return new pagination(
-      message,arg.text,error,warning,arg.code);
-  return new pagination(message,arg,error,warning);
+    this.length= Math.ceil(str.length/chunkSize);
+    this.code = code;
+    this.title = title;
+    this.timestamp = timestamp?Math.floor(timestamp/1000):undefined;
+    this.page = (0<page&&page<=this.length)?page:1;
+    
+    for (let i = 0; i <= this.length; i++) 
+      if(!i)this.chunks=[
+        this.decorate(str.substr(i*chunkSize,chunkSize),i)]
+      else this.chunks.push(
+        this.decorate(str.substr(i*chunkSize,chunkSize),i));
+  }
+    
+  private decorate(str:string,page:number){
+    return "```"+this.code+"\n"
+      +(str==''?' ':str)+'```'
+      +(this.length>1?(`\` ⛬ Page : ${page+1}/${this.length} \` `):'')
+      +(this.title?`\`‣ ${this.title} \` `:'')
+      +(this.timestamp?` <t:${this.timestamp}:R>  `:'');
+  }
+  
+  get value(){ return this.chunks[this.page-1]; }
 }
-
-//Interfaces and Types
-export interface EmbedObject{
-  author? : MessageEmbedAuthor;
-  color? : number|string;
-  description? : string;
-  fields? : EmbedField[];
-  files? : [string|MessageAttachment|FileOptions];
-  //footer :reserved for page Number
-  image? : MessageEmbedImage;
-  provider? : MessageEmbedProvider;
-  thumbnail? : MessageEmbedThumbnail;
-  timestamp? : number;
-  title? : string;
-  type? : 'rich'|'image'|'video'|'gifv'|'article'|'link';
-  url? : string;
-}
-
-interface customError {
-  code:number|string;
-  message : string;
-}
-

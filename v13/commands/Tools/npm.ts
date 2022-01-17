@@ -1,22 +1,17 @@
-import { argumentObjectType} from '../types';
 import pageView from '#libs/pagination';
 import npmSearch from '#api/npm.js';
+import {Command} from 'Interfaces';
 
-function run({msg, content}:argumentObjectType){
-  npmSearch(content())
-    .then(t=>new pageView(msg,t))
-    .catch(()=>msg.reply(global.config.emojis.sad+' Any relevant search result not found!'))
-}
 
-export default {
+export const command :Command={
   name : 'npm',
   description : 'search for npm packages',
-  // aliases : [string],
-  usage : '[...query]',
+  usage : '...<query>',
   args : true,
-  // permissions : string,
-  // devOnly : true,
-  // permRequired : [string],
   examples : ['react','discord.js'],
-  run
+  run({msg,content}){
+    npmSearch(content())
+      .then(t=>new pageView(msg,t))
+      .catch(()=>msg.reply(msg.client.config.emojis.sad+' Any relevant search result not found!'))
+  }
 }

@@ -1,13 +1,15 @@
-import { CommandInteraction } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+//import { SlashCommandBuilder } from '@discordjs/builders';
+import {SlashCommand} from 'Interfaces';
 
-export default {
-  data : new SlashCommandBuilder()
-    .setName('ping')
-    .setDescription('ping pong!')
-    .toJSON(),
+export const command : SlashCommand = {
+  name : "ping",
+  description : "ping pong!",
+ // data : new SlashCommandBuilder()
+ //   .setName('ping')
+ //   .setDescription('ping pong!')
+ //   .toJSON(),
   
-  run(interaction:CommandInteraction){
+  run({interaction}){
      interaction.reply({content:'ping pong!', ephemeral:true})
    }
 }

@@ -1,20 +1,15 @@
-import slashCommands from '../libs/slash-handler';
-import {Interaction,Client} from 'discord.js';
-import {slashCmnds} from '#types/slash';
-import slashDeploy from '../libs/slash-deploy';
+import {Interaction} from 'discord.js';
+import {Event} from '../Interfaces';
 
-export default {
+export const event : Event =  {
   name : 'interactionCreate',
-  execute(interaction:Interaction,client:Client){
+  execute(client,interaction:Interaction){
     if(!interaction.isCommand()) return;
-    
-    const cmnd =( slashCommands
-      .get(interaction.commandName) as slashCmnds);
-    if((!cmnd)&&client.user && interaction.guildId){ 
-      // slashDeploy(client.user.id,interaction.guildId,slashCommands);
-      // interaction.reply({content:'Slash command not Found!', ephemeral:true})
+
+    const cmnd = client.slashCommands.get(interaction.commandName);
+    if(!(cmnd && client.user && interaction.guildId)){
       return;
     };
-    cmnd.run(interaction);
+    cmnd.run({client, interaction});
   }
 }

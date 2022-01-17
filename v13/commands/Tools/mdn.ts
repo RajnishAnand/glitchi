@@ -1,22 +1,19 @@
-import { argumentObjectType} from '../types';
+import {Command} from 'Interfaces';
 import pageView from '#libs/pagination';
 import mdnSearch from '#api/mdn.js';
 
-function run({msg, content}:argumentObjectType){
-  mdnSearch(content())
-    .then(t=>new pageView(msg,t))
-    .catch(()=>msg.reply(global.config.emojis.sad+' Any relevant search result not found!'))
-}
-
-export default {
+export const command : Command = {
   name : 'mdn',
   description : 'search from mdn',
-  // aliases : [string],
-  usage : '[...query]',
+  usage : '...<query>',
   args : true,
   // permissions : string,
   // devOnly : true,
   // permRequired : [string],
   examples : ['AJAX','fetch'],
-  run
+  run ({msg,content}){
+    mdnSearch(content())
+      .then(t=>new pageView(msg,t))
+      .catch(()=>msg.reply(msg.client.config.emojis.sad+' Any relevant search result not found!'))
+  }
 }

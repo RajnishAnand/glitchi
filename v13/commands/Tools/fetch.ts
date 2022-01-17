@@ -1,4 +1,3 @@
-import { argumentObjectType,} from '../types';
 import fetch from 'node-fetch';
 import {inspect} from 'util';
 import {parse} from 'content-type';
@@ -6,22 +5,20 @@ import {Util} from 'discord.js';
 import select from '#libs/selection.js'
 import pageView from '#libs/pagination';
 import codeBlockParser from '#libs/codeBlock-parser.js';
+import {Command, CommandArgument} from 'Interfaces';
 
-export default {
+export const command: Command= {
   name : 'fetch',
   description : 'To fetch any URL .',
-  usage : '[url]',
+  usage : '<url> ?<--get||--post> ?<raw> ?<post_text>',
   args : true ,
-  // aliases : [string],
-  // permissions : string,
-  // devOnly : boolean,
-  // permRequired : [string],
+  examples :['http://example.com/'] ,
   run
 }
 
 const types = ['text','xml','json','script'];
 
-async function run ({msg,args, content}:argumentObjectType){
+async function run ({msg,args, content}:CommandArgument){
   const raw = (args[1]=='raw' && args.splice(1,1)) || args[2]=='raw';
   
   let response = '';
