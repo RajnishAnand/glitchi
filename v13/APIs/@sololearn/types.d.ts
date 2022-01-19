@@ -15,11 +15,12 @@ export interface User {
       followers : number,
       following : number,
       bio : string,
+      registerDate: string,
       connectedAccounts : {
         connectionId: number,
         service: string,
         name: string,
-        profileUrl: string,
+        profileUrl: string|null,
         isVisible: true,
         syncDate: null,
         avatarUrl: string,
@@ -67,7 +68,7 @@ export interface User {
     userCodes: {
       id: number,
       publicId: string,
-      language: string,
+      language: "web"|"cpp"|"c"|"cs"|"java"|"kt"|"swift"|"py"|"rb"|"php"|"node"|"go",
       name: string,
       isPublic: boolean,
       modifiedDate: Date

@@ -76,12 +76,18 @@ export default class pagination {
     
   }
   private async main(){
-    if(!!this.HandleHandler)await this.msg.react(this.buttons[6])
-    if(this.handler.length>2)await this.msg.react(this.buttons[0]);
-    if(this.handler.length>2&&!this.HandleHandler)await this.msg.react(this.buttons[1]);
-    if(this.handler.length>1)await this.msg.react(this.buttons[2]);
-    if(this.handler.length>1)await this.msg.react(this.buttons[3]);
-    if(this.handler.length>2&&!this.HandleHandler)await this.msg.react(this.buttons[4]);
+    if(!!this.HandleHandler)
+      await this.msg.react(this.buttons[6]);
+    if(this.handler.length>2||this.HandleHandler)
+      await this.msg.react(this.buttons[0]);
+    if(this.handler.length>2&&!this.HandleHandler)
+      await this.msg.react(this.buttons[1]);
+    if(this.handler.length>1||this.HandleHandler)
+      await this.msg.react(this.buttons[2]);
+    if(this.handler.length>1||this.HandleHandler)
+      await this.msg.react(this.buttons[3]);
+    if(this.handler.length>2&&!this.HandleHandler)
+      await this.msg.react(this.buttons[4]);
     this.msg.react(this.buttons[5]);
     
     const reactionCollector=this.msg.createReactionCollector({
