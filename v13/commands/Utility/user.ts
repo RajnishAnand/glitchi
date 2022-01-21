@@ -10,9 +10,7 @@ export const command: Command = {
 
   run({msg,args}){
     if (args[0]) {
-      let id = args[0]
-        .replace(/^<@!?/, '')
-        .replace(/>$/, '');
+      let id = args[0].replace(/^<@!?/, '').replace(/>$/, '');
       if (/^\d+$/.test(id)) {
         msg.client.users.fetch(id)
           .then((u) => {
