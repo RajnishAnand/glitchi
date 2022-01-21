@@ -30,6 +30,8 @@ export default {
     evilLaugh: "<:voldyLaugh:854700368126541834>",
     evilAttack: "<:voldyAttack:853598830632763432>",
     quick: "<:quick:856818054602948608>",
+    knife: "<a:knifeBear:901369113656561744>",
+    salute: "<:salute:895714590996955176>",
 
     swift: "<:swift:917731222891929630>",
     r: "<:r_:933080757688229938>",
