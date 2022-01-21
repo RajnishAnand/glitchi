@@ -74,12 +74,18 @@ export default class ExtendClient extends Client {
 
   async registerSlashCommand ({guildId,commands}:RegisterSlashCommandsOption){
       if(guildId){
-        this.guilds.cache.get(guildId)?.commands.set(commands);
-        console.log(`Registering Commands to ${guildId}`);
+        return await this.guilds.cache.get(guildId)?.commands
+          .set(commands)
+          .then(()=>{
+            console.log(`Registering Commands to ${guildId}`);
+            return true
+          })
+          .catch(()=>false)
       }
       else {
         this.application?.commands.set(commands);
         console.log(`Registering global Commands.`)
+        return true;
       }
   }
 }
