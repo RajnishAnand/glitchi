@@ -26,7 +26,7 @@ export default async function (id:number){
 
   const bio = user.getProfile.userDetails.bio?`‣ Bio : \n>>> ${user.getProfile.userDetails.bio}`:'';
   
-  const connectedAccounts = user.getProfile.userDetails.connectedAccounts.map(a=>`${a.service} : ${a.profileUrl?`[${a.name}](${a.profileUrl})`: a.name } ${a.avatarUrl?`[[pfp]](${a.avatarUrl}`:''})`).join("\n");
+  const connectedAccounts = user.getProfile.userDetails.connectedAccounts.map(a=>`${a.service} : ${a.profileUrl?`[${a.name}](${a.profileUrl})`: a.name } ${a.avatarUrl?`[[pfp]](${a.avatarUrl})`:''}`).join("\n");
   
   const coursesCompleted =user.getProfile.certificates.map(e=> '\n`  ‣` ['+e.name+']('+e.imageUrl+')').join('');
 
