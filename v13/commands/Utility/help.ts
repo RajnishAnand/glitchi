@@ -46,7 +46,7 @@ async function run({msg,args}:CommandArgument){
 
     if(command.aliases)embed.description+= `\n‣ **Aliases** : ${command.aliases.join(', ')}`;
     if(command.args)embed.description+='\n‣ **Arguments required** : true';
-    if(command.usage)embed.description+='\n‣ **Usage** : '+command.usage;
+    if(command.usage)embed.description+='\n‣ **Usage** : `'+command.usage+'`';
     if(command.userPerms)embed.description+='\n‣ **Permission Required** : '+command.userPerms.join(', ');
     if(command.devOnly)embed.description+='\n‣ **Bot Devlopers Only** : true';
     if(command.examples)embed.fields?.push({

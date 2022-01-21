@@ -8,9 +8,7 @@ export const command: Command = {
   name : 'set',
   description : 'to set configuration',
   usage : '?<sololearn> ?<sololearn_ID>',
-  // permissions : string,
-  // devOnly : true,
-  // permRequired : [string],
+
   async run({msg,args}){
     if(!args.length){
       try{
@@ -44,7 +42,7 @@ export const command: Command = {
         userdb.child(msg.author.id+'/sololearn')
          .set(args[1])
          .then(()=>msg.reply({
-           content : 'Suscessfully saved your sololearn id.',
+           content : msg.client.config.emojis.salute+' Successfully saved your sololearn id.',
            failIfNotExists : false
          }))
 
