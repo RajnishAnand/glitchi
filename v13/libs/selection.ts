@@ -27,7 +27,7 @@ export default async function select(
     });
   return await msg.awaitMessageComponent({
     componentType:'SELECT_MENU',
-    time : 120000,
+    time : 60000,
     filter(interaction){
       return interaction.customId==id && filter(interaction);
     }
