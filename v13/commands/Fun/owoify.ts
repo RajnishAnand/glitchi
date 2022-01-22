@@ -8,7 +8,11 @@ export const command : Command={
   args : true,
   examples : ["hello"],
 
-  run({msg,content}){
-    msg.reply(owoify(content()))
+  run({msg,commandName}){
+    msg.reply(owoify(
+      msg.cleanContent
+        .replace(/^[\s+]?/, "")
+        .replace(commandName + ' ', '')
+    ))
   }
 }
