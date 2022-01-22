@@ -5,7 +5,7 @@ import {Command} from 'Interfaces';
 export const command : Command = {
   name : 'deploy',
   description: 'deploy slash commands',
-  usage : '<...commandName>',
+  usage : '?<...commandName>',
   userPerms: ['ADMINISTRATOR'],
   
   async run({msg,args}){
