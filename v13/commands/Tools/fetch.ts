@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import {inspect} from 'util';
 import {parse} from 'content-type';
 import {Util} from 'discord.js';
-import {select,pageView,codeBlockParser} from '#libs'
+import {ask,select,pageView,codeBlockParser} from '#libs'
 import {Command, CommandArgument} from 'Interfaces';
 
 export const command: Command= {
@@ -14,7 +14,12 @@ export const command: Command= {
   run
 }
 
-const types = ['text','xml','json','script'];
+const types = [
+  'plain/text',
+  'application/xml',
+  'application/json',
+  'application/x-www-form-urlencoded'
+];
 
 async function run ({msg,args, content}:CommandArgument){
   const raw = (args[1]=='raw' && args.splice(1,1)) || args[2]=='raw';
@@ -41,12 +46,21 @@ async function run ({msg,args, content}:CommandArgument){
         lang = await select(msg,{
           content :'Please pick a supported content type:',
           title : 'Select content-type',
-          options : types.map(z=>{return {
-            label : `application/${z}`,
+          options : [ ...types.map(z=>{return {
+            label : z,
             description :`set request body format as ${z}`,
             value : z
-          }})
+          }}),{
+            label: "Other",
+            description: "custom content type",
+            value : "none"
+          }]
         });
+        if(lang=="none"){
+          const ans = await ask(msg,"Enter your custom content type :");
+          if(!ans)return msg.channel.send("Time Out! Command Cancelled.");
+          lang=ans;
+        }
       } catch(err:any){ return msg.reply(err.message) };
     };
     
@@ -99,7 +113,7 @@ async function GET(url:string) {
 async function POST(url:string,data:string,type:string) {
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE,
-    headers: {'Content-Type': 'application/'+type},
+    headers: {'Content-Type':type},
     redirect: 'follow', 
     body: data
   })
