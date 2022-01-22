@@ -16,7 +16,7 @@ export const command:Command= {
 
 async function run({msg,args}:CommandArgument){
   if (args[0]?.toLowerCase() =='user'||args[0]?.toLowerCase() =='profile'){
-    args[1]=args[1].replace(/^<@!?/, '').replace(/>$/, '');
+    args[1]=args[1]?.replace(/^<@!?/, '')?.replace(/>$/, '');
     if(!args[1]) await userdb.child(msg.author.id+'/sololearn').once('value',d=>{args[1]=d.val()});
     if(!args[1]|| !/^\d*$/.test(args[1]))
       return msg.reply('Your sololearn id not found. Please configure it using \n`'+msg.client.config.prefix+'set sololearn <id>`');
