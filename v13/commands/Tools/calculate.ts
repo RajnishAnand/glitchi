@@ -1,7 +1,7 @@
 import {inspect} from 'util';
 import {compile} from 'mathjs';
 import {Command} from 'Interfaces';
-import {pageView} from '../../libs'
+import {pageView} from '#libs'
 
 
 export const command: Command = {

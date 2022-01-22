@@ -1,4 +1,4 @@
-import {pageView} from "../../libs";
+import {pageView} from "#libs";
 import {Command} from "Interfaces";
 
 export const command :Command= {

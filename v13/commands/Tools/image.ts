@@ -1,4 +1,4 @@
-import pageView from '#libs/pagination';
+import {pageView} from '#libs';
 import imgs from '#api/unsplash.js';
 import {Command} from 'Interfaces';
 

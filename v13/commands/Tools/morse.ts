@@ -1,4 +1,4 @@
-import pageView from '#libs/pagination';
+import {pageView} from '#libs';
 import morseNode from 'morse-node';
 import {Command} from 'Interfaces';
 

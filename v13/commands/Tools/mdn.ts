@@ -1,5 +1,5 @@
 import {Command} from 'Interfaces';
-import pageView from '#libs/pagination';
+import {pageView} from '#libs';
 import mdnSearch from '#api/mdn.js';
 
 export const command : Command = {

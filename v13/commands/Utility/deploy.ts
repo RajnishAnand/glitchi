@@ -1,4 +1,4 @@
-import {select} from '../../libs';
+import {select} from '#libs';
 import {ApplicationCommandDataResolvable} from 'discord.js';
 import {Command} from 'Interfaces';
 

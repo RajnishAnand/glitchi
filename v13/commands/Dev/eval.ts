@@ -1,6 +1,5 @@
 import util from 'util';
-import pageView from '#libs/pagination';
-import userdb from '#libs/firebase.js';
+import {pageView,firebase} from '#libs';
 import {Command} from 'Interfaces';
 
 export const command: Command = {
@@ -16,7 +15,7 @@ export const command: Command = {
     try {
       if (msg.author.id === msg.client.guilds.cache.get(msg.client.config.guildId)?.ownerId) {
         const client = msg.client;
-        const db=()=>{userdb.once("value",(d)=>send(d.val()))};
+        const db=()=>{firebase.once("value",(d)=>send(d.val()))};
         const send=(text:string, bool:boolean=false)=>{
           if(bool)new pageView(msg,text);
           else new pageView(msg,debug(text),

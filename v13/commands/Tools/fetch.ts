@@ -2,9 +2,7 @@ import fetch from 'node-fetch';
 import {inspect} from 'util';
 import {parse} from 'content-type';
 import {Util} from 'discord.js';
-import select from '#libs/selection.js'
-import pageView from '#libs/pagination';
-import codeBlockParser from '#libs/codeBlock-parser.js';
+import {select,pageView,codeBlockParser} from '#libs'
 import {Command, CommandArgument} from 'Interfaces';
 
 export const command: Command= {

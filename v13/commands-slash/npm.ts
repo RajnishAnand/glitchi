@@ -1,5 +1,5 @@
 import npmSearch from '../APIs/npm';
-import pageView from '../libs/pagination';
+import {pageView} from '#libs';
 import {SlashCommand} from 'Interfaces';
 
 export const command : SlashCommand = {
@@ -11,15 +11,6 @@ export const command : SlashCommand = {
     type : 'STRING',
     required : true,
   }],
-
-  //data : new SlashCommandBuilder()
-  //  .setName('npm')
-  //  .setDescription('Search for npm packages.')
-  //  .addStringOption(query=>
-  //    query.setName('query')
-  //      .setDescription('text you wanna query for :')
-  //      .setRequired(true))
-  //  .toJSON(),
     
   run({client,interaction}){
     const p = interaction.options.getString('query') as string;

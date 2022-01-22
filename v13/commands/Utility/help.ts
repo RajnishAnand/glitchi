@@ -1,6 +1,6 @@
-import pageView from '#libs/pagination';
-import {MessageEmbed} from 'discord.js';
+import {pageView} from '#libs';
 import {APIEmbed} from 'discord.js/node_modules/discord-api-types';
+import {MessageEmbed} from 'discord.js';
 import {Command, CommandArgument} from 'Interfaces';
 
 export const command : Command={
@@ -37,7 +37,7 @@ async function run({msg,args}:CommandArgument){
       content: msg.client.config.emojis.sad+'There is no such command as `'+args[0]+'`'
     });
     
-    let embed :APIEmbed= {
+    let embed: APIEmbed= {
       color : 0x00bfff,
       title : '🥷| Command : '+command.name,
       description : '‣ **Description** : '+command.description,

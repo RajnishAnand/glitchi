@@ -4,8 +4,7 @@
   "description": "An open source Discord bot",
   "main": "build/index.js",
   "imports": {
-    "#libs/*.js": "./build/libs/*.js",
-    "#libs/pagination": "./build/libs/pagination/index.js",
+    "#libs": "./build/libs/index.js",
     "#api/*.js": "./build/APIs/*.js",
     "#api/@sololearn": "./build/APIs/@sololearn/index.js"
   },

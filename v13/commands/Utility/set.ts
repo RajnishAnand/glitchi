@@ -1,7 +1,5 @@
 import {Command} from 'Interfaces';
-import userdb from '#libs/firebase.js';
-import select from '#libs/selection.js';
-import ask from '#libs/ask.js';
+import {firebase,select,ask} from '#libs';
 import fetch from 'node-fetch';
 
 export const command: Command = {
@@ -39,7 +37,7 @@ export const command: Command = {
         args[1]=answer;
       };
       if(await verifySololearnUser(args[1])){
-        userdb.child(msg.author.id+'/sololearn')
+        firebase.child(msg.author.id+'/sololearn')
          .set(args[1])
          .then(()=>msg.reply({
            content : msg.client.config.emojis.salute+' Successfully saved your sololearn id.',

@@ -1,6 +1,6 @@
 import {SlashCommand} from 'Interfaces';
 import mdnApi from '../APIs/mdn';
-import pageView from '../libs/pagination';
+import {pageView} from '#libs';
 
 export const command : SlashCommand = {
   name: 'mdn',
@@ -11,14 +11,6 @@ export const command : SlashCommand = {
     type : 'STRING',
     required : true,
   }],
-  //data : new SlashCommandBuilder()
-  //  .setName('mdn')
-  //  .setDescription('search from mdn docs.')
-  //  .addStringOption((opt)=>
-  //    opt.setName('query')
-  //      .setDescription('text to query for :')
-  //      .setRequired(true))
-  //  .toJSON(),
     
   run({client, interaction}){
     const q=interaction.options.getString('query') as string;

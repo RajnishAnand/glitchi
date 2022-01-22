@@ -1,5 +1,4 @@
-import pageView from '#libs/pagination';
-import userdb from '#libs/firebase.js';
+import {pageView,firebase} from '#libs';
 import {hotToday, trending, user} from '#api/@sololearn';
 import {Command, CommandArgument} from 'Interfaces';
 
@@ -17,10 +16,10 @@ export const command:Command= {
 async function run({msg,args}:CommandArgument){
   if (args[0]?.toLowerCase() =='user'||args[0]?.toLowerCase() =='profile'){
     args[1]=args[1]?.replace(/^<@!?/, '')?.replace(/>$/, '');
-    if(!args[1]) await userdb.child(msg.author.id+'/sololearn').once('value',d=>{args[1]=d.val()});
+    if(!args[1]) await firebase.child(msg.author.id+'/sololearn').once('value',d=>{args[1]=d.val()});
     if(!args[1]|| !/^\d*$/.test(args[1]))
       return msg.reply('Your sololearn id not found. Please configure it using \n`'+msg.client.config.prefix+'set sololearn <id>`');
-    if(args[1].length>10&&args[1].length<20)await userdb.child(args[1]+'/sololearn').once('value',d=>{args[1]=d.val()});
+    if(args[1].length>10&&args[1].length<20)await firebase.child(args[1]+'/sololearn').once('value',d=>{args[1]=d.val()});
 
     return user(+args[1])
       .then(t=>new pageView(msg,t))

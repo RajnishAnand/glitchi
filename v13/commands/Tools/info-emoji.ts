@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import {pageView} from '../../libs';
+import {pageView} from '#libs';
 import {Command} from 'Interfaces';
 import {MessageEmbed} from 'discord.js';
 

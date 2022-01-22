@@ -1,6 +1,6 @@
 import cp from 'child_process';
 import util from 'util';
-import pageView from '#libs/pagination';
+import {pageView} from '#libs';
 import {Command} from 'Interfaces';
 
 

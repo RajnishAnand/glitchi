@@ -1,4 +1,4 @@
-import pageView from '#libs/pagination';
+import {pageView} from '#libs';
 import npmSearch from '#api/npm.js';
 import {Command} from 'Interfaces';
 
