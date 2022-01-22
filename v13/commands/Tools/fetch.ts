@@ -8,7 +8,7 @@ import {Command, CommandArgument} from 'Interfaces';
 export const command: Command= {
   name : 'fetch',
   description : 'To fetch any URL .',
-  usage : '<url> ?<--get||--post> ?<raw> ?<post_text>',
+  usage : '<url> ?<--get||--post||--headers> ?<raw> ?<post_text>',
   args : true ,
   examples :['http://example.com/'] ,
   run
@@ -23,11 +23,11 @@ async function run ({msg,args, content}:CommandArgument){
   let title:string|undefined;
   if(!args[1]||!args[1].startsWith('-'))args.splice(1,0,'-g');
   
-  if(args[1]=='-g'||args[1]=='--get') {
+  if(args[1].toLowerCase()=='-g'||args[1].toLowerCase()=='--get') {
     [response,title]= await GET(args[0])
   }
   
-  else if(args[1]=='-p'||args[1]=='--post'){
+  else if(args[1].toLowerCase()=='-p'||args[1].toLowerCase()=='--post'){
       let {code,lang}= codeBlockParser(content().replace(/[­ ]/g,''));
     if(!code){
       return msg.reply('Please also include body/text you wanna POST in a codeBlock !')
@@ -53,11 +53,11 @@ async function run ({msg,args, content}:CommandArgument){
     [response,title] = await POST(args[0],code,lang)
   }
 
-  else if(args[1]=='-h'||args[1]=='--headers'){
+  else if(args[1].toLowerCase()=='-h'||args[1].toLowerCase()=='--headers'){
     [response,title] = await Headers(args[0]);
   }
   else{
-    return msg.reply(`*__${args[1].replace(/([\*\`\~\_])/g,'\\$1')}__* isn't a valid flag. Currently it only supports :\n   • \`[ -p ]\` or \`[ --post ]\` : POST REQUEST\n   • \`[ -g ]\` or \`[ --get ]\` : GET REQUEST (Default)`)
+    return msg.reply(`*__${args[1].replace(/([\*\`\~\_])/g,'\\$1')}__* isn't a valid flag. Currently it only supports :\n   • \`[ -p ]\` or \`[ --post ]\` : POST REQUEST\n   • \`[ -g ]\` or \`[ --get ]\` : GET REQUEST (Default)\n   • \`[ -h ]\` or \`[ --headers ]\` : GET HEADERS`)
   } //`
   //type = type.includes('+')?type.split("+")[0]:type.split("/")[1]
   let langGuess = parse(title??'').type.split('/')[1];
