@@ -38,6 +38,7 @@ async function run ({msg,args, content}:CommandArgument){
       return msg.reply('Please also include body/text you wanna POST in a codeBlock !')
     }
     if(lang == 'json'){
+      lang = "application/json";
       try{JSON.parse(code)}
       catch(err:any){return msg.reply(err.message)};
     }

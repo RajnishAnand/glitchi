@@ -28,7 +28,7 @@ export const event : Event = {
     
     const args= msg.content
       .slice(client.config.prefix.length)
-      .trim().split(/ +/);
+      .trim().split(/ +|\n/);
     let commandName = (args.shift() as string).toLowerCase();
     const command = client.commands.get(commandName)
     || client.aliases.get(commandName);
