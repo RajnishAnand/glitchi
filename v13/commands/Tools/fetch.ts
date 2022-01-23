@@ -15,7 +15,7 @@ export const command: Command= {
 }
 
 const types = [
-  'plain/text',
+  'text/plain',
   'application/xml',
   'application/json',
   'application/x-www-form-urlencoded'
