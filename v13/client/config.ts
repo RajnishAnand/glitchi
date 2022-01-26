@@ -1,5 +1,5 @@
 let block :{[index:string] :string|undefined } ={};
-let prefix = ["g>","?:"][+(process.env.BETA??0)];
+let prefix = [">>","?:"][+(process.env.BETA??0)];
 
 export default {
   prefix,
