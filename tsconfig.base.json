@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+
+    "target": "ESNEXT",
+    "module": "commonjs",
+    "lib": ["ESNext"],
+    "moduleResolution": "Node",
+    
+    "removeComments": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedParameters": true,
+    
+    //"typeRoots": ["./src/globalTypes.d.ts"],
+    "types": ["node"],
+    "esModuleInterop": true,
+    //"resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    
+    "baseUrl": ".",
+    "outDir": "../build",
+    "rootDir": ".",
+    
+    "paths": {
+      "#api/*": ["APIs/*"],
+      "#libs": ["libs/index"],
+      "#types/*": ["typings/*"]
+    }
+  },
+  //"include":["./*"],
+  "exclude":["./tsconfig.json"]
+}
