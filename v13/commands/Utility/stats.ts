@@ -1,6 +1,7 @@
 import prettyMs from 'pretty-ms';
 import os from 'os';
 import {Command} from 'Interfaces';
+import {inspect} from 'util';
 
 export const command :Command= {
   name:'stats',
@@ -21,15 +22,17 @@ export const command :Command= {
       
       uptime.push(`**Client** : ${prettyMs(msg.client.uptime??0)}`);
       uptime.push(`**Host** : ${prettyMs(os.uptime())}`);
-      uptime.push(`**Total** : ${prettyMs(os.uptime())}`);
       
-      let data= process.memoryUsage();
-      sysInfo.push(`**Memory** : ${formatMemory(data.rss)}MB | ${formatMemory(os.totalmem())}MB`);
-      sysInfo.push(`**Total Heap** : ${formatMemory(data.heapTotal)}MB`);
+      const mmry = process.memoryUsage();
+      sysInfo.push(`**Memory Usage** : \`\`\`js\n{\n    rss: '${formatMemory(mmry.rss)}',\n    heapUsed: '${formatMemory(mmry.heapUsed)}',\n    heapTotal: '${formatMemory(mmry.heapTotal)}'\n}\`\`\``)
       
-      let cpu = require("os").cpus()[0].times;
-      sysInfo.push(`**CPU Load** : ${(((cpu.user + cpu.nice + cpu.sys) / cpu.idle) * 100).toFixed(2)}%`);
-      
+      sysInfo.push( `**CPU Load** : ${
+        os.cpus().map((c:any) =>
+          (((c?.times?.user + c?.times?.nice + c?.times?.sys) / c?.times?.idle) * 100).toFixed(2) + "%"
+        ).join(" | ")
+      }`)
+      sysInfo.push(`**Platform** : ${os.platform()}`)
+
     }
     catch(err){
       console.log(err);
@@ -69,6 +72,6 @@ export const command :Command= {
  
 
 function formatMemory(size:number){
-  return Math.round(size/1024/1024*100)/100;
+  return Math.round(size/1024/1024*100)/100 + "MB";
 }
 
