@@ -15,6 +15,8 @@ export const command:Command= {
 
 async function run({msg,args}:CommandArgument){
   if (args[0]?.toLowerCase() =='user'||args[0]?.toLowerCase() =='profile'){
+    //TODO : Update sololearn api
+    return msg.reply("API under bugFix")
     args[1]=args[1]?.replace(/^<@!?/, '')?.replace(/>$/, '');
     if(!args[1]) await firebase.child(msg.author.id+'/sololearn').once('value',d=>{args[1]=d.val()});
     if(!args[1]|| !/^\d*$/.test(args[1]))
@@ -34,4 +36,3 @@ async function run({msg,args}:CommandArgument){
     .then(t => new pageView(msg, t))
     .catch(() => msg.reply('An Unknown Error Occured while getting trending codes!'));
 }
-
