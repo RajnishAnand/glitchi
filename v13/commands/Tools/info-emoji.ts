@@ -29,38 +29,37 @@ export const command : Command= {
           name:parts[1],
           id: parts[2],
           guild: msg.client.emojis.cache.find(e =>
-          e.id == parts[2])?.guild?.name,
+            e.id == parts[2])?.guild?.name,
         })
       })
       new pageView(msg,emoList.map(e=>embedIt(e)));
-    }
-    else if (/^\d+$/.test(args[0])&& args[0].length<33) {
-      let emo = msg.client.emojis.resolve(args[0]);
-      let emote = {
+    } 
+    else if(/^\d+$/.test(args[0]) && args[0].length<33){
+      const emo = msg.client.emojis.resolve(args[0]);
+      const emote = {
         id : args[0],
         name : emo?.name,
         animated : emo?.animated,
-        guild : emo?.guild?.name,
-      }
+        guild : emo?.guild?.name
+      } // { // }
       if (!emo) {
-        fetch("https://cdn.discordapp.com/emojis/${args[0]}.gif")
+        fetch(`https://cdn.discordapp.com/emojis/${args[0]}.gif`)
           .then((resp) => {
             if (resp.status == 200) {
               emote.animated = true;
               msg.channel.send({embeds:[embedIt(emote)]});
             }
             else {
-              fetch("https://cdn.discordapp.com/emojis/${args[0]}.png")
+              fetch(`https://cdn.discordapp.com/emojis/${args[0]}.png`)
                 .then((resp) =>{
                   if(resp.status==200){
-                    // this.send(emote))
                     emote.animated = false;
                     msg.channel.send({embeds:[embedIt(emote)]});
 
-                }
-                else{
-                  msg.reply('your Specified emoji not Found!')
-                }
+                  }
+                  else{
+                    msg.reply('your Specified emoji not Found!')
+                  }
                 })
             }
           });
@@ -110,17 +109,17 @@ export const command : Command= {
 
 
 function embedIt(emote:emoji) {
-return new MessageEmbed({
-  color : '#000000',
-  title:`➟ emoji : [${emote.name||emote.id}]`,
-  url :`https://cdn.discordapp.com/emojis/${emote.id}.${(emote.animated)?'gif':'png'}`,
-  image : {
-      url : `https://cdn.discordapp.com/emojis/${emote.id}.${(emote.animated)?'gif':'png'}`,
-  },
-  description : '```js\n'+`Name : ${emote.name??'uknown'
-    }\nID : ${emote.id
-    }\nAnimated : ${emote.animated??false
-    }\nGuild : ${emote.guild??'uknown'} `+'```',
+  return new MessageEmbed({
+    color : '#000000',
+    title:`Emoji ${emote.name||emote.id}.${(emote.animated)?'gif':'png'}`,
+    url :`https://cdn.discordapp.com/emojis/${emote.id}.${(emote.animated)?'gif':'png'}`,
+    image : {
+        url : `https://cdn.discordapp.com/emojis/${emote.id}.${(emote.animated)?'gif':'png'}`,
+    },
+    description : '```js\n'+`Name : ${emote.name??'uknown'
+      }\nID : ${emote.id
+      }\nAnimated : ${emote.animated??false
+      }\nGuild : ${emote.guild??'uknown'} `+'```',
   });
 }
 
