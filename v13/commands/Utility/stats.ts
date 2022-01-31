@@ -25,12 +25,13 @@ export const command :Command= {
       
       const mmry = process.memoryUsage();
       sysInfo.push(`**Memory Usage** : \`\`\`js\n{\n    rss: '${formatMemory(mmry.rss)}',\n    heapUsed: '${formatMemory(mmry.heapUsed)}',\n    heapTotal: '${formatMemory(mmry.heapTotal)}'\n}\`\`\``)
-      
-      sysInfo.push( `**CPU Load** : ${
-        os.cpus().map((c:any) =>
-          (((c?.times?.user + c?.times?.nice + c?.times?.sys) / c?.times?.idle) * 100).toFixed(2) + "%"
+      const cpus= os.cpus();
+      if(cpus.length)sysInfo.push( `**CPU Load** : ${
+        [cpus[0],cpus[cpus.length-1]].map((c) =>
+          (((c.times.user + c.times.nice + c.times.sys) / c.times.idle) * 100).toFixed(2) + "%"
         ).join(" | ")
-      }`)
+      }`);
+
       sysInfo.push(`**Platform** : ${os.platform()}`)
 
     }
