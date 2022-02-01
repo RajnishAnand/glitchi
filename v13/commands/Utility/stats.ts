@@ -42,12 +42,6 @@ export const command :Command= {
       msg.channel.send({
         embeds:[{
           color :'#00bfff',
-          thumbnail : {
-            url : msg.client.user?.avatarURL({
-              dynamic : true,
-              size: 4096
-            })??''
-          },
           fields : [
             {
               name:'Statistics',
