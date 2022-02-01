@@ -1,7 +1,5 @@
 import { GuildMember } from 'discord.js';
 import { Event, ExtendMessage } from '../Interfaces';
-//import { commands } from '../libs/command-handler';
-//import { commandTemplate} from '../commands/types';
 
 export const event : Event = {
   name : 'messageCreate',

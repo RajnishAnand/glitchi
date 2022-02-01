@@ -36,5 +36,5 @@ export function owoify(txt: string){
     return dict[match]; 
   });
 
-  return txt+randE;
+  return txt+" "+randE;
 }

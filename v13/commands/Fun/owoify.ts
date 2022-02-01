@@ -11,7 +11,8 @@ export const command : Command={
   run({msg,commandName}){
     msg.reply(owoify(
       msg.cleanContent
-        .replace(/^[\s+]?/, "")
+        .slice(msg.client.config.prefix.length)
+        .trim()
         .replace(commandName + ' ', '')
     ))
   }
