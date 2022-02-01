@@ -1,7 +1,6 @@
 import prettyMs from 'pretty-ms';
 import os from 'os';
 import {Command} from 'Interfaces';
-import {inspect} from 'util';
 
 export const command :Command= {
   name:'stats',
@@ -43,7 +42,12 @@ export const command :Command= {
       msg.channel.send({
         embeds:[{
           color :'#00bfff',
-          // author:require('../../config.js').info,
+          thumbnail : {
+            url : msg.client.user?.avatarURL({
+              dynamic : true,
+              size: 4096
+            })??''
+          },
           fields : [
             {
               name:'Statistics',
@@ -54,7 +58,7 @@ export const command :Command= {
               value :'• '+uptime.join('\n• ')
             },
             {
-              name:'Server usage',
+              name:'Server',
               value:'• '+sysInfo.join('\n• ')
             }
           ],
