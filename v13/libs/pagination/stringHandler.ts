@@ -26,8 +26,8 @@ export class stringHandler {
     
   private decorate(str:string,page:number){
     return "```"+this.code+"\n"
-      + (str==''?' ':str.replaceAll('`','\`')) 
-      + '```'
+      + str.replaceAll('`','\`')
+      + ' ```'
       + (this.length>1?(`\` ⛬ Page : ${page+1}/${this.length} \` `):'')
       + (this.title?`\`‣ ${this.title} \` `:'')
       + (this.timestamp?` <t:${this.timestamp}:R>  `:'');
