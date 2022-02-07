@@ -1,5 +1,5 @@
 import { User, GuildMember ,PermissionString,MessageEmbed} from 'discord.js';
-import {Command} from 'Interfaces';
+import {Command, ExtendMessage} from 'Interfaces';
 
 export const command: Command = {
   name: 'user',
@@ -16,10 +16,10 @@ export const command: Command = {
           .then((u) => {
             msg.guild?.members.fetch(u.id)
               .then((gu) => msg.channel.send({
-                embeds : embedIt(u, gu)
+                embeds : embedIt(msg,u, gu)
               }))
               .catch(() => msg.channel.send({
-                embeds : embedIt(u)}))
+                embeds : embedIt(msg,u)}))
           })
           .catch((err: Error) => msg.reply(err.message));
       }
@@ -30,14 +30,13 @@ export const command: Command = {
     }
     else {
       msg.channel.send({
-        embeds : embedIt(msg.author, msg.member)
+        embeds : embedIt(msg,msg.author, msg.member)
       });
     }
   }
 }
-
-
-function embedIt(user: User, member:GuildMember|null=null) {
+/** Returns [Embed] for User command */
+function embedIt(msg:ExtendMessage ,user: User, member:GuildMember|null=null) {
   let embed = new MessageEmbed({
     color: 0x00bfff,
     title: user.tag,
@@ -76,8 +75,8 @@ function embedIt(user: User, member:GuildMember|null=null) {
         },
     ],
     footer: {
-      text: '| Requested by ' + user.username,
-      icon_url: user.avatarURL({ format: 'png' })??undefined
+      text: '| Requested by ' + msg.author.tag ,
+      icon_url: msg.author.avatarURL({ format: 'png' })??undefined
     }
   });
   if (member&&member.joinedAt) {
