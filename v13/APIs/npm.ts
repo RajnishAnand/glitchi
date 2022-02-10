@@ -25,7 +25,7 @@ ${r.package.maintainers.map((m)=>`    ⌙ [${m.username}](https://www.npmjs.com/
     const keywords = `${r.package.keywords?`
 >>> **Keywords :** ${r.package.keywords.join(', ')}`:''}`;
     
-    const scores = `>>> Quality: ${(r.score.detail.quality).toFixed(2)}%
+    const scores = `>>> Quality: ${(r.score.detail.quality*100).toFixed(2)}%
 Popularity: ${(r.score.detail.popularity*100).toFixed(2)}%
 Maintenance: ${(r.score.detail.maintenance*100).toFixed(2)}%
 Overall: ${(r.score.final*100).toFixed(2)}%`;
