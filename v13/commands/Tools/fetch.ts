@@ -110,11 +110,11 @@ async function GET(url:string) {
   const response = await fetch(url)
     .then(async r=>{
       const warning = checkFileSize(r.headers.get('content-length'));
-      if(warning)return[warning, "warning"];
+      if(warning)return[warning, "text/warning"];
 
       return [await r.text(),r.headers.get('content-type')];
     })
-    .catch(err=>[err.message,'plain/text']);
+    .catch(err=>[err.message,'text/plain']);
   return response
 }
 
@@ -128,10 +128,10 @@ async function POST(url:string,data:string,type:string) {
   })
     .then(async r=>{
       const warning = checkFileSize(r.headers.get('content-length'));
-      if(warning)return[warning, "warning"];
+      if(warning)return[warning, "text/warning"];
       return [await r.text(),r.headers.get('content-type')]
     })
-    .catch(err=>[err.message,'plain/text']);
+    .catch(err=>[err.message,'text/plain']);
   return response;
 }
 
