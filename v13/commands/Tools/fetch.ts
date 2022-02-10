@@ -96,6 +96,7 @@ async function run ({msg,args, content}:CommandArgument){
 
 /////////////////////////////////////////////////
 
+/**fetch HEADERS*/
 async function Headers(url:string) {
   const response = await fetch(url)
     .then(resp=>resp.headers)
@@ -104,13 +105,20 @@ async function Headers(url:string) {
   return [response,'application/javascript'];
 }
 
+/**fetch GET request*/
 async function GET(url:string) {
   const response = await fetch(url)
-    .then(async r=>[await r.text(),r.headers.get('content-type')])
+    .then(async r=>{
+      const warning = checkFileSize(r.headers.get('content-length'));
+      if(warning)return[warning, "warning"];
+
+      return [await r.text(),r.headers.get('content-type')];
+    })
     .catch(err=>[err.message,'plain/text']);
   return response
 }
 
+/**fetch POST request*/
 async function POST(url:string,data:string,type:string) {
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE,
@@ -118,12 +126,19 @@ async function POST(url:string,data:string,type:string) {
     redirect: 'follow', 
     body: data
   })
-    .then(async r=>[await r.text(),r.headers.get('content-type')])
+    .then(async r=>{
+      const warning = checkFileSize(r.headers.get('content-length'));
+      if(warning)return[warning, "warning"];
+      return [await r.text(),r.headers.get('content-type')]
+    })
     .catch(err=>[err.message,'plain/text']);
   return response;
 }
 
-
-
-
+/**returns false if filesize is under 20MB else returns warning*/
+function checkFileSize(bytes:string|null){
+  if(!bytes)return 'File of Unknown size.';
+  if(+bytes>20971520)return `Filesize: ${Math.ceil(+bytes/1048576)}MB exceeds size limit of 20MB`;
+  return false;
+}
 
