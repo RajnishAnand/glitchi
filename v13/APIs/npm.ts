@@ -10,16 +10,26 @@ export default async function npmSearch(query:string){
   if(!resp.total)throw Error('Any relevant search result not found!');
   
   const embeds= resp.objects.map(r=>{
-    const author = `${r.package.author?`\n‣ **Author :** ${r.package.author.username?`[${r.package.author.name}](https://www.npmjs.com/~${r.package.author.username})`:r.package.author.name}`:''}\n`;
+    const author = `${r.package.author?`
+‣ **Author :** ${r.package.author.username?`[${r.package.author.name}](https://www.npmjs.com/~${r.package.author.username})`:r.package.author.name}`:''}
+`;
     
-    const publisher = `‣ **Publisher :** [${r.package.publisher.username}](https://www.npmjs.com/~${r.package.publisher.username})\n`;
+    const publisher = `‣ **Publisher :** [${r.package.publisher.username}](https://www.npmjs.com/~${r.package.publisher.username})
+`;
     
     const large= r.package.maintainers.length>15&&
       (r.package.maintainers.length=15);
-    const maintainers = `‣ **Maintainer(s) :** \n${r.package.maintainers.map((m)=>`    ⌙ [${m.username}](https://www.npmjs.com/~${m.username})`).join('\n')}${large?'...':''}`;
+    const maintainers = `‣ **Maintainer(s) :** 
+${r.package.maintainers.map((m)=>`    ⌙ [${m.username}](https://www.npmjs.com/~${m.username})`).join('\n')}${large?'...':''}`;
     
-    const keywords = `${r.package.keywords?`\n>>> **Keywords :** ${r.package.keywords.join(', ')}`:''}`;
+    const keywords = `${r.package.keywords?`
+>>> **Keywords :** ${r.package.keywords.join(', ')}`:''}`;
     
+    const scores = `>>> Quality: ${(r.score.detail.quality).toFixed(2)}%
+Popularity: ${(r.score.detail.popularity*100).toFixed(2)}%
+Maintenance: ${(r.score.detail.maintenance*100).toFixed(2)}%
+Overall: ${(r.score.final*100).toFixed(2)}%`;
+
     return new MessageEmbed({
       author:{
         name:'npm',
@@ -29,12 +39,17 @@ export default async function npmSearch(query:string){
       title:r.package.name,
       url:r.package.links.npm,
       description:r.package.description,
-      fields:[{
-        name:'About :',
-        value:`‣ **Version :** ${r.package.version
-          }\n‣ **Last Publish :** <t:${Math.floor(+new Date(r.package.date)/1000)
-          }:R>${author}${publisher}${maintainers}${keywords}`
-      }],
+      fields:[
+        {
+          name:'About :',
+          value:`‣ **Version :** ${r.package.version}
+‣ **Last Publish :** <t:${Math.floor(+new Date(r.package.date)/1000)}:R>${author}${publisher}${maintainers}${keywords}`
+        },
+        {
+          name: 'Score: ',
+          value: scores
+        }
+      ],
       timestamp:new Date()
     })
   });
