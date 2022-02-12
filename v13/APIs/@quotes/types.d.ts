@@ -5,19 +5,14 @@ export interface RandomFilterOptions {
   maxLength: number;
   /** The minimum Length in characters */
   minLength: number;
-  /** Get a random quote with specific tag(s)) */
-  tag: {
-    /** if set true will match quotes that have all of the given tags.*/
-    required : boolean;
-    /** tags to match for*/
-    tags : string[];
-  }
+  /** Get a random quote with specific tag(s). This takes a list of one or more tag names, separated by a comma (meaning AND) or a pipe (meaning OR). A comma separated list will match quotes that have all of the given tags. While a pipe (|) separated list will match quotes that have any one of the provided tags./ */
+  tags: string;
   /** Author Name or Author slug*/
-  author: string
+  author: string;
 }
 
 
-export interface RandomResponse {
+export interface QuoteResponse {
   _id: string
   /** The quotation text */
   content: string
@@ -31,4 +26,10 @@ export interface RandomResponse {
   tags: string[]
 }
 
-type QuoteRoutes = "random"|"quote"|"search"|"author"|"tags";
+/** if any Error Occurs */
+export interface ErrorResponse{
+  statusCode: number;
+  statusMessage: string;
+}
+
+type QuoteRoutes = "random"|"quotes"|"search"|"author"|"tags";
