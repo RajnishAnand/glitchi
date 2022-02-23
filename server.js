@@ -6,7 +6,7 @@ const http = require('http');
 const port = process.env.PORT || 3000;
 const text = `running!`;
 
-http.createServer((req,res)=>{
+http.createServer((_,res)=>{
   res.writeHead(200, {
     'Content-Type': 'text/plain',
   });
