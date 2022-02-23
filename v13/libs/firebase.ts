@@ -1,5 +1,4 @@
 import admin from 'firebase-admin';
-import {Snowflake} from 'discord.js';
 
 const credential = JSON.parse(process.env.FIRE as string);
 admin.initializeApp({

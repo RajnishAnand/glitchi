@@ -1,8 +1,8 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      TOKEN : string;
-      FIRE : string;
+      TOKEN ?: string;
+      FIRE ?: string;
       ACOKEY : string;
       API0 :string ;
       UNSPLASH : string;
