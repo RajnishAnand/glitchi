@@ -7,7 +7,8 @@
     "rootDir": ".",
     
     "paths": {
-      "#api/*": ["APIs/*"],
+      "#api/*.js": ["APIs/*.js"],
+      "#api/*":["APIs/*/index.js"],
       "#libs": ["libs/index"],
       "#types/*": ["typings/*"]
     }
