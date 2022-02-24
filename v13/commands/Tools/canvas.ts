@@ -8,9 +8,11 @@ import { inspect } from "util";
 export const command: Command = {
   name : "canv",
   description: "canvas sandbox",
+  usage: "<code...>",
   aliases: ["canvas","draw"],
   args: true,
-  devOnly:false,
+  roleAccess: "betaTesters",
+
   async run({msg,content}){
     const vm = new VM({
       sandbox: {Canvas},
