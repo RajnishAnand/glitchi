@@ -6,6 +6,10 @@ export default {
   ownerId: "800445583046213663",
   guildId: "856090036998635520",
 
+  roles : {
+    "betaTesters" : "903716928391094332",
+  },
+
   channels: {
     errorLog: "857648123676459058",
     bugReport: "861422096852844544",

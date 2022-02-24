@@ -28,6 +28,7 @@ export interface Command {
   requiredPerms ? : PermissionResolvable[];
   category ?: string;
   
+  roleAccess?: "betaTesters";
   devOnly ? : boolean;
   run : (arg:CommandArgument) => any;
 }
