@@ -1,6 +1,6 @@
 import {Command} from "Interfaces";
 import {VM} from "vm2";
-import {Canvas} from 'skia-canvas';
+import {Canvas, Image} from 'skia-canvas';
 import { pageView ,codeBlockParser} from "#libs";
 import { inspect } from "util";
 
@@ -13,9 +13,43 @@ export const command: Command = {
   args: true,
   roleAccess: "betaTesters",
 
-  async run({msg,content}){
+  async run({msg,args,content}){
+
+    if(args[0].toLowerCase()=="--cheatsheet"){
+      return msg.reply({
+        embeds: [{
+          title: "Cheatsheet",
+          color: "#00bfff",
+          url: "http://www.cheat-sheets.org",
+          description: "Canvas Cheatsheet Preview: ",
+          image: {
+            url: "http://www.cheat-sheets.org/saved-copy/HTML5_Canvas_Cheat_Sheet.png",
+          }
+        }],
+        components: [{
+          type: "ACTION_ROW",
+          components: [
+            {
+              style: "LINK",
+              label: "PDF",
+              type: "BUTTON",
+              url: "https://cdn.discordapp.com/attachments/864517432026333184/864518194445287454/HTML5_Canvas_Cheat_Sheet.pdf"
+            },
+            {
+              style: "LINK",
+              label: "PNG",
+              type: "BUTTON",
+              url: "http://www.cheat-sheets.org/saved-copy/HTML5_Canvas_Cheat_Sheet.png"
+            }
+          ]
+        }],
+        allowedMentions: {repliedUser: false},
+        failIfNotExists: false,
+      });
+    };
+
     const vm = new VM({
-      sandbox: {Canvas},
+      sandbox: {Canvas,Image},
       eval: false,
       wasm: false,
       timeout: 6000,
@@ -31,7 +65,7 @@ export const command: Command = {
       const img = await canv.toBuffer("png");
 
        msg.reply({
-         content: "Img : ",
+         content: "Image Output: :frame_photo:",
          files: [img],
          allowedMentions:{repliedUser:false},
          failIfNotExists:false,
