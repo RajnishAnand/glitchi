@@ -7,7 +7,7 @@ export const event : Event = {
   async execute (client , msg :ExtendMessage ){ 
     if(msg.author.bot ||msg.channel.type=='DM'||!msg.guild)return;
     
-    // ignkre if user don't have betaTester role 
+    // ignore if user don't have betaTester role 
     // when running in beta mode.
     if(process.env.BETA){
       let betaTester= await msg
