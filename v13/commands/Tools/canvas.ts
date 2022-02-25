@@ -65,7 +65,7 @@ export const command: Command = {
       const img = await canv.toBuffer("png");
 
        msg.reply({
-         content: "Image Output: :frame_photo:",
+         content: "Canvas Output: :frame_photo:",
          files: [img],
          allowedMentions:{repliedUser:false},
          failIfNotExists:false,
