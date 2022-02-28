@@ -107,14 +107,19 @@ async function Headers(url:string) {
 
 /**fetch GET request*/
 async function GET(url:string) {
-  const response = await fetch(url)
-    .then(async r=>{
-      const warning = checkFileSize(r.headers.get('content-length'));
-      if(warning)return[warning, "text/warning"];
+  const controller = new AbortController();
+  setTimeout(()=>controller.abort(),6000);
 
-      return [await r.text(),r.headers.get('content-type')];
-    })
-    .catch(err=>[err.message,'text/plain']);
+  const response = await fetch(url,{
+    signal: controller.signal
+  })
+    .then(async r=> 
+      [await r.text(),r.headers.get('content-type')])
+    .catch(err=>{
+      if(err.type=="aborted") //warn if time exceeds
+        return ['fetch request aborted! exceeds timelimit of 6000ms','text/warning'];
+      return [err.message,'text/plain']
+    });
   return response
 }
 
@@ -126,19 +131,14 @@ async function POST(url:string,data:string,type:string) {
     redirect: 'follow', 
     body: data
   })
-    .then(async r=>{
-      const warning = checkFileSize(r.headers.get('content-length'));
-      if(warning)return[warning, "text/warning"];
-      return [await r.text(),r.headers.get('content-type')]
-    })
-    .catch(err=>[err.message,'text/plain']);
+    .then(async r=>
+      [await r.text(),r.headers.get('content-type')])
+    .catch(err=>{
+      if(err.type=="aborted") //warn if time exceeds
+        return ['fetch request aborted! exceeds timelimit of 6000ms.','text/warning'];
+      return [err.message,'text/plain']
+    });
   return response;
 }
 
-/**returns false if filesize is under 20MB else returns warning*/
-function checkFileSize(bytes:string|null){
-  if(!bytes)return 'File of Unknown size.';
-  if(+bytes>20971520)return `Filesize: ${Math.ceil(+bytes/1048576)}MB exceeds size limit of 20MB`;
-  return false;
-}
 
