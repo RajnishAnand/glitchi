@@ -14,11 +14,11 @@ export default async function mdn (query:string){
   })=>{return {
     author:{
       name : 'MDN Web Docs',
-      iconURL:'https://developer.mozilla.org/favicon-48x48.97046865.png',
+      iconURL:'https://developer.mozilla.org/favicon-48x48.cbbd161b.png',
     },
     title:r.title,
     url:'https://developer.mozilla.org'+r.mdn_url,
-    color:'#000000',
+    color:'#15141a',
     description:r.summary,
     timestamp:new Date()
   }})
