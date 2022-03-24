@@ -13,7 +13,7 @@ export default async function mdn (query:string){
     title:string
   })=>{return {
     author:{
-      name : 'MDN Web Docs',
+      name : 'MDN Web Docs_',
       iconURL:'https://developer.mozilla.org/favicon-48x48.cbbd161b.png',
     },
     title:r.title,
