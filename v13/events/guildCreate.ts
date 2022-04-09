@@ -3,9 +3,21 @@ import {Event} from "../Interfaces";
 
 export const event : Event = {
   name : 'guildCreate',
+
   execute(client,guild: Guild){
+    // set status when in production
+    if(!process.env.BETA)client.user!.setPresence({
+      status:'online',
+      activities:[{
+        name : `${client.config.prefix} commands in ${client.guilds.cache.size} servers`,
+        type: "LISTENING"
+      }]
+    });
+
+
     const channel = client.channels.cache.get(client.config.channels.serverLog);
     if(!channel|| !(channel instanceof TextChannel))return;
+
     channel.send({
       embeds : [{
         title : `Joined New Server ${client.config.emojis.yus}`,
