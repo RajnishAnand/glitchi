@@ -58,7 +58,12 @@ export const event : Event = {
             allowedMentions: {repliedUser: false}
           });
           break;
-
+        case 'slap':
+          msg.channel.send({
+            content: `${client.config.emojis.salute} yes boss!`,
+            files: ["https://cdn.weeb.sh/images/BJ8o71tD-.gif"]
+          })
+          break;
         case 'hru':
         case 'how are you':
           msg.channel.send('Sometime i get bored alone '+client.config.emojis.sad+' and my system goes idle! but right now I\'m absolutely fine.\\🐥');
