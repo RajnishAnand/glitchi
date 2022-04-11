@@ -6,6 +6,7 @@ export const command: Command = {
   name : 'set',
   description : 'to set configuration',
   usage : '?<sololearn> ?<sololearn_ID>',
+  devOnly: true,
 
   async run({msg,args}){
     if(!args.length){
