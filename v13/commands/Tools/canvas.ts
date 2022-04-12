@@ -1,5 +1,5 @@
 import {Command} from "Interfaces";
-import {VM} from "vm2";
+import {VM, } from "vm2";
 import {Canvas, Image} from 'skia-canvas';
 import { pageView ,codeBlockParser} from "#libs";
 import { inspect } from "util";
@@ -53,7 +53,7 @@ export const command: Command = {
       eval: false,
       wasm: false,
       timeout: 6000,
-      fixAsync:true,
+      fixAsync: false,
       compiler: "javascript"
     });
 
@@ -61,7 +61,7 @@ export const command: Command = {
       let code= content();
       code = codeBlockParser(code).code??code;
 
-      const canv:Canvas = vm.run(wrap(code));
+      const canv:Canvas = await vm.run(wrap(code));
       const img = await canv.toBuffer("png");
 
        msg.reply({
@@ -71,12 +71,15 @@ export const command: Command = {
          failIfNotExists:false,
        })
     }catch(e){
-      new pageView(msg,inspect(e))
+      new pageView(msg,inspect(e),{
+        code: "js",
+        title: "Canvas[Error]"
+      })
     }
   }
 }
 
-function wrap(  txt:string){
+function wrap(txt:string){
   return `"use strict";
   let canvas = new Canvas(600, 600);
   ${txt}
