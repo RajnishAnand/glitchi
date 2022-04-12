@@ -47,7 +47,7 @@ export const command: Command = {
         failIfNotExists: false,
       });
     };
-
+    
     const vm = new VM({
       sandbox: {Canvas,Image},
       eval: false,
@@ -56,7 +56,9 @@ export const command: Command = {
       fixAsync: false,
       compiler: "javascript"
     });
-
+    const process= {env : {TOKEN: "never gonna give you up never gonna let you down never gonnna turn arnound and desert you."}};
+    vm.freeze(process,'process');
+    
     try{
       let code= content();
       code = codeBlockParser(code).code??code;
