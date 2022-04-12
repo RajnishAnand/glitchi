@@ -31,4 +31,5 @@ if (!process.env[requiredEnv[0]])
   console.log('logging in...\n');
   if (+(process.env.HTTPSERVER??0)) require('../server.js');
   process.on('unhandledRejection', console.log);
+  process.on('uncaughtException',console.log);
 }
