@@ -13,4 +13,5 @@ const db = admin.database();
 
 const users = db.ref("users/");
 
+console.log('Firebase initialized');
 export default users;
