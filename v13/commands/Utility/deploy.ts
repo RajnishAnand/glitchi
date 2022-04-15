@@ -26,7 +26,7 @@ export const command : Command = {
       args= args.map(e=>e.toLowerCase());
       const commands:ApplicationCommandDataResolvable[] =[];
       msg.client.slashCommands.forEach(c=>{
-        if(args.includes(c.name)){
+        if(args.includes(c.name)||args[0]=="all"){
           commands.push(c)
         }
       })
