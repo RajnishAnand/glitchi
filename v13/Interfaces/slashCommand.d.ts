@@ -1,21 +1,22 @@
 import {
+    AutocompleteInteraction,
   ChatInputApplicationCommandData,
   CommandInteraction, 
-  CommandInteractionOptionResolver, 
   PermissionResolvable
 } from 'discord.js';
 import Client from "../client";
 
 
-interface RunOptions{
+interface RunOptions<K>{
   client: Client;
-  interaction: CommandInteraction;
+  interaction: K;
 }
 
-type RunFunction = (Options : RunOptions)=>any;
+type RunFunction<K> = (Options : RunOptions<K>)=>any;
 
 export type SlashCommand = {
   userPermissions ?: PermissionResolvable[];
-  run : RunFunction;
+  run : RunFunction<CommandInteraction>;
+  autocompleteRun?: RunFunction<AutocompleteInteraction>
   // cooldown ?: number;
 } & ChatInputApplicationCommandData
