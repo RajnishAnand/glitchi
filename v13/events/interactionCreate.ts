@@ -4,12 +4,18 @@ import {Event} from '../Interfaces';
 export const event : Event =  {
   name : 'interactionCreate',
   execute(client,interaction:Interaction){
-    if(!interaction.isCommand()) return;
+    if (!(interaction.isAutocomplete()||interaction.isCommand()))return;
 
     const cmnd = client.slashCommands.get(interaction.commandName);
-    if(!(cmnd && client.user && interaction.guildId)){
+    if(!(cmnd && interaction.guildId)){
       return;
     };
-    cmnd.run({client, interaction});
+
+    if(interaction.isAutocomplete()){
+      if(!cmnd.autocompleteRun || interaction.responded)return;
+      cmnd.autocompleteRun({client,interaction});
+    }
+    else if(!interaction.replied) 
+      cmnd.run({client, interaction});
   }
 }
