@@ -5,8 +5,7 @@
   "main": "build/index.js",
   "imports": {
     "#libs": "./build/libs/index.js",
-    "#api/*.js": "./build/APIs/*.js",
-    "#api/@sololearn": "./build/APIs/@sololearn/index.js"
+    "#api/*.js": "./build/APIs/*.js"
   },
   "scripts": {
     "build": "tsc -b v13",
