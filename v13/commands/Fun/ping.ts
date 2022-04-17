@@ -7,6 +7,6 @@ export const command : Command = {
   args: false,
   run({msg}){
     msg.channel.send(`pong!`)
-      .then((sent:Message)=>sent.edit(`${msg.client.config.emojis.dance}|Pong! |Heartbeat : ${msg.client.ws.ping}ms |Roundtrip latency : ${sent.createdTimestamp-msg.createdTimestamp}ms.`));
+      .then((sent:Message)=>sent.edit(`${msg.client.config.emojis.dance} | Pong! | Heartbeat : ${msg.client.ws.ping}ms | Roundtrip latency : ${sent.createdTimestamp-msg.createdTimestamp}ms.`));
   }
 }
