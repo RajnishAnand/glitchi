@@ -38,6 +38,6 @@ export const command : SlashCommand= {
       value: `${e.name}`
     })).slice(0,25);
 
-    if(options.length)interaction.respond(options);
+    interaction.respond(options);
   }
 }
