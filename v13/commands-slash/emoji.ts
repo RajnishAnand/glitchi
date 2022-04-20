@@ -1,4 +1,5 @@
 import {SlashCommand} from 'Interfaces';
+import {Collection, GuildEmoji} from 'discord.js';
 
 export const command : SlashCommand= {
   name : 'e',
@@ -12,32 +13,49 @@ export const command : SlashCommand= {
   }],
     
   run({interaction}){
-    const q=interaction.options.getString('query') as string;
-    let e = interaction.client.emojis.cache.find(f=> 
-      new RegExp(`^${q}$`,'i').test(f.name||''));
-    if(!e) e = interaction.client.emojis.cache.find(f=>
-      new RegExp(`^${q}`,'i').test(f.name||''));
-    if(!e) e = interaction.client.emojis.cache.find(f=>
-      new RegExp(q,'i').test(f.name||''));
-    if(!e) return interaction.reply({
-      content : 'Your specified emoji not found!',
-      ephemeral : true
+    const q=(interaction.options.getString('query') as string);
+    let emoji: string|undefined = findEmojis(interaction.client.emojis.cache,q.split("#")[0])[q];
+
+    if(emoji)interaction.reply(`<${emoji.startsWith("a:")?'':':'}${emoji}>`);
+    else interaction.reply({
+      content: "Your Specified emoji not Found!",
+      ephemeral: true,
     })
-    interaction.reply(e.toString());
   },
 
   autocompleteRun({interaction}){
     const q=interaction.options.getString('query') as string;
 
-    let emojiArray = interaction.client.emojis.cache.filter(f=> new RegExp(`^${q}$`,'i').test(f.name||''));
-    if(!emojiArray.size)emojiArray = interaction.client.emojis.cache.filter(f=>new RegExp(`^${q}`,'i').test(f.name||''));
-    if(!emojiArray.size)emojiArray = interaction.client.emojis.cache.filter(f=>new RegExp(q,'i').test(f.name||''));
-
-    const options = emojiArray.map(e=>({
-      name: `${e.name}`,
-      value: `${e.name}`
-    })).slice(0,25);
-
+    const options =Object.keys(findEmojis(
+      interaction.client.emojis.cache,q)
+    ).map(e=>({name:e,value:e}));
     interaction.respond(options);
   }
+}
+
+
+type SearchedEmoji = {[key:string]:string};
+
+// Emoji search Function
+function findEmojis(emoji:Collection<string,GuildEmoji>,q:string):SearchedEmoji{
+  let emojis = emoji.filter(f=>new RegExp(`^${q}$`,'i').test(`${f.name}`));
+  if(!emojis.size)emojis = emoji.filter(f=>new RegExp(`^${q}`,'i').test(`${f.name}`));
+  if(!emojis.size)emojis = emoji.filter(f=>new RegExp(q,'i').test(`${f.name}`));
+
+  const result:SearchedEmoji = {};
+  for(let [_,e] of emojis){
+
+    if(Object.keys(result).length>24)return result;
+    if(!(`${e.name}` in result)){
+      result[`${e.name}`] = e.identifier;
+      continue;
+    }
+    for(let i=1;i<25;i++){
+      if(!(`${e.name}#${i}` in result)){
+        result[`${e.name}#${i}`] = e.identifier;
+        break;
+      }
+    };
+  }
+  return result;
 }
