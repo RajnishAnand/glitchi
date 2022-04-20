@@ -2,7 +2,7 @@ import {SlashCommand} from 'Interfaces';
 import mdnApi,{mdnEmbedify} from '../APIs/mdn';
 
 export const command : SlashCommand = {
-  name: 'mdnn',
+  name: 'mdn',
   description: 'Search from mdn docs',
   options: [{
     name: 'query',
