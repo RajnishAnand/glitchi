@@ -1,27 +1,39 @@
+import { MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
 const url='https://developer.mozilla.org/api/v1/search?q=';
 
-//TODO : Test by changing url if err occurs or if a security vulnerability
 export default async function mdn (query:string){
-  let resp = await fetch(url+encodeURI(query))
+  const resp = await fetch(url+encodeURI(query))
     .then(r=>r.json());
   if(!resp.documents.length)throw Error('Any relevant search result not found!');
   
-  resp = resp.documents.map((r:{
-    mdn_url:string,
-    summary:string,
-    title:string
-  })=>{return {
-    author:{
-      name : 'MDN Web Docs_',
-      iconURL:'https://developer.mozilla.org/favicon-48x48.cbbd161b.png',
-    },
-    title:r.title,
-    url:'https://developer.mozilla.org'+r.mdn_url,
-    color:'#15141a',
-    description:r.summary,
-    timestamp:new Date()
-  }})
+  const data:mdnResponse[]= resp.documents.map((r:mdnResponse)=>{
+    return {
+      title: r.title,
+      summary: r.summary,
+      mdn_url:'https://developer.mozilla.org'+ r.mdn_url
+    }
+  })
   
-  return resp;
+  return data
+}
+
+export function mdnEmbedify(data:mdnResponse):MessageEmbed{
+  return new MessageEmbed({
+     author:{
+       name : 'MDN Web Docs_',
+       iconURL:'https://developer.mozilla.org/favicon-48x48.cbbd161b.png',
+     },
+     title:data.title,
+     url:data.mdn_url,
+     color:'#15141a',
+     description:data.summary,
+     timestamp:new Date()
+  });
+}
+
+type mdnResponse = {
+  mdn_url:string;
+  summary:string;
+  title:string;
 }
