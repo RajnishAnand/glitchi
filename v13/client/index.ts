@@ -19,11 +19,18 @@ export default class ExtendClient extends Client {
         Intents.FLAGS.GUILD_MESSAGES,
         Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
         Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-      ]
+      ],
+      sweepers:{
+        messages: {
+          interval: 600000,
+          lifetime: 600000
+        }
+      }
     })
   }
 
   public async init(){
+    console.log("logging in...\n");
     this.login(process.env.TOKEN);
 
     //commands 
