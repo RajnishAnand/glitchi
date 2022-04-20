@@ -16,12 +16,17 @@ export const command : Command = {
       if(!e) e = msg.client.emojis.cache.find(f=>
         new RegExp(args[0],'i').test(f.name||''));
       if(!e) return msg.reply('Your specified emoji not found!');
-      msg.reply(e.toString());
+      msg.reply({
+        content:e.toString(),
+        allowedMentions: {repliedUser:false}
+      });
     }
     else{
       let emojis = msg.client.emojis.cache.map(e=>e.toString());
-      msg.reply(emojis[Math.ceil(Math.random()*emojis.length)])
-        .then(m=>{
+      msg.reply({
+        content: emojis[Math.ceil(Math.random()*emojis.length)],
+        allowedMentions:{repliedUser:false},
+        }).then(m=>{
           m.react('🔄').then(()=>m.react('⛔'));
           return m;
         })
