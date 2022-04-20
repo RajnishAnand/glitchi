@@ -28,6 +28,7 @@ export const command : Command = {
     // send embed 
     if(user){
       msg.reply({
+        allowedMentions: {repliedUser:false},
         embeds : [{
           'color': `#00bfff`,
           'title': user.tag,
@@ -36,6 +37,10 @@ export const command : Command = {
               format : 'png',
               dynamic : true,
             })}?size=4096`,
+          },
+          footer: {
+            text: `Requested by ${msg.author.tag}`,
+            icon_url: msg.author.avatarURL()??undefined,
           },
           'timestamp': new Date(),
         }]
