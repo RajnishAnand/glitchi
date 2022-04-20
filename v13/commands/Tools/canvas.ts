@@ -11,7 +11,7 @@ export const command: Command = {
   usage: "<code...>",
   aliases: ["canvas","draw"],
   args: true,
-  roleAccess: "betaTesters",
+  // roleAccess: "betaTesters",
 
   async run({msg,args,content}){
 
