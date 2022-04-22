@@ -43,6 +43,6 @@ export const command : SlashCommand = {
       value: e.title
     }))).catch(()=>[]);
 
-    interaction.respond(resp.slice(0,25))
+    interaction.respond(resp.slice(0,25)).catch(()=>{})
   }
 }
