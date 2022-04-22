@@ -29,7 +29,7 @@ export const command : SlashCommand= {
     const options =Object.keys(findEmojis(
       interaction.client.emojis.cache,q)
     ).map(e=>({name:e,value:e}));
-    interaction.respond(options);
+    interaction.respond(options).catch(()=>{});
   }
 }
 
