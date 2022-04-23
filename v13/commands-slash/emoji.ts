@@ -16,7 +16,7 @@ export const command : SlashCommand= {
     const q=(interaction.options.getString('query') as string);
     let emoji: string|undefined = findEmojis(interaction.client.emojis.cache,q.split("#")[0])[q];
 
-    if(emoji)interaction.reply(`<${emoji.startsWith("a:")?'':':'}${emoji}>`);
+    if(emoji)interaction.reply(`${emoji}`);
     else interaction.reply({
       content: "Your Specified emoji not Found!",
       ephemeral: true,
@@ -47,12 +47,12 @@ function findEmojis(emoji:Collection<string,GuildEmoji>,q:string):SearchedEmoji{
 
     if(Object.keys(result).length>24)return result;
     if(!(`${e.name}` in result)){
-      result[`${e.name}`] = e.identifier;
+      result[`${e.name}`] = e.url;
       continue;
     }
     for(let i=1;i<25;i++){
       if(!(`${e.name}#${i}` in result)){
-        result[`${e.name}#${i}`] = e.identifier;
+        result[`${e.name}#${i}`] = e.url;
         break;
       }
     };
