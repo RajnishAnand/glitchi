@@ -62,7 +62,7 @@ export const command: Command = {
     try{
       let code= content();
       code = codeBlockParser(code).code??code;
-      const matches = code.matchAll(/\!\[([A-Za-z]\w+)\]\((.*)\)/g);
+      const matches = code.matchAll(/\!\[([A-Za-z]?\w+)\]\((.*)\)/g);
       for (let each of matches){
         vm.sandbox[each[1]] = await loadImage(each[2]);
       }
