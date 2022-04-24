@@ -1,6 +1,6 @@
 import {Command} from "Interfaces";
 import {VM, } from "vm2";
-import {Canvas, Image} from 'skia-canvas';
+import {Canvas, Image, loadImage} from 'skia-canvas';
 import { pageView ,codeBlockParser} from "#libs";
 import { inspect } from "util";
 
@@ -62,6 +62,10 @@ export const command: Command = {
     try{
       let code= content();
       code = codeBlockParser(code).code??code;
+      const matches = code.matchAll(/\!\[([A-Za-z]\w+)\]\((.*)\)/g);
+      for (let each of matches){
+        vm.sandbox[each[1]] = await loadImage(each[2]);
+      }
 
       const canv:Canvas = await vm.run(wrap(code));
       const img = await canv.toBuffer("png");
