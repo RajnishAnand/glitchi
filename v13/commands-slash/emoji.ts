@@ -2,7 +2,7 @@ import {SlashCommand} from 'Interfaces';
 import {Collection, GuildEmoji} from 'discord.js';
 
 export const command : SlashCommand= {
-  name : 'emo',
+  name : 'e',
   description : 'sends emoji for you!',
   options : [
     {
