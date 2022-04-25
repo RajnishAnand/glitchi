@@ -43,7 +43,7 @@ function embedIt(msg:ExtendMessage ,user: User, member:GuildMember|null=null) {
     url: `https://discordapp.com/users/${user.id}`,
     description: `>>> **Username** :\` ${user.username
       } \`\n**ID** :\` ${user.id
-      } \`\n🖼️ |**Avatar** : [[png]](${user.displayAvatarURL({
+      } \`\n🖼️ | **Avatar** : [[png]](${user.displayAvatarURL({
           format : 'png',
           dynamic : true,
           size : 4096
@@ -60,26 +60,42 @@ function embedIt(msg:ExtendMessage ,user: User, member:GuildMember|null=null) {
           dynamic : true,
           size : 4096
         })
-      })\n**🤖 |Bot** :\` ${user.bot
-      }\`\n**⏳ |Created** : <t:${Math.ceil(+user.createdAt/1000)}:R>`,
+      })\n**🤖 | Bot** :\` ${user.bot
+      }\`\n**⏳ | Created** : <t:${Math.ceil(+user.createdAt/1000)}:R>`,
     thumbnail: {
       url: user.displayAvatarURL({
         format: 'png',
         dynamic: true
       })
     },
-    fields: [
-      {
-        name: '🎗️| Badges : ',
-        value: `\`\`\`\n${user.flags?.toArray().length?user.flags.toArray().join(', '):'NONE'}\`\`\``,
-        },
-    ],
+    fields: [],
     footer: {
       text: '| Requested by ' + msg.author.tag ,
       icon_url: msg.author.avatarURL({ format: 'png' })??undefined
     }
   });
+  
+  // BADGES EmbedField
+  const badges = user.flags?.toArray().join(', ');
+  if(badges)embed.fields.push({
+    name: '🎗️| Badges : ',
+    value: `\`\`\`\n${badges}\`\`\``,
+    inline: false
+  });
+
   if (member&&member.joinedAt) {
+    embed.description += `\n🍻 | **Joined** : <t:${Math.ceil(+member.joinedAt/1000)}:R>`;
+    
+    // ROLES EmbedField
+    const roles : string[]= member.roles.cache.filter((r) => r.id != member.guild.id).map(r => r.toString());
+    
+    if(roles.length)embed.fields.push({
+      name: `🪃| Roles [${roles.length}]: `,
+      value:roles.join(", "),
+      inline : false,
+    });
+    
+    // KEY PERMISSIONS EmbedField
     const keyPerms :PermissionString[]= [
       'KICK_MEMBERS', 'BAN_MEMBERS',
       'MANAGE_CHANNELS', 'MANAGE_GUILD',
@@ -88,18 +104,9 @@ function embedIt(msg:ExtendMessage ,user: User, member:GuildMember|null=null) {
       'MANAGE_WEBHOOKS', 'MANAGE_EMOJIS_AND_STICKERS',
       'MANAGE_EVENTS', 'MANAGE_THREADS'
     ];
-  
-    embed.description += `\n🍻 |**Joined** : <t:${Math.ceil(+member.joinedAt/1000)}:R>`,
 
-    embed.fields.push({
-      name: `🪃| Roles [${member
-        .roles.cache.size-1}]: `,
-      value: (member.roles.cache.size - 1) ? member.roles.cache.filter((r) => r.id != member.guild.id).map((r: any) => r).join(", ") : '` NONE `',
-      inline : false,
-    });
-  
     const permKeys = member.permissions.toArray();
-    let userKeyPerms = '';
+    let userKeyPerms:string|undefined;
   
     if (permKeys.includes('ADMINISTRATOR')) {
       userKeyPerms = 'ALL_PERMISSIONS'
@@ -112,10 +119,6 @@ function embedIt(msg:ExtendMessage ,user: User, member:GuildMember|null=null) {
       userKeyPerms = permKeys
         .filter((perm:PermissionString) => keyPerms.includes(perm))
         .join(', ');
-    }
-    else {
-      userKeyPerms = permKeys.length ? permKeys
-        .join(", ") : 'NONE';
     }
   
     if (userKeyPerms) {
