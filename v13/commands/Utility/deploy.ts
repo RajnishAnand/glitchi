@@ -8,6 +8,7 @@ export const command : Command = {
   userPerms: ['ADMINISTRATOR'],
   aliases:["register"],
   args:true,
+  examples: ["add ping","update","list"],
   
   async run({msg,args}){
     if(!msg.guild)return;
