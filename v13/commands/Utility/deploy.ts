@@ -100,8 +100,8 @@ export const command : Command = {
           const cmd = msg.client.slashCommands.get(c.name);
           if(cmd)await msg.guild!.commands.edit(c,cmd);
           else await msg.guild!.commands.delete(c)
-          msg.channel.send(msg.client.config.emojis.salute+"Successfully updated all registered commands.")
         })
+        msg.channel.send(msg.client.config.emojis.salute+"Successfully updated all registered commands.")
       }
       catch(e){
         msg.reply("Failed to update slash commands!");
