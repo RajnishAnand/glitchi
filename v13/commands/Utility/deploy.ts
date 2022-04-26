@@ -7,13 +7,14 @@ export const command : Command = {
   usage : '?<add|rm|update|set> ?<commandName>|<...commanName>',
   userPerms: ['ADMINISTRATOR'],
   aliases:["reguster"],
+  args:true,
   
   async run({msg,args}){
     if(!msg.guild)return;
     args = args.map(a=>a.toLowerCase());
     const subCommand = args.shift();
 
-    if(!args.length || subCommand=="list")list();
+    if(subCommand=="list")list();
     else if(subCommand == "add")add();
     else if(subCommand == "rm"||subCommand=="remove")remove();
     else if(subCommand == "update")update();
@@ -99,6 +100,7 @@ export const command : Command = {
           const cmd = msg.client.slashCommands.get(c.name);
           if(cmd)await msg.guild!.commands.edit(c,cmd);
           else await msg.guild!.commands.delete(c)
+          msg.channel.send(msg.client.config.emojis.salute+"Successfully updated all registered commands.")
         })
       }
       catch(e){
@@ -121,7 +123,7 @@ export const command : Command = {
       })
       
       msg.guild!.commands.set(commands)
-        .then(()=>msg.channel.send(`Commands: ${commands.map(c=>c.name)}\nSuccessfully regustered.`))
+        .then(()=>msg.channel.send(`Commands: ${commands.map(c=>c.name)}\n${msg.client.config.emojis.salute}Successfully registered.`))
         .catch(()=>{
           msg.reply("Failed to register requested slash commands.")
         });
