@@ -4,9 +4,9 @@ import {Command} from 'Interfaces';
 export const command : Command = {
   name : 'deploy',
   description: 'deploy slash commands',
-  usage : '?<add|rm|update|set> ?<commandName>|<...commanName>',
+  usage : '?<add|rm|update|set|list> ?<commandName>|<...commanName>',
   userPerms: ['ADMINISTRATOR'],
-  aliases:["reguster"],
+  aliases:["register"],
   args:true,
   
   async run({msg,args}){
