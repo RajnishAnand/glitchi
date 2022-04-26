@@ -1,5 +1,5 @@
 import { ApplicationCommandDataResolvable, Client, Collection, Intents} from 'discord.js';
-import {Command, Event, RegisterSlashCommandsOption} from '../Interfaces';
+import {Command, Event} from '../Interfaces';
 import Config from "./config";
 import {readdirSync} from 'fs';
 import path from 'path';
@@ -54,14 +54,14 @@ export default class ExtendClient extends Client {
     });
     
     //Slash Commands
-    const commandSlash : ApplicationCommandDataResolvable[]=[];
+    // const commandSlash : ApplicationCommandDataResolvable[]=[];
     const slashCommandsPath = path.join(__dirname,'..','commands-slash');
     const slashCommandFiles = readdirSync(slashCommandsPath).filter(f=>f.endsWith('.js'));
                                                              
     slashCommandFiles.forEach(async filePath => {
       const slashCommand : SlashCommand = require(`${slashCommandsPath}/${filePath}`).command;
       this.slashCommands.set(slashCommand.name,slashCommand);
-      commandSlash.push(slashCommand);
+      // commandSlash.push(slashCommand);
     })
 
     //Events
@@ -78,21 +78,9 @@ export default class ExtendClient extends Client {
     
     
   }
-
-  async registerSlashCommand ({guildId,commands}:RegisterSlashCommandsOption){
-      if(guildId){
-        return await this.guilds.cache.get(guildId)?.commands
-          .set(commands)
-          .then(()=>{
-            console.log(`Registering Commands to ${guildId}`);
-            return true
-          })
-          .catch(()=>false)
-      }
-      else {
-        this.application?.commands.set(commands);
-        console.log(`Registering global Commands.`)
-        return true;
-      }
+  async registerGlobalSlashCommand (commands:ApplicationCommandDataResolvable[]){
+    this.application?.commands.set(commands);
+    console.log(`Registering global Commands.`)
+    return true;
   }
 }
