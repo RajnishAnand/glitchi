@@ -63,7 +63,30 @@ export const command: Command = {
       let code= content();
       code = codeBlockParser(code).code??code;
       const matches = code.matchAll(/\!\[([A-Za-z]?\w+)\]\((.*)\)/g);
+
       for (let each of matches){
+
+        // loading image from avatar url 
+        if(each[2].startsWith("user#")){
+          let url : string|null|undefined;
+          const str=each[2].replace("user#",'').toLowerCase();
+          if(str=="me")url=msg.author.avatarURL({size:4096,format:'png'});
+          else if(str=="you")url=msg.client.user?.avatarURL({size:4096,format:'png'});
+          else if(/^\d+$/.test(str))url=(await msg.client.users.fetch(str)).avatarURL({size:4096,format:'png'})
+          else throw new Error(`${each[1]}:user ->${str}<- is not a userID.`)
+          if(!url)throw new Error(`${each[1]}:${each[2]}'s avatar returned null|undefined.`);
+          each[2]= url;
+        }
+
+        // loading image from attachments
+        else if(each[2].startsWith("attachment#")){
+          const key = +each[2].replace("attachment#",'');
+          if(key===NaN) throw new Error(`${each[1]}:${each[2]} is probably undefined.`);
+          const url = msg.attachments.at(key)?.url;
+          if(!url)throw new Error(`${each[1]}:${each[2]} is undefined.`);
+          each[2]=url;
+        }
+
         vm.sandbox[each[1]] = await loadImage(each[2]);
       }
 
