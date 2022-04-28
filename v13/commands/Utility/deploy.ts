@@ -115,7 +115,7 @@ export const command : Command = {
 
       const commands:ApplicationCommandDataResolvable[]= 
       msg.client.slashCommands.filter(c=> 
-        args.includes(c.name)||args[1]=="all"
+        args.includes(c.name)||args[0]=="all"
       ).map(c=>c);
 
       if(!commands.length)return msg.reply({
