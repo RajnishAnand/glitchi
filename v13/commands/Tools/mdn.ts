@@ -1,6 +1,6 @@
 import {Command} from 'Interfaces';
 import {pageView} from '#libs';
-import mdnSearch,{mdnEmbedify} from '#api/mdn.js';
+import mdnSearch from '#api/mdn.js';
 
 export const command : Command = {
   name : 'mdn',
@@ -13,7 +13,7 @@ export const command : Command = {
   examples : ['AJAX','fetch'],
   run ({msg,content}){
     mdnSearch(content())
-      .then(t=>new pageView(msg,t.map(k=>mdnEmbedify(k))))
+      .then(t=>new pageView(msg,t.map(k=>k.embedify())))
       .catch(()=>msg.reply(msg.client.config.emojis.sad+' Any relevant search result not found!'))
   }
 }

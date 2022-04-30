@@ -7,33 +7,39 @@ export default async function mdn (query:string){
     .then(r=>r.json());
   if(!resp.documents.length)throw Error('Any relevant search result not found!');
   
-  const data:mdnResponse[]= resp.documents.map((r:mdnResponse)=>{
+  const data:mdnResponse[]= resp.documents.map((r:mdnAPIResponse)=>{
     return {
-      title: r.title,
-      summary: r.summary,
-      mdn_url:'https://developer.mozilla.org'+ r.mdn_url
+      value : {
+        title: r.title,
+        summary: r.summary,
+        mdn_url:'https://developer.mozilla.org'+ r.mdn_url
+      },
+      embedify(){
+        return new MessageEmbed({
+           author:{
+             name : 'MDN Web Docs_',
+             iconURL:'https://developer.mozilla.org/favicon-48x48.cbbd161b.png',
+           },
+           title:this.value.title,
+           url:this.value.mdn_url,
+           color:'#15141a',
+           description:this.value.summary,
+           timestamp:new Date()
+        });
+      }
     }
   })
   
   return data
 }
 
-export function mdnEmbedify(data:mdnResponse):MessageEmbed{
-  return new MessageEmbed({
-     author:{
-       name : 'MDN Web Docs_',
-       iconURL:'https://developer.mozilla.org/favicon-48x48.cbbd161b.png',
-     },
-     title:data.title,
-     url:data.mdn_url,
-     color:'#15141a',
-     description:data.summary,
-     timestamp:new Date()
-  });
+interface mdnResponse{
+  value :mdnAPIResponse;
+  embedify:()=>MessageEmbed;
 }
 
-type mdnResponse = {
-  mdn_url:string;
-  summary:string;
-  title:string;
+interface mdnAPIResponse{
+  mdn_url:string,
+  summary:string,
+  title:string,
 }

@@ -1,5 +1,5 @@
 import {SlashCommand} from 'Interfaces';
-import mdnApi,{mdnEmbedify} from '../APIs/mdn';
+import mdnApi from '../APIs/mdn';
 
 export const command : SlashCommand = {
   name: 'mdn',
@@ -17,13 +17,13 @@ export const command : SlashCommand = {
     mdnApi(q)
       .then(response=>{
         interaction.reply({
-          embeds: [mdnEmbedify(response[0])],
+          embeds: [response[0].embedify()],
           components: [{
             type:"ACTION_ROW",
             components:[{
               type: 'BUTTON',
               style: 'LINK',
-              url: response[0].mdn_url,
+              url: response[0].value.mdn_url,
               label: "Open in Browser"
             }]
           }]
@@ -39,8 +39,8 @@ export const command : SlashCommand = {
   async autocompleteRun({interaction}){
     const q=interaction.options.getString('query') as string;
     const resp = await mdnApi(q).then(r=>r.map(e=>({
-      name: e.title,
-      value: e.title
+      name: e.value.title,
+      value: e.value.title
     }))).catch(()=>[]);
 
     interaction.respond(resp.slice(0,25)).catch(()=>{})
