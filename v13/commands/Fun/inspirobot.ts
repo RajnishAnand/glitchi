@@ -7,7 +7,7 @@ export const command : Command= {
   aliases : ['insp','inspiro'],
   run({msg}){
     insp()
-      .then(t=>msg.reply(t))
+      .then(t=>msg.reply({embeds:[t.embedify()]}))
       .catch(()=>msg.reply(msg.client.config.emojis.sad+' An Unknown Error Occurred while fetching from api.'))
     }
 }
