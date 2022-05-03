@@ -9,7 +9,7 @@ export const command: Command ={
     // (default) random quote 
     if(!args.length||args[0].toLowerCase()=="random") 
       return msg.reply({
-        embeds : [await randomQuote()],
+        embeds : [(await randomQuote()).embedify()],
         allowedMentions:{
           repliedUser:false
         }

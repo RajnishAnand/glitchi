@@ -6,7 +6,7 @@ import {QuoteRoutes, RandomFilterOptions, QuoteResponse, ErrorResponse} from "./
 const URL='https://api.quotable.io';
 
 /** Returns (a Quote or Error) as MessageEmbed */
-async function randomQuote(filters?:RandomFilterOptions):Promise<MessageEmbed>{
+async function randomQuote(filters?:RandomFilterOptions){
   let options :string|undefined;
   if(filters)options= `?${
     filters.author?`author=${encodeURI(filters.author)}&`:''
@@ -19,7 +19,10 @@ async function randomQuote(filters?:RandomFilterOptions):Promise<MessageEmbed>{
   }`;
 
   const resp: QuoteResponse|ErrorResponse= await fetchit("random",options);
-  return decorate(resp);
+  return {
+    value : resp,
+    embedify(){return decorate(this.value)}
+  };
 }
 
 /** Returns a Quote with id if found else error message*/
