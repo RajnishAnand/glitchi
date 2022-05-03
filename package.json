@@ -28,6 +28,7 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
+    "cbparser": "^1.0.2",
     "content-type": "^1.0.4",
     "discord.js": "^13.6.0",
     "firebase-admin": "^10.0.0",
