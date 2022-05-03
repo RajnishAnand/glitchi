@@ -2,8 +2,9 @@ import fetch from 'node-fetch';
 import {inspect} from 'util';
 import {parse} from 'content-type';
 import {Util} from 'discord.js';
-import {ask,select,pageView,codeBlockParser} from '#libs'
+import {ask,select,pageView} from '#libs'
 import {Command, CommandArgument} from 'Interfaces';
+import { CBParser } from 'cbparser';
 
 export const command: Command= {
   name : 'fetch',
@@ -33,7 +34,7 @@ async function run ({msg,args, content}:CommandArgument){
   }
   
   else if(args[1].toLowerCase()=='-p'||args[1].toLowerCase()=='--post'){
-      let {code,lang}= codeBlockParser(content().replace(/[­ ]/g,''));
+      let {code,lang}= CBParser(content().replace(/[­ ]/g,''))[0];
     if(!code){
       return msg.reply('Please also include body/text you wanna POST in a codeBlock !')
     }

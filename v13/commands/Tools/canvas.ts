@@ -1,8 +1,9 @@
 import {Command} from "Interfaces";
-import {VM, } from "vm2";
+import {VM} from "vm2";
 import {Canvas, Image, loadImage} from 'skia-canvas';
-import { pageView ,codeBlockParser} from "#libs";
-import { inspect } from "util";
+import {inspect} from "util";
+import {CBParser} from 'cbparser';
+import {pageView} from '#libs';
 
 
 export const command: Command = {
@@ -61,7 +62,7 @@ export const command: Command = {
     
     try{
       let code= content();
-      code = codeBlockParser(code).code??code;
+      code = CBParser(code)[0]?.code??code;
       const matches = code.matchAll(/\!\[([A-Za-z]?\w+)\]\((.*)\)/g);
 
       for (let each of matches){
