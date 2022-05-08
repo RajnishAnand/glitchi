@@ -28,6 +28,11 @@ export const command : SlashCommand= {
 
     let emojiData= findEmojis(interaction.client.emojis.cache,q.split("#")[0])[q];
     
+    if(!emojiData)return interaction.reply({
+      content: "Used an unknown emoji.",
+      ephemeral: true
+    });
+
     const emoji: string = size?`https://cdn.discordapp.com/emojis/${emojiData.id}.${emojiData.animated?"gif":"png"}?size=${size}`:`<${emojiData.animated?"a":""}:${emojiData.name}:${emojiData.id}>`;
 
     if(emoji)interaction.reply(`${emoji}`);
