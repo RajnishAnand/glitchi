@@ -1,8 +1,7 @@
 import {SlashCommand} from 'Interfaces';
-import {Collection, GuildEmoji} from 'discord.js';
 
 export const command : SlashCommand= {
-  name : 'e',
+  name : 'em',
   description : 'sends emoji for you!',
   options : [
     {
@@ -26,14 +25,14 @@ export const command : SlashCommand= {
     const q=(interaction.options.getString('query') as string);
     const size=interaction.options.getString('size');
 
-    let emojiData= findEmojis(interaction.client.emojis.cache,q.split("#")[0])[q];
+    let emojiData= interaction.client.searchEmoji(q.split("#")[0])[q];
     
     if(!emojiData)return interaction.reply({
       content: "Used an unknown emoji.",
       ephemeral: true
     });
 
-    const emoji: string = size?`https://cdn.discordapp.com/emojis/${emojiData.id}.${emojiData.animated?"gif":"png"}?size=${size}`:`<${emojiData.animated?"a":""}:${emojiData.name}:${emojiData.id}>`;
+    const emoji: string = size?`${emojiData.url}?size=${size}`: emojiData.toString();
 
     if(emoji)interaction.reply(`${emoji}`);
     else interaction.reply({
@@ -45,50 +44,8 @@ export const command : SlashCommand= {
   autocompleteRun({interaction}){
     const q=interaction.options.getString('query') as string;
 
-    const options =Object.keys(findEmojis(
-      interaction.client.emojis.cache,q)
-    ).map(e=>({name:e,value:e}));
+    const options =Object.keys(interaction.client.searchEmoji(q)).map(e=>({name:e,value:e}));
     interaction.respond(options).catch(()=>{});
   }
 }
 
-
-type SearchedEmoji = {
-  [key:string]:{
-    name:string,
-    id:string,
-    animated:boolean
-  }
-};
-
-// Emoji search Function
-function findEmojis(emoji:Collection<string,GuildEmoji>,q:string):SearchedEmoji{
-  let emojis = emoji.filter(f=>new RegExp(`^${q}$`,'i').test(`${f.name}`));
-  if(!emojis.size)emojis = emoji.filter(f=>new RegExp(`^${q}`,'i').test(`${f.name}`));
-  if(!emojis.size)emojis = emoji.filter(f=>new RegExp(q,'i').test(`${f.name}`));
-
-  const result:SearchedEmoji = {};
-  for(let [_,e] of emojis){
-    if(Object.keys(result).length>24)return result;
-    if(!e.name)continue;
-    if(!(e.name in result)){
-      result[`${e.name}`] = {
-        name: e.name,
-        id: e.id,
-        animated: e.animated||false
-      };
-      continue;
-    }
-    for(let i=1;i<25;i++){
-      if(!(`${e.name}#${i}` in result)){
-        result[`${e.name}#${i}`] = {
-          name: e.name,
-          id: e.id,
-          animated: e.animated||false
-        };
-        break;
-      }
-    };
-  }
-  return result;
-}
