@@ -87,6 +87,17 @@ export const command: Command = {
           if(!url)throw new Error(`${each[1]}:${each[2]} is undefined.`);
           each[2]=url;
         }
+        
+        // loading inage from emoji
+        else if(each[2].startsWith("emoji#")){
+          const key = each[2].replace("emoji#","");
+          if(/^\d+$/.test(key))each[2]=`https://cdn.discordapp.com/emojis/${key}.png`;
+          else {
+            const url = msg.client.searchEmoji(key.split("#")[0])[key]?.url;
+            if(!url) throw new Error(`${each[1]}:${each[2]} returned null|undefined.`)
+            each[2] = url;
+          }
+        }
 
         vm.sandbox[each[1]] = await loadImage(each[2]);
       }
