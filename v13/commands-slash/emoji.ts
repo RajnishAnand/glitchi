@@ -1,7 +1,7 @@
 import {SlashCommand} from 'Interfaces';
 
 export const command : SlashCommand= {
-  name : 'em',
+  name : 'e',
   description : 'sends emoji for you!',
   options : [
     {
