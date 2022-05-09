@@ -1,4 +1,5 @@
-import {codeBlockParser,pageView} from '#libs';
+import {pageView} from '#libs';
+import { CBParser } from 'cbparser';
 import {MessageEmbed} from 'discord.js';
 import { Command } from 'Interfaces';
 
@@ -11,7 +12,7 @@ export const command:Command = {
   
   run({msg,content}){
     let txt = content().replace(/[­ ]/g,'');
-    txt = codeBlockParser(txt).code??txt;
+    txt = CBParser(txt)[0]?.code??txt;
 
     try{
       let obj = JSON.parse(txt);
