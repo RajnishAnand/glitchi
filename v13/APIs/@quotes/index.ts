@@ -6,9 +6,11 @@ import {RandomFilterOptions, QuoteResponse, ErrorResponse} from "./types";
 const URL='https://api.quotable.io';
 
 
-/** Returns (a Quote or Error) as MessageEmbed */
+/** Returns a random Quote */
 export async function randomQuote(filters?:RandomFilterOptions){
   let options :string|undefined;
+
+  // filter options
   if(filters)options= `?${
     filters.author?`author=${encodeURI(filters.author)}&`:''
   }${
@@ -19,7 +21,7 @@ export async function randomQuote(filters?:RandomFilterOptions){
     filters.tags?`tags=${encodeURI(filters.tags)}`:''
   }`;
 
-  const value: QuoteResponse|ErrorResponse= await fetch(`${URL}/random/${options}`).then(r=>r.json());
+  const value: QuoteResponse|ErrorResponse= await fetch(`${URL}/random/${options??''}`).then(r=>r.json());
   if(!("_id" in value)) throw new Error(value.statusMessage);
   return {
     value,
@@ -28,7 +30,7 @@ export async function randomQuote(filters?:RandomFilterOptions){
 }
 
 
-/** Returns a Quote with id if found else error message*/
+/** Returns a Quote with id id found*/
 export async function quoteById(id:string){
   const value:QuoteResponse|ErrorResponse = await fetch(`${URL}/quotes/${id}`).then(r=>r.json());
   if(!("_id" in value)) throw new Error(value.statusMessage);
