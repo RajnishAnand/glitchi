@@ -1,4 +1,4 @@
-import { ApplicationCommandDataResolvable, Client, Collection, Intents} from 'discord.js';
+import { ApplicationCommandDataResolvable, Client, Collection, Emoji, Intents} from 'discord.js';
 import {Command, Event} from '../Interfaces';
 import Config from "./config";
 import {readdirSync} from 'fs';
@@ -11,7 +11,8 @@ export default class ExtendClient extends Client {
   public events:Collection<string, Event> = new Collection();
   public aliases:Collection<string,Command> = new Collection();
   public config = Config;
-  
+  declare public utils : {searchEmoji:Function};
+
   constructor(){
     super({
       intents : [
@@ -76,11 +77,42 @@ export default class ExtendClient extends Client {
       else this.on(event.name,event.execute.bind(null,this));
     });
     
-    
   }
+
+  // register global commands
   async registerGlobalSlashCommand (commands:ApplicationCommandDataResolvable[]){
     this.application?.commands.set(commands);
     console.log(`Registering global Commands.`)
     return true;
   }
+
+  // search emojis
+  public searchEmoji(q:string):SearchedEmoji{
+    let emojis = this.emojis.cache.filter(f=>new RegExp(q,'i').test(`${f.name}`));
+
+    const result:SearchedEmoji = {};
+    for(let [_,e] of emojis){
+      if(Object.keys(result).length>24)return result;
+      if(!e.name)continue;
+      if(!(e.name in result)){
+        result[`${e.name}`] = e;
+        continue;
+      }
+      for(let i=1;i<25;i++){
+        if(!(`${e.name}#${i}` in result)){
+          result[`${e.name}#${i}`] = e;
+          break;
+        }
+      };
+    }
+    return result;
+  }
+  
 }
+
+type SearchedEmoji = {
+    [key:string]:Emoji
+};
+
+
+
