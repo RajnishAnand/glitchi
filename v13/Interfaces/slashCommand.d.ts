@@ -2,10 +2,17 @@ import {
     AutocompleteInteraction,
   ChatInputApplicationCommandData,
   CommandInteraction, 
+  Interaction, 
   PermissionResolvable
 } from 'discord.js';
 import Client from "../client";
 
+
+export interface ExtendInteraction extends Interaction {  client: Client}
+
+interface ExtendCommandInteraction extends CommandInteraction {client : Client }
+
+interface ExtendAutocompleteInteraction extends AutocompleteInteraction {client: Cluent}
 
 interface RunOptions<K>{
   client: Client;
@@ -16,7 +23,7 @@ type RunFunction<K> = (Options : RunOptions<K>)=>any;
 
 export type SlashCommand = {
   userPermissions ?: PermissionResolvable[];
-  run : RunFunction<CommandInteraction>;
-  autocompleteRun?: RunFunction<AutocompleteInteraction>
+  run : RunFunction<ExtendCommandInteraction>;
+  autocompleteRun?: RunFunction<ExtendAutocompleteInteraction>
   // cooldown ?: number;
 } & ChatInputApplicationCommandData

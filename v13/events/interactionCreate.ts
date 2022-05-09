@@ -1,9 +1,8 @@
-import {Interaction} from 'discord.js';
-import {Event} from '../Interfaces';
+import {Event, ExtendInteraction} from '../Interfaces';
 
 export const event : Event =  {
   name : 'interactionCreate',
-  execute(client,interaction:Interaction){
+  execute(client,interaction:ExtendInteraction){
     if (!(interaction.isAutocomplete()||interaction.isCommand()))return;
 
     const cmnd = client.slashCommands.get(interaction.commandName);
