@@ -3,7 +3,7 @@ import {VM} from "vm2";
 import {Canvas, Image, loadImage} from 'skia-canvas';
 import {inspect} from "util";
 import {CBParser} from 'cbparser';
-import {pageView} from '#libs';
+import {pageView, Stopwatch} from '#libs';
 
 
 export const command: Command = {
@@ -61,8 +61,11 @@ export const command: Command = {
     vm.freeze(process,'process');
     
     try{
+      const stopwatch = new Stopwatch();
       let code= content();
       code = CBParser(code)[0]?.code??code;
+
+      stopwatch.start();
       const matches = code.matchAll(/\!\[([A-Za-z]?\w+)\]\((.*)\)/g);
 
       for (let each of matches){
@@ -104,9 +107,10 @@ export const command: Command = {
 
       const canv:Canvas = await vm.run(wrap(code));
       const img = await canv.toBuffer("png");
+      stopwatch.stop();
 
        msg.reply({
-         content: "Canvas Output: :frame_photo:",
+         content: `⏱️${stopwatch.elapsed}s | Canvas Output: :frame_photo:`,
          files: [img],
          allowedMentions:{repliedUser:false},
          failIfNotExists:false,
