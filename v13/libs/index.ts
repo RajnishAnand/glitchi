@@ -4,3 +4,4 @@ export {default as select } from './selection';
 export {default as pageView} from './pagination';
 export {owoify} from './owoify';
 export {Stopwatch} from './stopwatch';
+export {PerlinNoise} from './noise'; 
