@@ -9,7 +9,7 @@ export const command : Command = {
 
   async run({msg,args}){
     if(args.length){
-      const e = msg.client.searchEmoji(args[0])[0];
+      const e = Object.values(msg.client.searchEmoji(args[0]))[0];
       if(!e)return msg.reply("Specified Emoji not Found!");
       msg.reply({
         content:e.toString(),
