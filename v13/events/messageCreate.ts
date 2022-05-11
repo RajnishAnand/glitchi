@@ -7,6 +7,10 @@ export const event : Event = {
   async execute (client , msg :ExtendMessage ){ 
     if(msg.author.bot ||msg.channel.type=='DM'||!msg.guild)return;
     
+    // ignore if can't message in this channel
+    const perms = msg.channel.permissionsFor(msg.client.user!.id)
+    if(!(perms && perms.has("SEND_MESSAGES")))return;
+
     // ignore if user don't have betaTester role 
     // when running in beta mode.
     if(process.env.BETA){
@@ -43,7 +47,8 @@ export const event : Event = {
     let commandName = (args.shift() as string).toLowerCase();
     const command = client.commands.get(commandName)
     || client.aliases.get(commandName);
-      
+    
+
     //TODO : MOVE these cases to saperate file
     if (!command) {
       switch (commandName) {
