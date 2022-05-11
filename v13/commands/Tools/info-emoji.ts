@@ -116,10 +116,10 @@ function embedIt(emote:emoji) {
     image : {
         url : `https://cdn.discordapp.com/emojis/${emote.id}.${(emote.animated)?'gif':'png'}`,
     },
-    description : '```js\n'+`Name : ${emote.name??'uknown'
+    description : '```js\n'+`Name : ${emote.name??'unknown'
       }\nID : ${emote.id
       }\nAnimated : ${emote.animated??false
-      }\nGuild : ${emote.guild??'uknown'} `+'```',
+      }\nGuild : ${emote.guild??'unknown'} `+'```',
   });
 }
 
