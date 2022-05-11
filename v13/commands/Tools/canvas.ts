@@ -3,7 +3,7 @@ import {VM} from "vm2";
 import {Canvas, Image, loadImage} from 'skia-canvas';
 import {inspect} from "util";
 import {CBParser} from 'cbparser';
-import {pageView, Stopwatch} from '#libs';
+import {pageView, Stopwatch,PerlinNoise} from '#libs';
 
 
 export const command: Command = {
@@ -50,7 +50,7 @@ export const command: Command = {
     };
     
     const vm = new VM({
-      sandbox: {Canvas,Image},
+      sandbox: {Canvas,Image,PerlinNoise},
       eval: false,
       wasm: false,
       timeout: 6000,
