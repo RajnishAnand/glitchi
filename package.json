@@ -31,7 +31,6 @@
     "cbparser": "^1.0.4",
     "content-type": "^1.0.4",
     "discord.js": "^13.6.0",
-    "firebase-admin": "^10.0.0",
     "mathjs": "^9.4.4",
     "morse-node": "^0.1.1",
     "node-fetch": "^2.6.1",
