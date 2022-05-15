@@ -55,11 +55,13 @@ export  const command: Command = {
           else emojiUrl = matches[0][0];
         }
 
-        // referenced attachment ??
-        else if(refMsg.attachments.size){
-          emojiUrl= refMsg.attachments.first()?.url;
-        }
       }
+      
+      // referenced attachment ??
+      else if(refMsg.attachments.size){
+        emojiUrl= refMsg.attachments.first()?.url;
+      }
+
       // from referenced message embed url
       else if(refMsg.embeds[0]?.url)emojiUrl=refMsg.embeds[0].url
     }
