@@ -79,10 +79,16 @@ export  const command: Command = {
     
     //set if has nane override
     if(emojiNameOverride)emojiName=emojiNameOverride;
+    
+    // emoji url 
+    if(!emojiUrl) return msg.reply({
+      content : `Unable to find any considerable emoji or URL.`,
+      allowedMentions: {repliedUser:false}
+    })
 
-    // if dosen't matches specs suggest user to get help
-    if(!(emojiName&&emojiUrl)) return msg.reply({
-      content: `Get Help! Use \`${msg.client.config.prefix}help addemoji\` to get help on it.`,
+    // emojiNane flag
+    if(!emojiName) return msg.reply({
+      content: `Please specify emoji name with \`--name=<name>\` flag!`,
       allowedMentions: {repliedUser:false}
     });
     
