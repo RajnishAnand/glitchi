@@ -46,7 +46,8 @@ type SelectionType = {
   content ?: string,
   options : {
     label : string,
-    description : string,
-    value : string
+    description ?: string,
+    value : string,
+    emoji ?: string
   }[]
 }
