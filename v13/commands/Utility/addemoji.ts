@@ -54,9 +54,14 @@ export  const command: Command = {
           ).catch(()=>undefined);
           else emojiUrl = matches[0][0];
         }
+
+        // referenced attachment ??
+        else if(refMsg.attachments.size){
+          emojiUrl= refMsg.attachments.first()?.url;
+        }
       }
       // from referenced message embed url
-      else if(refMsg.embeds[0].url)emojiUrl=refMsg.embeds[0].url
+      else if(refMsg.embeds[0]?.url)emojiUrl=refMsg.embeds[0].url
     }
 
     // from args
@@ -65,7 +70,7 @@ export  const command: Command = {
     }
 
     // from attachments
-    else if(args[0] && msg.attachments.size){
+    else if((args[0]||emojiNameOverride) && msg.attachments.size){
       emojiName= args[0],
       emojiUrl= msg.attachments.first()?.url
     }
