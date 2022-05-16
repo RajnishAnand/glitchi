@@ -1,7 +1,7 @@
 import {inspect} from 'util';
 import {compile} from 'mathjs';
 import {Command} from 'Interfaces';
-import {pageView} from '#libs'
+import {pageView, Stopwatch} from '#libs'
 
 
 export const command: Command = {
@@ -12,11 +12,17 @@ export const command: Command = {
   args : true,
 
   async run({msg,content}){
+    const stopwatch = new Stopwatch();
+
     try{
+      stopwatch.start()
       const txt = compile(content()).evaluate();
+      stopwatch.stop()
+
       new pageView(msg,inspect(txt,{depth:10}),{
         code: 'js',
-        title: 'MATH.JS'
+        title: 'MATH.JS',
+        secondaryTitle : `⏱ ${stopwatch.elapsed}s`
       });
     }
     catch(err: any){
