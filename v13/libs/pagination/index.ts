@@ -29,6 +29,7 @@ export default class pagination {
         argument,
         options?.chunkSize,
         options?.title,
+        options?.secondaryTitle,
         options?.code,
         options?.timestamp
       );

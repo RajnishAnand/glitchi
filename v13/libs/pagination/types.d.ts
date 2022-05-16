@@ -9,6 +9,7 @@ export interface PaginationOption<T>{
   code ?: T extends string ? string : never;
   chunkSize ?: T extends string ? number : never;
   title ?: T extends string ? string : never;
+  secondaryTitle ?: T extends string ? string : never;
   timestamp ?: T extends string ? Date : never;
 
   //EmbedPaginationOption : no options
