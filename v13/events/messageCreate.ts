@@ -10,6 +10,15 @@ export const event : Event = {
     // ignore if can't message in this channel
     const perms = msg.channel.permissionsFor(msg.client.user!.id)
     if(!(perms && perms.has("SEND_MESSAGES")))return;
+    
+    // ignore if this is a protected run
+    if(process.env.PROTECTED){
+      const owner = await msg
+        .client.guilds.fetch(client.config.guildId)
+        .then(g=>g.ownerId === msg.author.id && msg.author.id === client.config.ownerId)
+        .catch(()=>false);
+      if(!owner)return;
+    }
 
     // ignore if user don't have betaTester role 
     // when running in beta mode.
@@ -49,37 +58,9 @@ export const event : Event = {
     || client.aliases.get(commandName);
     
 
-    //TODO : MOVE these cases to saperate file
-    if (!command) {
-      switch (commandName) {
-        case 'beep':
-          msg.channel.send('boop!');
-          break;
-        
-        case 'hi':
-        case 'hello':
-          msg.reply({
-            content: ['Hi', 'Hello there!', 'Hello'][Math.floor(Math.random() * 3)],
-            allowedMentions: {repliedUser: false}
-          });
-          break;
-        case 'slap':
-          msg.channel.send({
-            content: `${client.config.emojis.salute} yes boss!`,
-            files: ["https://cdn.weeb.sh/images/BJ8o71tD-.gif"]
-          })
-          break;
-        case 'hru':
-        case 'how are you':
-          msg.channel.send('Sometime i get bored alone '+client.config.emojis.sad+' and my system goes idle! but right now I\'m absolutely fine.\\🐥');
-          break;
-        case 'ok':
-        case '0k':
-          msg.channel.send(client.config.emojis.ok); 
-      };
-      return;
-    };
-    
+    // ignore if command dosent exists
+    if (!command) return;
+
     // check if command is role specific
     if(command.roleAccess){
       const id = client.config.roles[command.roleAccess];
