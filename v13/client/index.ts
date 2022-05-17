@@ -33,7 +33,38 @@ export default class ExtendClient extends Client {
   public async init(){
     console.log("logging in...\n");
     this.login(process.env.TOKEN);
+    
+    this.loadCommands();
+    this.loadSlashCommands();
 
+    //Events
+    const eventsPath= path.join(__dirname,'..','events');
+    const eventFiles = readdirSync(eventsPath).filter(f=>f.endsWith('.js'));
+
+    eventFiles.forEach((file)=>{
+      const event : Event =require(`${eventsPath}/${file}`).event;
+      this.events.set(event.name,event);
+      
+      if(event.once)this.once(event.name,event.execute.bind(null,this)); 
+      else this.on(event.name,event.execute.bind(null,this));
+    });
+    
+  }
+
+  public loadSlashCommands(){
+    //Slash Commands
+    // const commandSlash : ApplicationCommandDataResolvable[]=[];
+    const slashCommandsPath = path.join(__dirname,'..','commands-slash');
+    const slashCommandFiles = readdirSync(slashCommandsPath).filter(f=>f.endsWith('.js'));
+                                                             
+    slashCommandFiles.forEach(async filePath => {
+      const slashCommand : SlashCommand = require(`${slashCommandsPath}/${filePath}`).command;
+      this.slashCommands.set(slashCommand.name,slashCommand);
+      // commandSlash.push(slashCommand);
+    })
+  }
+
+  public loadCommands(){
     //commands 
     const commandsPath = path.join(__dirname,'..','commands')
     const commandFolders=readdirSync(commandsPath);
@@ -53,30 +84,7 @@ export default class ExtendClient extends Client {
         }
       });
     });
-    
-    //Slash Commands
-    // const commandSlash : ApplicationCommandDataResolvable[]=[];
-    const slashCommandsPath = path.join(__dirname,'..','commands-slash');
-    const slashCommandFiles = readdirSync(slashCommandsPath).filter(f=>f.endsWith('.js'));
-                                                             
-    slashCommandFiles.forEach(async filePath => {
-      const slashCommand : SlashCommand = require(`${slashCommandsPath}/${filePath}`).command;
-      this.slashCommands.set(slashCommand.name,slashCommand);
-      // commandSlash.push(slashCommand);
-    })
 
-    //Events
-    const eventsPath= path.join(__dirname,'..','events');
-    const eventFiles = readdirSync(eventsPath).filter(f=>f.endsWith('.js'));
-
-    eventFiles.forEach((file)=>{
-      const event : Event =require(`${eventsPath}/${file}`).event;
-      this.events.set(event.name,event);
-      
-      if(event.once)this.once(event.name,event.execute.bind(null,this)); 
-      else this.on(event.name,event.execute.bind(null,this));
-    });
-    
   }
 
   // register global commands
