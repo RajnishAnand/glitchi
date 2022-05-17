@@ -116,7 +116,7 @@ export const command: Command = {
 
       stopwatch.stop();
 
-       msg.reply({
+       await msg.reply({
          content: `⏱️${stopwatch.elapsed}s | Canvas Output: :frame_photo:`,
          files: [img],
          allowedMentions:{repliedUser:false},
