@@ -110,7 +110,10 @@ export const command: Command = {
 
       const canv:Canvas = await vm.run(wrap(code));
       if(!(canv instanceof Canvas))throw new Error("canv not an Instanceof Canvas");
+
       const img = await canv.toBuffer("png");
+      if(!Buffer.isBuffer(img))throw new Error("img isn't a Buffer.")
+
       stopwatch.stop();
 
        msg.reply({
