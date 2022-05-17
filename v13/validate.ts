@@ -1,11 +1,9 @@
 const requiredEnv = [
   "TOKEN",      // DISCORD BOT TOKEN
   'ACOKEY',     // ACOBOT CHAT API KEY
-  'FIRE',       // FIREBASE 
-  'API0',       // PRIVATE SL API
   'UNSPLASH'    // FOR IMAGE 
   
-  //? 'HTTPSERVER', 'BETA' ?//
+  //? 'HTTPSERVER', 'BETA' ,'PROTECTED' ?//
 ]
 
 if (!process.env[requiredEnv[0]])
