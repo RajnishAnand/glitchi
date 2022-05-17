@@ -102,10 +102,14 @@ export const command: Command = {
           }
         }
 
+        // prevent lacal file access
+        if(!(/^https?:\/\/.+/.test(each[2])))throw new Error(`Invalid URL at ${each[1]}:${each[2]}`)
+
         vm.sandbox[each[1]] = await loadImage(each[2]);
       }
 
       const canv:Canvas = await vm.run(wrap(code));
+      if(!(canv instanceof Canvas))throw new Error("canv not an Instanceof Canvas");
       const img = await canv.toBuffer("png");
       stopwatch.stop();
 
