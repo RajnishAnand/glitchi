@@ -19,14 +19,18 @@ async function run({msg,args}:CommandArgument){
     cmnds.forEach((cmd)=>{
       if(cmd.category==undefined)return;
       if(!(cmd.category in data))data[cmd.category]='';
-      data[cmd.category]+=`‣ ${msg.client.config.prefix}${cmd.name} ⇨ ${cmd.description}\n`
+      data[cmd.category]+=`${cmd.roleAccess?"🔸":"🔹"} **${cmd.name} ⤍**  *${cmd.description}*\n`
+    })
+
+    Object.keys(data).forEach(c=>{
+      data[c]+=`>>> Use \`${msg.client.config.prefix}help <CommandName>\` to get more help on it.`
     })
       
     new pageView(msg,Object.keys(data).map((m:string)=>{
       return new MessageEmbed({
-        title:m,
+        title:`Help >> Category: ${m}`,
         description:data[m],
-        color:'#00bfff'
+        color:'#00bfff',
       })
     }));
   }
@@ -34,27 +38,50 @@ async function run({msg,args}:CommandArgument){
     const command: Command|undefined = msg.client.commands.get(args[0])|| msg.client.aliases.get(args[0]);
 
     if(!command) return msg.reply({
-      content: msg.client.config.emojis.sad+'There is no such command as `'+args[0]+'`'
+      content: msg.client.config.emojis.sad+'There is no such command as `'+args[0]+'`',
+      allowedMentions: {repliedUser: false},
     });
     
-    let embed: APIEmbed= {
+    const embed: APIEmbed= {
       color : 0x00bfff,
-      title : '🥷| Command : '+command.name,
-      description : '‣ **Description** : '+command.description,
+      title : `${msg.client.config.emojis.yus}|Help >> Command: ${command.name}`,
+      description : '🔹 **Description** : '+command.description,
       fields : []
     }
 
-    if(command.aliases)embed.description+= `\n‣ **Aliases** : ${command.aliases.join(', ')}`;
-    if(command.args)embed.description+='\n‣ **Arguments required** : true';
-    if(command.usage)embed.description+='\n‣ **Usage** : `'+command.usage+'`';
-    if(command.userPerms)embed.description+='\n‣ **Permission Required** : '+command.userPerms.join(', ');
-    if(command.devOnly)embed.description+='\n‣ **Bot Devlopers Only** : true';
-    if(command.examples)embed.fields?.push({
-      name:'**Examples** :',
-      value : '>>> *'+(!command.args?msg.client.config.prefix+command.name+'\n':'')+msg.client.config.prefix+command.name+' '+command.examples.join('\n'+msg.client.config.prefix+command.name+' ')+(command.aliases?('\n'+command.aliases?.map((c:string)=>command.examples?.map(e=>msg.client.config.prefix+c+' '+e).join('\n')).join('\n')):'')+'*',
-      inline :false
-    });
-    msg.reply({embeds:[new MessageEmbed(embed)]})
-  };
+    // Aliases
+    if(command.aliases)embed.description+= `\n🔹 **Aliases** : ${command.aliases.join(', ')}`;
+
+    // Arguments
+    if(command.args)embed.description+='\n🔹 **Arguments required** : `true`';
+
+    // Usage
+    if(command.usage)embed.description+='\n🔹 **Usage** : `'+command.usage+'`';
+
+    // Permission
+    if(command.userPerms)embed.description+='\n🔹 **Permission Required** : '+command.userPerms.join(', ');
+
+    // RoleAccess
+    if(command.roleAccess)embed.description+=`\n🔸 **RoleAccess** : \`${command.roleAccess}\``;
+
+    // DevOnly
+    if(command.devOnly)embed.description+='\n🔹 **Bot Devlopers Only** : `true`';
+
+    // Exemples
+    if(command.examples||!command.args){
+      const cmdNames = [...command.aliases??"",command.name];
+      embed.fields?.push({
+        name:'**Examples** :',
+        value : `>>> ${command.args?'':`\`${msg.client.config.prefix}${command.name}\`\n`}${command.examples?.length?command.examples.map((e)=>
+          "`"+msg.client.config.prefix+cmdNames[~~(Math.random()*cmdNames.length)]+" "+e+"`"
+        ).join("\n"):""}`
+      });
+    }
+
+    msg.reply({
+      embeds:[new MessageEmbed(embed)],
+      allowedMentions:{repliedUser:false}
+    })
+  }
 }
 
