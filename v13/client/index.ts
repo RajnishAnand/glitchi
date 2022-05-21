@@ -73,7 +73,9 @@ export default class ExtendClient extends Client {
       const commandFiles = readdirSync(`${commandsPath}/${folder}`).filter((file)=>file.endsWith('.js'));
       
       commandFiles.forEach((file)=>{
-        const command : Command = require(`${commandsPath}/${folder}/${file}`).command;
+        const filePath = `${commandsPath}/${folder}/${file}`;
+        delete require.cache?.[require.resolve(filePath)];
+        const command : Command = require(filePath).command;
         command.category = folder;
         this.commands.set(command.name, command);
         
