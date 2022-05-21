@@ -16,7 +16,7 @@ export const command : Command= {
     let emojiReg = /<a?:\w{1,20}:\d{1,32}>/g;
     
     if(!args.length&&!msg.reference){
-      msg.channel.send(msg.client.config.emojis.aha+' Aha! you just sent an empty argument.');
+      msg.channel.send(msg.client.config.emojis.aha+' You were supposed to reference a message or pass emojiName as an argument to query.');
       return;
     }
     else if (emojiReg.test(contents)) {
