@@ -12,7 +12,7 @@
     "prestart": "npm run build",
     "start": "node build/index.js",
     "dev": "node build/index.js",
-    "protected" : "PROTECTED=1 npm start"
+    "protected": "PROTECTED=1 npm start"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "@discordjs/builders": "^0.6.0",
     "cbparser": "^1.0.4",
     "content-type": "^1.0.4",
-    "discord.js": "^13.6.0",
+    "discord.js": "^13.7.0",
     "mathjs": "^9.4.4",
     "morse-node": "^0.1.1",
     "node-fetch": "^2.6.1",
