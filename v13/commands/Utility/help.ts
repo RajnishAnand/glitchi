@@ -1,5 +1,5 @@
 import {pageView} from '#libs';
-import {APIEmbed} from 'discord.js/node_modules/discord-api-types';
+import {MessageEmbedOptions} from 'discord.js';
 import {MessageEmbed} from 'discord.js';
 import {Command, CommandArgument} from 'Interfaces';
 
@@ -42,7 +42,7 @@ async function run({msg,args}:CommandArgument){
       allowedMentions: {repliedUser: false},
     });
     
-    const embed: APIEmbed= {
+    const embed: MessageEmbedOptions= {
       color : 0x00bfff,
       title : `${msg.client.config.emojis.yus}|Help >> Command: ${command.name}`,
       description : '🔹 **Description** : '+command.description,
