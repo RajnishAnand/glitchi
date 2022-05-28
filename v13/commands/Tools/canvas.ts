@@ -109,7 +109,21 @@ export const command: Command = {
       }
 
       const canv:Canvas = await vm.run(wrap(code));
-      if(!(canv instanceof Canvas))throw new Error("canv not an Instanceof Canvas");
+      
+      // canv as an object for Output
+      if(!(canv instanceof Canvas)){
+        let txt = inspect(canv);
+        const length = txt.length;
+        if(length>4000)
+          txt = `${txt.slice(4001)}...${length-4000} Char`;
+        stopwatch.stop();
+
+        return new pageView(msg,txt,{
+          code: "js",
+          title: "Canvas[Output]",
+          secondaryTitle: `⏱ ${stopwatch.elapsed}`
+        });
+      }
 
       const img = await canv.toBuffer("png");
       if(!Buffer.isBuffer(img))throw new Error("img isn't a Buffer.")
@@ -133,7 +147,9 @@ export const command: Command = {
 
 function wrap(txt:string){
   return `"use strict";
-  let canvas = new Canvas(600, 600);
-  ${txt}
-  canvas;`;
+  (function(){
+    let canvas = new Canvas(600, 600);
+    ${txt}
+    return canvas;
+  })();`;
 }
