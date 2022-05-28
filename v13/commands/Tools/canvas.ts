@@ -50,7 +50,7 @@ export const command: Command = {
     };
     
     const vm = new VM({
-      sandbox: {Canvas,Image,PerlinNoise},
+      sandbox: {},
       eval: false,
       wasm: false,
       timeout: 6000,
@@ -59,6 +59,10 @@ export const command: Command = {
     });
     const process= {env : {TOKEN: "never gonna give you up never gonna let you down never gonnna turn arnound and desert you."}};
     vm.freeze(process,'process');
+    vm.freeze(Canvas,"Canvas");
+    vm.freeze(Image,"Image");
+    vm.freeze(PerlinNoise,"PerlinNoise");
+
     
     try{
       const stopwatch = new Stopwatch();
@@ -108,7 +112,7 @@ export const command: Command = {
         vm.sandbox[each[1]] = await loadImage(each[2]);
       }
 
-      const canv:Canvas = await vm.run(wrap(code));
+      const canv:unknown= await vm.run(wrap(code));
       
       // canv as an object for Output
       if(!(canv instanceof Canvas)){
