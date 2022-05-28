@@ -121,7 +121,7 @@ export const command: Command = {
         return new pageView(msg,txt,{
           code: "js",
           title: "Canvas[Output]",
-          secondaryTitle: `⏱ ${stopwatch.elapsed}`
+          secondaryTitle: `⏱ ${stopwatch.elapsed}s`
         });
       }
 
