@@ -23,7 +23,7 @@ export default {
     thumbsdown: "<:thumbsdown:862862298556399656>",
     think: "<:chadThink:862312026608369695>",
     sad: "<:sed:860576595039354931>",
-    ok: "<:ok:861456928184860672>",
+    // ok: "<:ok:861456928184860672>",
     cry: "<a:sadGuitar:869172267869949962>",
     aha: "<a:aha:858172419792961657>",
     nono: "<:noNOno:831705934648573982>",
@@ -37,6 +37,8 @@ export default {
     knife: "<a:knifeBear:901369113656561744>",
     salute: "<:salute:895714590996955176>",
     rollCat: "<a:rolling_cat:971076987009503293>",
+    leftArrow: "<:leftArrow:977737601073156096>",
+    rightArrow: "<:rightArrow:977737741871767593>",
 
     // swift: "<:swift:917731222891929630>",
     // r: "<:r_:933080757688229938>",
