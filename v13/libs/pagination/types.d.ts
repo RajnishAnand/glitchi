@@ -1,7 +1,7 @@
 import {MessageEmbed} from "discord.js";
 
 export type PaginationArgument = string|MessageEmbed[]|{
-  [key: string]: string |MessageEmbed[]
+  [key: string]: string|MessageEmbed[]|undefined;
 }
 
 export interface PaginationOption<T>{

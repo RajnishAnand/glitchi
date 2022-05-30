@@ -6,13 +6,14 @@ export class objectHandler {
   declare public keys : string[];
   declare private handlers: (stringHandler|embedHandler)[];
 
-  constructor(obj:{[index:string]: string | MessageEmbed[]}){
+  constructor(obj:{[index:string]: string | MessageEmbed[]|undefined}){
     this.keys = Object.keys(obj)
-    Object.values(obj).forEach((o)=>{
-      if(typeof o=='string'){
+    Object.values(obj).forEach((o,i)=>{
+      if(typeof o == "undefined")return this.keys.splice(i,1);
+      if(typeof o == 'string'){
         if(!this.handlers?.length)
-         this.handlers=[new stringHandler(o)];
-        else this.handlers.push(new stringHandler(o))
+         this.handlers=[new stringHandler(o,undefined,this.keys[i],undefined,"js")];
+        else this.handlers.push(new stringHandler(o,undefined,this.keys[i],undefined,"js"))
       }
       else {
          if(!this.handlers?.length)
