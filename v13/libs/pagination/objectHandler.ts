@@ -7,9 +7,9 @@ export class objectHandler {
   declare private handlers: (stringHandler|embedHandler)[];
 
   constructor(obj:{[index:string]: string | MessageEmbed[]|undefined}){
-    this.keys = Object.keys(obj)
+    this.keys = Object.keys(obj).filter(k=>obj[k]!==undefined);
     Object.values(obj).forEach((o,i)=>{
-      if(typeof o == "undefined")return this.keys.splice(i,1);
+      if(typeof o == "undefined")return;
       if(typeof o == 'string'){
         if(!this.handlers?.length)
          this.handlers=[new stringHandler(o,undefined,this.keys[i],undefined,"js")];
