@@ -1,11 +1,12 @@
-import { MessageEmbed, TextChannel } from 'discord.js'
+import { Message, MessageActionRow, MessageEmbed, TextChannel } from 'discord.js'
 import { Command } from 'Interfaces'
 import { pageView } from '#libs'
+import { inspect } from "util";
 
 export const command: Command = {
   name: 'messageinfo',
   description: 'detailed information about message.',
-  aliases: ['minfo', 'mi'],
+  aliases: ['minfo', 'mi',"msginfo"],
   usage: '?<channelID> <messageID>',
   roleAccess: 'betaTesters',
 
@@ -49,34 +50,31 @@ export const command: Command = {
         ? await msg.client.channels.fetch(channelId)
         : msg.channel
       if (channel && channel instanceof TextChannel && messageId) {
-        const message = await channel.messages.fetch(messageId)
-        const info: MInfo = {
-          details: [
-            new MessageEmbed({
-              color: '#00bfff',
-              title: 'Message Details',
-              description: `> Id: ${message.id}\n> Channel Id: ${
-                message.channel.id
-              }\n> Guild Id: ${message.guild?.id}\n🕐 Created Timestamp: <t:${(
-                message.createdTimestamp / 1000
-              ).toFixed(0)}>\n⌨️ Type: ${message.type}\n⚙️ System: ${
-                message.system
-              }\n🥷 Author Id: ${message.author.id}\n📌 Pinned: ${
-                message.pinned
-              }\n🔉 tts: ${message.tts}\n🪝 Webhook Id: ${
-                message.webhookId
-              }\n⛱️ Group Activity Application: ${
-                message.groupActivityApplication
-              }\n🆔 Application Id: ${message.applicationId}\n👥 Referance: ${
-                message.reference
-                  ? `[${message.reference.messageId}](https://discord.com/channels/${message.reference.guildId}/${message.reference.channelId}/${message.reference.messageId})`
-                  : 'null'
-              }`,
-            }),
-          ],
-        }
+        const message: Partial<Message>= await channel.messages.fetch(messageId)
 
-        new pageView(msg, info)
+        // content
+        const content = message.content!.length
+          ?inspect(message.content):undefined;
+        delete message.content;
+
+        // embed 
+        const embeds = message.embeds!.length
+          ?inspect(message.embeds):undefined;
+        delete message.embeds;
+        
+        // author 
+        const author = inspect(message.author);
+        delete message.author;
+
+        const info: MInfo = {
+          "OVERVIEW" : inspect(message),
+          "AUTHOR": author,
+          "CONTENTS": content,
+          "EMBEDS": embeds
+        };
+
+        new pageView(msg,info)
+
       } else {
         msg.reply({
           content: 'Failed to resolve into TextChannel!',
@@ -94,4 +92,4 @@ export const command: Command = {
   },
 }
 
-type MInfo = { [index: string]: string | MessageEmbed[] }
+type MInfo = { [index: string]: string | MessageEmbed[]| undefined}
