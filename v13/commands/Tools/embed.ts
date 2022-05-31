@@ -12,14 +12,18 @@ export const command:Command = {
   
   run({msg,content}){
     let txt = content().replace(/[­ ]/g,'');
-    txt = CBParser(txt)[0]?.code??txt;
+    txt = CBParser(txt)[0]?.code.replaceAll("\\`","`")??txt;
 
     try{
       let obj = JSON.parse(txt);
-      obj = new MessageEmbed(obj);
+
+      let embeds: MessageEmbed[];
+      if(Array.isArray(obj)) 
+        embeds = obj.map(e=>new MessageEmbed(e));
+      else embeds = [new MessageEmbed(obj)];
       // if (!Array.isArray(obj))
       msg.reply({
-        embeds:[obj],
+        embeds,
         allowedMentions:{repliedUser:false}
       }).catch(e=>{
         new pageView(msg,e.message,{
