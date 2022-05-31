@@ -59,7 +59,7 @@ export const command: Command = {
 
         // embed 
         const embeds = message.embeds!.length
-          ?inspect(message.embeds):undefined;
+          ?JSON.stringify(message.embeds,null,"  "):undefined;
         delete message.embeds;
         
         // author 
