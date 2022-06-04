@@ -1,29 +1,47 @@
 import {
+  Interaction,
     AutocompleteInteraction,
-  ChatInputApplicationCommandData,
-  CommandInteraction, 
-  Interaction, 
-  PermissionResolvable
+    CommandInteraction, 
+    UserContextMenuInteraction,
+    MessageContextMenuInteraction,
+
+  ApplicationCommandData,
+    ChatInputApplicationCommandData,
+    MessageApplicationCommandData, 
+    UserApplicationCommandData,
+
+  PermissionResolvable,
 } from 'discord.js';
+import { ExtendInteraction } from 'Interfaces';
+
 import Client from "../client";
 
+export type ExtendInteraction<I=Interaction>={client:Client}&I;
 
-export interface ExtendInteraction extends Interaction {  client: Client}
-
-interface ExtendCommandInteraction extends CommandInteraction {client : Client }
-
-interface ExtendAutocompleteInteraction extends AutocompleteInteraction {client: Cluent}
-
-interface RunOptions<K>{
+type RunOptions<I> = { 
   client: Client;
-  interaction: K;
-}
+  interaction: ExtendInteraction<I>;
+};
 
-type RunFunction<K> = (Options : RunOptions<K>)=>any;
+type RunFunction<I> = ( Options: RunOptions<I> )=>any;
 
-export type SlashCommand = {
+type SlashCommandType<C extends ApplicationCommandData> =  {
   userPermissions ?: PermissionResolvable[];
-  run : RunFunction<ExtendCommandInteraction>;
-  autocompleteRun?: RunFunction<ExtendAutocompleteInteraction>
+  
+  run: C extends ChatInputApplicationCommandData 
+      ?RunFunction<CommandInteraction> :
+    C extends UserApplicationCommandData 
+      ?RunFunction<UserContextMenuInteraction> :
+    C extends MessageApplicationCommandData 
+      ?RunFunction<MessageContextMenuInteraction> : never;
+  
+  autocompleteRun?: C extends ChatInputApplicationCommandData
+    ?RunFunction<AutocompleteInteraction>:never;
   // cooldown ?: number;
-} & ChatInputApplicationCommandData
+}&C;
+
+
+export type SlashCommand =
+SlashCommandType<ChatInputApplicationCommandData> |
+SlashCommandType<UserApplicationCommandData> |
+SlashCommandType<MessageApplicationCommandData> ;
