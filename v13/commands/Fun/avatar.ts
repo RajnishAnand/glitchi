@@ -32,6 +32,10 @@ export const command : Command = {
         embeds : [{
           'color': `#00bfff`,
           'title': user.tag,
+          'url' : `${user.displayAvatarURL({
+              format : 'png',
+              dynamic : true,
+            })}?size=4096`,
           'image': {
             url: `${user.displayAvatarURL({
               format : 'png',
