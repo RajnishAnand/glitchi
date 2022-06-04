@@ -34,7 +34,7 @@ export const command : Command = {
             },
             title : 'Avaliable Slash Commands : ',
             description : msg.client.slashCommands.map(c=>{
-              return `${c.name} : ${c.description}`
+              return `${c.name} : ${(!c.type||c.type=="CHAT_INPUT")?c.description:c.type}`
             }).join('\n'),
             timestamp: new Date()
           }]
