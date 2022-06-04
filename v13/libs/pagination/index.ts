@@ -2,7 +2,9 @@ import {
   CommandInteraction,
   Interaction,
   Message,
-  Snowflake
+  MessageContextMenuInteraction,
+  Snowflake,
+  UserContextMenuInteraction
 } from 'discord.js';
 import {select} from '..';
 import {embedHandler} from './embedHandler';
@@ -20,7 +22,10 @@ export default class pagination {
   declare private handler : stringHandler|embedHandler;
   public buttons = ['🔢', '⏮️','◀️', '▶️', '⏭️', '🗑️','↕️'];
   constructor (
-    message: Message|CommandInteraction,
+    message: Message
+      |CommandInteraction
+      |UserContextMenuInteraction
+      |MessageContextMenuInteraction,
     argument: PaginationArgument ,
     options?: PaginationOption<PaginationArgument>
   ){
@@ -51,7 +56,7 @@ export default class pagination {
       this.author = message.author.id;
     }
     //TODO : if ever fails set deferReply
-    else if(message instanceof CommandInteraction ){
+    else if(message instanceof Interaction){
       if(typeof this.handler.value =='string')
         message.reply({
           content:this.handler.value,
