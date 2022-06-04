@@ -112,11 +112,11 @@ export const command: Command = {
         vm.sandbox[each[1]] = await loadImage(each[2]);
       }
 
-      const canv:unknown= await vm.run(wrap(code));
+      const data:unknown= await vm.run(wrap(code));
       
       // canv as an object for Output
-      if(!(canv instanceof Canvas)){
-        let txt = inspect(canv);
+      if(!(Buffer.isBuffer(data))){
+        let txt = inspect(data);
         const length = txt.length;
         if(length>4000)
           txt = `${txt.slice(4001)}...${length-4000} Char`;
@@ -129,14 +129,12 @@ export const command: Command = {
         });
       }
 
-      const img = await canv.toBuffer("png");
-      if(!Buffer.isBuffer(img))throw new Error("img isn't a Buffer.")
 
       stopwatch.stop();
 
        await msg.reply({
          content: `⏱️${stopwatch.elapsed}s | Canvas Output: :frame_photo:`,
-         files: [img],
+         files: [data],
          allowedMentions:{repliedUser:false},
          failIfNotExists:false,
        })
@@ -154,6 +152,6 @@ function wrap(txt:string){
   (function(){
     let canvas = new Canvas(600, 600);
     ${txt}
-    return canvas;
+    return canvas.toBuffer("png");
   })();`;
 }
