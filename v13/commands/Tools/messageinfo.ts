@@ -1,9 +1,9 @@
-import { Message, MessageActionRow, MessageEmbed, TextChannel } from 'discord.js'
+import { Message,  MessageEmbed, TextChannel }  from 'discord.js'
 import { Command } from 'Interfaces'
 import { pageView } from '#libs'
 import { inspect } from "util";
 
-export const command: Command = {
+export const command: Command<MainF> = {
   name: 'messageinfo',
   description: 'detailed information about message.',
   aliases: ['minfo', 'mi',"msginfo"],
@@ -52,29 +52,7 @@ export const command: Command = {
       if (channel && channel instanceof TextChannel && messageId) {
         const message: Partial<Message>= await channel.messages.fetch(messageId)
 
-        // content
-        const content = message.content!.length
-          ?inspect(message.content):undefined;
-        delete message.content;
-
-        // embed 
-        const embeds = message.embeds!.length
-          ?JSON.stringify(message.embeds,null,"  "):undefined;
-        delete message.embeds;
-        
-        // author 
-        const author = inspect(message.author);
-        delete message.author;
-
-        const info: MInfo = {
-          "OVERVIEW" : inspect(message),
-          "AUTHOR": author,
-          "CONTENTS": content,
-          "EMBEDS": embeds
-        };
-
-        new pageView(msg,info)
-
+        new pageView(msg,this.main!(message))
       } else {
         msg.reply({
           content: 'Failed to resolve into TextChannel!',
@@ -90,6 +68,30 @@ export const command: Command = {
       })
     }
   },
+  main(message){
+    // content
+    const content = message.content!.length
+      ?inspect(message.content):undefined;
+    delete message.content;
+
+    // embed 
+    const embeds = message.embeds!.length
+      ?JSON.stringify(message.embeds,null,"  "):undefined;
+    delete message.embeds;
+    
+    // author 
+    const author = inspect(message.author);
+    delete message.author;
+
+    const info: MInfo = {
+      "OVERVIEW" : inspect(message),
+      "AUTHOR": author,
+      "CONTENTS": content,
+      "EMBEDS": embeds
+    };
+    return info;
+  }
 }
 
+type MainF = (m:Partial<Message>|Message)=> MInfo;
 type MInfo = { [index: string]: string | MessageEmbed[]| undefined}

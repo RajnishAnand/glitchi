@@ -15,7 +15,7 @@ export interface CommandArgument{
 }
 
 
-export interface Command {
+export interface Command<M=undefined> {
   name: string;
   
   description ? : string;
@@ -30,5 +30,8 @@ export interface Command {
   
   roleAccess?: "betaTesters";
   devOnly ? : boolean;
-  run : (arg:CommandArgument) => any;
+
+  run : (Options:CommandArgument) => any;
+  main?: M extends undefined?never:M;
+
 }
