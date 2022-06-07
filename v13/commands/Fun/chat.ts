@@ -80,7 +80,7 @@ class chat{
   }
   
   async pipe(txt:string){
-    txt= txt.replace(/\\/g,'');
+    txt= encodeURIComponent(txt.replace(/\\/g,''));
     try{
     const url = `http://api.brainshop.ai/get?bid=158846&key=${process.env.ACOKEY}&uid=${this.msg.author.id}&msg=${txt}`;
     
