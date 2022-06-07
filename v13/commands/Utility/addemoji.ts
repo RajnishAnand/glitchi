@@ -92,6 +92,15 @@ export  const command: Command = {
       allowedMentions: {repliedUser:false}
     });
     
+    //test url
+    try{emojiUrl = new URL(emojiUrl).toString()}
+    catch(_){ 
+      return msg.reply({
+        content: "```\nInvalid URL:"+emojiUrl+" ```", 
+        allowedMentions: {repliedUser:false}
+      });
+    }
+
     // add Emoji
     msg.guild?.emojis.create(emojiUrl,emojiName,{
       reason: `requested by ${msg.author.tag}`
