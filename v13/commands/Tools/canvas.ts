@@ -138,10 +138,10 @@ export const command: Command = {
          allowedMentions:{repliedUser:false},
          failIfNotExists:false,
        })
-    }catch(e){
-      new pageView(msg,inspect(e),{
+    }catch(e:any|Error){
+      new pageView(msg,e.toString?.()||inspect(e),{
         code: "js",
-        title: "Canvas[Error]"
+        title: `Canvas[${e.name||"Error"}]`
       })
     }
   }
