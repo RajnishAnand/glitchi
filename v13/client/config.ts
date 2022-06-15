@@ -36,9 +36,11 @@ export default {
     quick: "<:quick:856818054602948608>",
     knife: "<a:knifeBear:901369113656561744>",
     salute: "<:salute:895714590996955176>",
+
     rollCat: "<a:rolling_cat:971076987009503293>",
     leftArrow: "<:leftArrow:977737601073156096>",
     rightArrow: "<:rightArrow:977737741871767593>",
+    cross: "<:whiteCross:985325737227730944>",
 
     // swift: "<:swift:917731222891929630>",
     // r: "<:r_:933080757688229938>",
