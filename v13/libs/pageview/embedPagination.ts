@@ -70,8 +70,10 @@ export class embedPagination {
         case "left": i--; break;
         case "right": i++; break;
         case "page":this.goto(interaction); break;
-        case "delete": this.msg.delete(); break;
+        case "delete": interaction.deleteReply(); break;
       }
+
+      if(this.page == i) return;
       this.page = i;
       interaction.update(this.value)
         .catch(()=>{})
