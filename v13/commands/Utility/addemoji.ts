@@ -1,4 +1,4 @@
-import { pageView, select } from "#libs";
+import { select, stringPagination } from "#libs";
 import {Command} from "Interfaces";
 
 export  const command: Command = {
@@ -110,7 +110,10 @@ export  const command: Command = {
         content: `Successfully added emoji ${e} with name ${e.name}.`
       })
     }).catch((e)=>{
-      new pageView(msg,e.message,{code:"js",title:"ERROR"});
+      new stringPagination(msg,e.message,{
+          split: {with: ","},
+          decoration: {lang: "js", title:"ERROR"}
+      });
     });
   }
 }

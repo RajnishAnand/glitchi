@@ -2,14 +2,14 @@ import fetch from 'node-fetch';
 import {inspect} from 'util';
 import {parse} from 'content-type';
 import {Util} from 'discord.js';
-import {ask,select,pageView} from '#libs'
+import {ask,select, stringPagination,} from '#libs'
 import {Command, CommandArgument} from 'Interfaces';
 import { CBParser } from 'cbparser';
 
 export const command: Command= {
   name : 'fetch',
   description : 'To fetch any URL .',
-  usage : '<url> ?<--get||--post||--headers> ?<raw> ?<post_text>',
+  usage : '<url> ?<--get||--post||--headers> ?<post_text>',
   args : true ,
   examples :['http://example.com/'] ,
   run
@@ -23,8 +23,6 @@ const types = [
 ];
 
 async function run ({msg,args, content}:CommandArgument){
-  const raw = (args[1]=='raw' && args.splice(1,1)) || args[2]=='raw';
-  
   let response = '';
   let title:string|undefined;
   if(!args[1]||!args[1].startsWith('-'))args.splice(1,0,'-g');
@@ -77,21 +75,15 @@ async function run ({msg,args, content}:CommandArgument){
   } //`
   //type = type.includes('+')?type.split("+")[0]:type.split("/")[1]
   let langGuess = parse(title??'application/error').type.split('/')[1];
-  if(!raw && langGuess=='json') {
+  if(langGuess=='json') {
     try{
       response = inspect(JSON.parse(response),{depth:Infinity});
       langGuess= 'js';
     }catch(err){}
   }
-  if(raw){
-    Util.splitMessage('```'+langGuess+'\n'+(response.replace(/```/g,'``­`' ))+' ```',{
-      prepend:'```'+langGuess+'\n',
-      append : '```',
-      char : '',
-      maxLength : 1950
-    }).forEach(e=>msg.channel.send(e));
-  }
-  else new pageView(msg,response,{code:langGuess,title});
+  else new stringPagination(msg,response,{
+    decoration:{lang:langGuess, title}
+  });
 }
 
 

@@ -1,4 +1,4 @@
-import {pageView} from '#libs';
+import { embedPagination } from '#libs';
 import npmSearch from '#api/npm.js';
 import {Command} from 'Interfaces';
 
@@ -11,7 +11,7 @@ export const command :Command={
   examples : ['react','discord.js'],
   run({msg,content}){
     npmSearch(content())
-      .then(t=>new pageView(msg,t))
+      .then(t=>new embedPagination(msg,t))
       .catch(()=>msg.reply(msg.client.config.emojis.sad+' Any relevant search result not found!'))
   }
 }

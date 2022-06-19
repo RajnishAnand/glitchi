@@ -1,4 +1,4 @@
-import {pageView} from '#libs';
+import { stringPagination } from '#libs';
 import morseNode from 'morse-node';
 import {Command} from 'Interfaces';
 
@@ -22,11 +22,9 @@ export const command :Command= {
     
     if(args[0].toLowerCase()=='decode'||
       args[0].toLowerCase()=='de')
-      new pageView(msg,morse.decode(text));
-    else new pageView(msg,morse.encode(text),
-      {
-        code:'morse',
-        title:'MORSE [ITU Standard]',
+      new stringPagination(msg,morse.decode(text));
+    else new stringPagination(msg,morse.encode(text),{
+        decoration: {lang:'morse', title:'MORSE [ITU Standard]'}
       })
     }
 }

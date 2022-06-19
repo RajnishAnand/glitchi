@@ -1,4 +1,4 @@
-import {pageView} from '#libs';
+import { embedPagination } from '#libs';
 import {MessageEmbedOptions} from 'discord.js';
 import {MessageEmbed} from 'discord.js';
 import {Command, CommandArgument} from 'Interfaces';
@@ -26,7 +26,7 @@ async function run({msg,args}:CommandArgument){
       data[c]+=`>>> Use \`${msg.client.config.prefix}help <CommandName>\` to get more help on it.`
     })
       
-    new pageView(msg,Object.keys(data).map((m:string)=>{
+    new embedPagination(msg,Object.keys(data).map((m:string)=>{
       return new MessageEmbed({
         title:`Help >> Category: ${m}`,
         description:data[m],

@@ -1,4 +1,4 @@
-import {pageView} from "#libs";
+import { stringPagination } from "#libs";
 import {Command} from "Interfaces";
 
 export const command :Command= {
@@ -58,7 +58,7 @@ export const command :Command= {
       messages.fetch(messageID)
         .then((m0)=>{
           if(m0.content.length)
-            new pageView(msg, m0.content);
+            new stringPagination(msg, m0.content);
           else msg.reply({
             content: "Referenced message has no content. Try `messageinfo` for detailed information about the message."
           });

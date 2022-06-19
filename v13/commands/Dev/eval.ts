@@ -1,7 +1,6 @@
 import util from 'util';
-import {pageView,Stopwatch} from '#libs';
+import {Stopwatch, stringPagination} from '#libs';
 import {Command} from 'Interfaces';
-// import { embedPagination } from '../../libs/pageview/embedPagination';
 
 export const command: Command = {
   name: 'eval',
@@ -17,18 +16,19 @@ export const command: Command = {
     try {
       if (msg.author.id === msg.client.guilds.cache.get(msg.client.config.guildId)?.ownerId) {
         const client = msg.client;
-        // const ep = embedPagination;
-        // const db=()=>{firebase.once("value",(d)=>send(d.val()))};
         const send=(text:string, bool:boolean=false)=>{
-          if(bool)new pageView(msg,text);
-          else new pageView(msg,debug(text),
+          if(bool)new stringPagination(msg,text);
+          else new stringPagination(msg,debug(text),
           {
-            code:'javascript',
-            title:'JS-OUTPUT',
-            secondaryTitle: `⏱ ${(
-              stopwatch.stop(),
-              stopwatch.elapsed
-            )}s`
+            decoration:{
+              lang: "js",
+              title:'JS-OUTPUT',
+              secondaryTitle: `⏱ ${(
+                stopwatch.stop(),
+                stopwatch.elapsed
+              )}s`
+            }, 
+            split: {with: ","}
           });
           return '<pagination>';
         }

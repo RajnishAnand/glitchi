@@ -1,7 +1,7 @@
 import {inspect} from 'util';
 import {compile} from 'mathjs';
 import {Command} from 'Interfaces';
-import {pageView, Stopwatch} from '#libs'
+import {Stopwatch, stringPagination} from '#libs'
 
 
 export const command: Command = {
@@ -19,17 +19,20 @@ export const command: Command = {
       const txt = compile(content()).evaluate();
       stopwatch.stop()
 
-      new pageView(msg,inspect(txt,{depth:10}),{
-        code: 'js',
-        title: 'MATH.JS',
-        secondaryTitle : `⏱ ${stopwatch.elapsed}s`
+      new stringPagination(msg,inspect(txt,{depth:10}),{
+        split: {with: ","},
+        decoration: {
+          lang: 'js',
+          title: 'MATH.JS',
+          secondaryTitle : `⏱ ${stopwatch.elapsed}s`
+        }
       });
     }
     catch(err: any){
-      new pageView(msg,err.message??' ',{
-        code: 'js',
+      new stringPagination(msg,err.message??' ',{decoration: {
+        lang: 'js',
         title: 'MATH.JS[ERROR]',
-      });
+      }});
     }
   }
 }

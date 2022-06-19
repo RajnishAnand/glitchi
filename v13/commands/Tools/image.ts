@@ -1,4 +1,4 @@
-import {pageView} from '#libs';
+import { embedPagination } from '#libs';
 import imgs from '#api/unsplash.js';
 import {Command} from 'Interfaces';
 
@@ -14,7 +14,7 @@ export const command : Command = {
   examples : ['clock'],
   run({msg,content }){
     imgs(content())
-      .then(t=>new pageView(msg,t))
+      .then(t=>new embedPagination(msg,t))
       .catch(()=>msg.reply(msg.client.config.emojis.sad+' Any relevant search result not found!'))
    }
 

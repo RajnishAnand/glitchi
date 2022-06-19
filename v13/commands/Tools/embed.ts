@@ -1,4 +1,4 @@
-import {pageView} from '#libs';
+import { stringPagination } from '#libs';
 import { CBParser } from 'cbparser';
 import {MessageEmbed} from 'discord.js';
 import { Command } from 'Interfaces';
@@ -26,14 +26,13 @@ export const command:Command = {
         embeds,
         allowedMentions:{repliedUser:false}
       }).catch(e=>{
-        new pageView(msg,e.message,{
-            code:"js",
-            title:"EmbedError"
+        new stringPagination(msg,e.message,{
+          decoration: {lang:"js",title:"EmbedError"}
         })
       })
     }
     catch(err:any){
-      new pageView(msg,err.message,{code:'JSON_ERROR'});
+      new stringPagination(msg,err.message,{decoration:{lang:'JSON_ERROR'}});
     }
     
     //msg.channel.send('Your message is far beyond my pasing limit. Try sending it in a  **"code-block"**');

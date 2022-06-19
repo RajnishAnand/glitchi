@@ -1,4 +1,5 @@
-import { pageView } from "#libs";
+import { messageinfo, objectPagination } from "#libs";
+import { Message } from "discord.js";
 import { SlashCommand } from "Interfaces";
 
 export const command: SlashCommand = {
@@ -7,10 +8,10 @@ export const command: SlashCommand = {
 
   run({interaction}){
     try{
-      const data = (interaction.client.commands
-        .get("messageinfo") as any)
-        ?.main?.(interaction.targetMessage);
-      new pageView(interaction,data);
+      new objectPagination(
+        interaction,
+        messageinfo(interaction.targetMessage as Message)
+      )
     } 
     catch(_){}
   }

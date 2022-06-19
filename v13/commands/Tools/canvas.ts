@@ -3,7 +3,7 @@ import {VM} from "vm2";
 import {Canvas, Image, loadImage} from 'skia-canvas';
 import {inspect} from "util";
 import {CBParser} from 'cbparser';
-import {pageView, Stopwatch,PerlinNoise} from '#libs';
+import {Stopwatch,PerlinNoise, stringPagination} from '#libs';
 
 
 export const command: Command = {
@@ -122,10 +122,13 @@ export const command: Command = {
           txt = `${txt.slice(4001)}...${length-4000} Char`;
         stopwatch.stop();
 
-        return new pageView(msg,txt,{
-          code: "js",
-          title: "Canvas[Output]",
-          secondaryTitle: `⏱ ${stopwatch.elapsed}s`
+        return new stringPagination(msg,txt,{
+          split: {with: ","},
+          decoration: {
+            lang: "js",
+            title: "Canvas[Output]",
+            secondaryTitle: `⏱ ${stopwatch.elapsed}s`
+          }
         });
       }
 
@@ -139,9 +142,11 @@ export const command: Command = {
          failIfNotExists:false,
        })
     }catch(e:any|Error){
-      new pageView(msg,e.toString?.()||inspect(e),{
-        code: "js",
-        title: `Canvas[${e.name||"Error"}]`
+      new stringPagination(msg,e.toString?.()||inspect(e),{
+        decoration : {
+          lang: "js",
+          title: `Canvas[${e.name||"Error"}]`
+        }
       })
     }
   }

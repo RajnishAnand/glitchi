@@ -1,9 +1,8 @@
-import { Message,  MessageEmbed, TextChannel }  from 'discord.js'
+import { TextChannel }  from 'discord.js'
 import { Command } from 'Interfaces'
-import { pageView } from '#libs'
-import { inspect } from "util";
+import { messageinfo, objectPagination } from '#libs'
 
-export const command: Command<MainF> = {
+export const command: Command = {
   name: 'messageinfo',
   description: 'detailed information about message.',
   aliases: ['minfo', 'mi',"msginfo"],
@@ -50,10 +49,12 @@ export const command: Command<MainF> = {
         ? await msg.client.channels.fetch(channelId)
         : msg.channel
       if (channel && channel instanceof TextChannel && messageId) {
-        const message: Partial<Message>= await channel.messages.fetch(messageId)
+        const message = await channel.messages.fetch(messageId)
 
-        new pageView(msg,this.main!(message))
-      } else {
+        new objectPagination(msg,messageinfo(message));
+
+      }
+      else {
         msg.reply({
           content: 'Failed to resolve into TextChannel!',
           allowedMentions: { repliedUser: false },
@@ -67,31 +68,6 @@ export const command: Command<MainF> = {
         failIfNotExists: false,
       })
     }
-  },
-  main(message){
-    // content
-    const content = message.content!.length
-      ?inspect(message.content):undefined;
-    delete message.content;
-
-    // embed 
-    const embeds = message.embeds!.length
-      ?JSON.stringify(message.embeds,null,"  "):undefined;
-    delete message.embeds;
-    
-    // author 
-    const author = inspect(message.author);
-    delete message.author;
-
-    const info: MInfo = {
-      "OVERVIEW" : inspect(message),
-      "AUTHOR": author,
-      "CONTENTS": content,
-      "EMBEDS": embeds
-    };
-    return info;
   }
 }
 
-type MainF = (m:Partial<Message>|Message)=> MInfo;
-type MInfo = { [index: string]: string | MessageEmbed[]| undefined}

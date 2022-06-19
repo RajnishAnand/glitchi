@@ -1,5 +1,5 @@
 import npmSearch from '../APIs/npm';
-import {pageView} from '#libs';
+import {embedPagination} from '#libs';
 import {SlashCommand} from 'Interfaces';
 
 export const command : SlashCommand = {
@@ -16,7 +16,7 @@ export const command : SlashCommand = {
     const p = interaction.options.getString('query') as string;
     npmSearch(p)
       .then(results=>{
-        new pageView(interaction, results)
+        new embedPagination(interaction, results)
       }).catch(()=>{
         interaction.reply({ 
           content:client.config.emojis.sad+' Any relevant search result not found!',

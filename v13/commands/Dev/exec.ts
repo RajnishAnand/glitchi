@@ -1,6 +1,6 @@
 import cp from 'child_process';
 import util from 'util';
-import {pageView} from '#libs';
+import { stringPagination } from '#libs';
 import {Command} from 'Interfaces';
 
 
@@ -18,7 +18,7 @@ export const command: Command = {
     if(!(msg.author.id===msg.client.config.ownerId))return;
       cp.exec (content(),(...d)=>{
         let tx = d[0]?util.inspect(d[0]):d[1]?d[1]:d[2];
-        new pageView(msg,tx,{code:'bash',title:'BASH-OUTPUT'})
+        new stringPagination(msg,tx,{decoration: {lang:'bash',title:'BASH-OUTPUT'}})
     }) 
   }
 }

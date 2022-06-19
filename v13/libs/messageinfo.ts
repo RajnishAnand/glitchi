@@ -7,8 +7,7 @@ export default function mInfo(m0:Message){
   const data:ObjectPaginationData = [];
 
   // content
-  const content = m.content!.length
-    ?inspect(m.content):undefined;
+  const content = m.content!.length?m.content:undefined;
   delete m.content;
 
   // embed 

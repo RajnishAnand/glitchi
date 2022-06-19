@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import {pageView} from '#libs';
+import { embedPagination } from '#libs';
 import {Command} from 'Interfaces';
 import {MessageEmbed} from 'discord.js';
 
@@ -32,7 +32,7 @@ export const command : Command= {
             e.id == parts[2])?.guild?.name,
         })
       })
-      new pageView(msg,emoList.map(e=>embedIt(e)));
+      new embedPagination(msg,emoList.map(e=>embedIt(e)));
     } 
     else if(/^\d+$/.test(args[0]) && args[0].length<33){
       const emo = msg.client.emojis.resolve(args[0]);
@@ -99,7 +99,7 @@ export const command : Command= {
         msg.reply('Reference messages dosent contain any resolvable emojies!');
         return;
       }
-      new pageView(msg,emoList.map(e=>embedIt(e)));
+      new embedPagination(msg,emoList.map(e=>embedIt(e)));
     });}
 
     else msg.reply('your Specified emoji not Found!');
