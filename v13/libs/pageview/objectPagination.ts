@@ -1,4 +1,5 @@
-import { MessageComponentInteraction, MessageEmbed, MessageOptions, SelectMenuInteraction} from "discord.js";
+import ExtendClient from "client";
+import { CommandInteraction, Message, MessageComponentInteraction, MessageContextMenuInteraction, MessageEmbed, MessageOptions, SelectMenuInteraction, UserContextMenuInteraction} from "discord.js";
 import { ExtendMessage } from "Interfaces";
 import EmbedHandler from "./handlers/embed";
 import StringHandler, { StringHandlerOptions } from "./handlers/string";
@@ -6,13 +7,23 @@ import StringHandler, { StringHandlerOptions } from "./handlers/string";
 export class objectPagination {
   declare handlers: (StringHandler | EmbedHandler)[];
   declare details: detailsOptions[];
-  declare refMsg: ExtendMessage;
-  declare msg: ExtendMessage;
+  declare refMsg: Message
+    | CommandInteraction
+    | UserContextMenuInteraction
+    | MessageContextMenuInteraction; 
+  declare msg: Message;
   declare filter: (i:MessageComponentInteraction)=>boolean;
 
   handlerIndex = 0; 
 
-  constructor(refMsg: ExtendMessage,data:ObjectPaginationData,options?:ObjectPaginationOption){
+  constructor(
+    refMsg:Message
+      | CommandInteraction
+      | UserContextMenuInteraction
+      | MessageContextMenuInteraction,
+    data:ObjectPaginationData,
+    options?:ObjectPaginationOption
+  ){
 
     // data 
     this.handlers = [];
@@ -29,9 +40,13 @@ export class objectPagination {
     })
 
 
-    this.refMsg = refMsg;
-    this.filter = options?.filter || ((interaction)=>
-      interaction.user.id == this.refMsg.author.id);
+    this.refMsg = refMsg; 
+
+    // filter 
+    const userSnowflake = this.refMsg instanceof Message
+      ? this.refMsg.author.id
+      : this.refMsg.user.id;
+    this.filter = options?.filter || ((i)=>i.user.id == userSnowflake);
 
     this.init();
   }  
@@ -59,8 +74,12 @@ export class objectPagination {
 
   // initialisation
   async init (){
-    this.msg = await this.refMsg.channel
-      .send(this.value) as ExtendMessage;
+    await (this.refMsg instanceof Message ?
+      this.refMsg.channel.send(this.value): 
+      this.refMsg.reply({...this.value,fetchReply: true}))
+        .then(m=>{if(m instanceof Message)this.msg = m;});
+    
+    if(!this.msg) return;
 
     // button interaction collector
     const collector=this.msg.createMessageComponentCollector({
@@ -141,7 +160,7 @@ export class objectPagination {
           {
             type: "BUTTON",
             style: "SECONDARY",
-            emoji: this.refMsg.client.config.emojis.leftArrow,
+            emoji: (this.refMsg.client as ExtendClient).config.emojis.leftArrow,
             customId: "left",
             disabled: this.page==1||this.length==1
           },
@@ -156,14 +175,14 @@ export class objectPagination {
           {
             type: "BUTTON",
             style: "SECONDARY",
-            emoji: this.refMsg.client.config.emojis.rightArrow,
+            emoji: (this.refMsg.client as ExtendClient).config.emojis.rightArrow,
             customId: "right",
             disabled: this.length ==1||this.page==this.length
           },
           {
             type: "BUTTON",
             style: "SECONDARY",
-            emoji: this.refMsg.client.config.emojis.cross,
+            emoji: (this.refMsg.client as ExtendClient).config.emojis.cross,
             customId: "delete"
           }
         ]
@@ -189,7 +208,7 @@ export class objectPagination {
 }
 
 
-type ObjectPaginationData =(
+export type ObjectPaginationData =(
   ({
     text: string;
     options ?: StringHandlerOptions;

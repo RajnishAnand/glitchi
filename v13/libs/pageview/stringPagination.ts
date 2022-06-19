@@ -1,18 +1,35 @@
-import { ButtonInteraction, MessageOptions } from "discord.js";
+import ExtendClient from "client";
+import { ButtonInteraction, CommandInteraction, Message, MessageContextMenuInteraction, MessageOptions, UserContextMenuInteraction } from "discord.js";
 import { ExtendMessage } from "Interfaces";
 import StringHandler, {StringHandlerOptions} from "./handlers/string";
 
 export class stringPagination{
   declare handler: StringHandler;
-  declare refMsg: ExtendMessage;
-  declare msg: ExtendMessage;
+  declare refMsg: Message
+    | CommandInteraction
+    | UserContextMenuInteraction
+    | MessageContextMenuInteraction ; 
+  declare msg:Message;
   declare filter: (i:ButtonInteraction)=>boolean;
 
-  constructor(refMsg: ExtendMessage,text:string,options?:StringPaginationOption){
+  constructor(
+    refMsg:Message
+      | CommandInteraction
+      | UserContextMenuInteraction
+      | MessageContextMenuInteraction,
+    text:string,
+    options?:StringPaginationOption
+  ){
     // data
-    this.refMsg = refMsg;
-    this.filter = options?.filter || ((interaction)=>
-      interaction.user.id == this.refMsg.author.id);
+    this.refMsg = refMsg; 
+
+    // filter 
+    const userSnowflake = this.refMsg instanceof Message
+      ? this.refMsg.author.id
+      : this.refMsg.user.id;
+    this.filter = options?.filter || ((i)=>i.user.id == userSnowflake);
+
+
     if(options?.initialPage)this.page = options.initialPage;
     
     this.handler = new StringHandler(text,{
@@ -37,8 +54,12 @@ export class stringPagination{
 
   // initialisation
   async init (){
-    this.msg = await this.refMsg.channel
-      .send(this.value) as ExtendMessage;
+    await (this.refMsg instanceof Message ?
+      this.refMsg.channel.send(this.value): 
+      this.refMsg.reply({...this.value,fetchReply: true}))
+        .then(m=>{if(m instanceof Message)this.msg = m;});
+    
+    if(!this.msg) return;
 
     const collector=this.msg.createMessageComponentCollector({
       idle: 120000,
@@ -107,7 +128,7 @@ export class stringPagination{
         {
           type: "BUTTON",
           style: "SECONDARY",
-          emoji: this.refMsg.client.config.emojis.leftArrow,
+          emoji: (this.refMsg.client as ExtendClient).config.emojis.leftArrow,
           customId: "left",
           disabled: this.page==1||this.length==1
         },
@@ -122,14 +143,14 @@ export class stringPagination{
         {
           type: "BUTTON",
           style: "SECONDARY",
-          emoji: this.refMsg.client.config.emojis.rightArrow,
+          emoji: (this.refMsg.client as ExtendClient).config.emojis.rightArrow,
           customId: "right",
           disabled: this.length ==1||this.page==this.length
         },
         {
           type: "BUTTON",
           style: "SECONDARY",
-          emoji: this.refMsg.client.config.emojis.cross,
+          emoji: (this.refMsg.client as ExtendClient).config.emojis.cross,
           customId: "delete"
         }
       ]

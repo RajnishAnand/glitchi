@@ -1,20 +1,35 @@
-import { ButtonInteraction, MessageEmbed, MessageOptions} from "discord.js";
-import { ExtendMessage } from "Interfaces";
+import ExtendClient from "client";
+import { ButtonInteraction, CommandInteraction, Message, MessageContextMenuInteraction, MessageEmbed, MessageOptions, UserContextMenuInteraction} from "discord.js";
 import EmbedHandler from "./handlers/embed";
 
 export class embedPagination {
   declare handler: EmbedHandler;
-  declare refMsg: ExtendMessage;
-  declare msg: ExtendMessage;
+  declare refMsg: Message 
+    | CommandInteraction
+    | UserContextMenuInteraction
+    | MessageContextMenuInteraction; 
+  declare msg: Message;
   declare filter: (i:ButtonInteraction)=>boolean;
 
-  constructor(refMsg: ExtendMessage,embeds:MessageEmbed[],options?:EmbedPaginationOption){
+  constructor(
+    refMsg: Message
+      | CommandInteraction
+      | UserContextMenuInteraction
+      | MessageContextMenuInteraction,
+    embeds:MessageEmbed[],
+    options?:EmbedPaginationOption
+  ){
 
     // data
     this.refMsg = refMsg;
     this.handler= new EmbedHandler(embeds);
-    this.filter = options?.filter || ((interaction)=>
-      interaction.user.id == this.refMsg.author.id);
+    
+    // filter 
+    const userSnowflake = this.refMsg instanceof Message
+      ? this.refMsg.author.id
+      : this.refMsg.user.id;
+    this.filter = options?.filter || ((i)=>i.user.id == userSnowflake);
+
     if(options?.initialPage)this.page = options.initialPage;
 
     this.init();
@@ -34,8 +49,12 @@ export class embedPagination {
 
   // initialisation
   async init (){
-    this.msg = await this.refMsg.channel
-      .send(this.value) as ExtendMessage;
+    await (this.refMsg instanceof Message ?
+      this.refMsg.channel.send(this.value): 
+      this.refMsg.reply({...this.value,fetchReply: true}))
+        .then(m=>{if(m instanceof Message)this.msg = m;});
+    
+    if(!this.msg) return;
 
     const collector=this.msg.createMessageComponentCollector({
       idle: 120000,
@@ -105,7 +124,7 @@ export class embedPagination {
         {
           type: "BUTTON",
           style: "SECONDARY",
-          emoji: this.refMsg.client.config.emojis.leftArrow,
+          emoji: (this.refMsg.client as ExtendClient).config.emojis.leftArrow,
           customId: "left",
           disabled: this.page==1||this.length==1
         },
@@ -120,14 +139,14 @@ export class embedPagination {
         {
           type: "BUTTON",
           style: "SECONDARY",
-          emoji: this.refMsg.client.config.emojis.rightArrow,
+          emoji: (this.refMsg.client as ExtendClient).config.emojis.rightArrow,
           customId: "right",
           disabled: this.length ==1||this.page==this.length
         },
         {
           type: "BUTTON",
           style: "SECONDARY",
-          emoji: this.refMsg.client.config.emojis.cross,
+          emoji: (this.refMsg.client as ExtendClient).config.emojis.cross,
           customId: "delete"
         }
       ]
