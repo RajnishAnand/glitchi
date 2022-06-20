@@ -105,7 +105,7 @@ export class objectPagination {
         case "left": this.page--; break;
         case "right": this.page++; break;
         case "page": this.goto(interaction); break;
-        case "delete": interaction.deleteReply(); break;
+        case "delete":await interaction.deleteReply().catch(()=>{this.msg.delete().catch(()=>{})}); break;
         case "select": this.handlerIndex = +(interaction as SelectMenuInteraction).values[0]; break;
       }
       interaction.update(this.value)

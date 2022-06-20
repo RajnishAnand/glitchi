@@ -75,7 +75,7 @@ export class stringPagination{
         case "left": i--; break;
         case "right": i++; break;
         case "page":this.goto(interaction); break;
-        case "delete": interaction.deleteReply(); break;
+        case "delete": interaction.deleteReply().catch(()=>this.msg.delete().catch(()=>{})); break;
       }
       if(this.page == i) return;
       this.page = i;

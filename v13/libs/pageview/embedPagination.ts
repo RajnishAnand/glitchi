@@ -70,7 +70,7 @@ export class embedPagination {
         case "left": i--; break;
         case "right": i++; break;
         case "page":this.goto(interaction); break;
-        case "delete": interaction.deleteReply(); break;
+        case "delete":await interaction.deleteReply().catch(()=>{this.msg.delete().catch(()=>{})}); break;
       }
 
       if(this.page == i) return;
