@@ -36,7 +36,7 @@
     "morse-node": "^0.1.1",
     "node-fetch": "^2.6.1",
     "pretty-ms": "^7.0.1",
-    "skia-canvas": "^0.9.28",
+    "skia-canvas": "^0.9.30",
     "typescript": "^4.3.5",
     "vm2": "^3.9.6"
   },
