@@ -1,135 +1,133 @@
-import { User, GuildMember ,PermissionString,MessageEmbed} from 'discord.js';
-import {Command, ExtendMessage} from 'Interfaces';
+import { User, GuildMember, PermissionString, MessageEmbed } from 'discord.js';
+import { Command, ExtendMessage } from 'Interfaces';
 
 export const command: Command = {
-  name: 'user',
-  aliases: ['whois', 'userinfo'],
-  description: 'user details.',
-  usage: '?<@mention||id>',
-  examples :['@glitchi'],
+	name: 'user',
+	aliases: ['whois', 'userinfo'],
+	description: 'user details.',
+	usage: '?<@mention||id>',
+	examples: ['@glitchi'],
 
-  run({msg,args}){
-    if (args[0]) {
-      let id = args[0].replace(/^<@!?/, '').replace(/>$/, '');
-      if (/^\d+$/.test(id)) {
-        msg.client.users.fetch(id)
-          .then((u) => {
-            msg.guild?.members.fetch(u.id)
-              .then((gu) => msg.channel.send({
-                embeds : embedIt(msg,u, gu)
-              }))
-              .catch(() => msg.channel.send({
-                embeds : embedIt(msg,u)}))
-          })
-          .catch((err: Error) => msg.reply(err.message));
-      }
-      else{
-        msg.react(msg.client.config.emojis.sad);
-        return msg.reply('your specified user wasn\'t found!')
-      }
-    }
-    else {
-      msg.channel.send({
-        embeds : embedIt(msg,msg.author, msg.member)
-      });
-    }
-  }
-}
+	run({ msg, args }) {
+		if (args[0]) {
+			let id = args[0].replace(/^<@!?/, '').replace(/>$/, '');
+			if (/^\d+$/.test(id)) {
+				msg.client.users
+					.fetch(id)
+					.then((u) => {
+						msg.guild?.members
+							.fetch(u.id)
+							.then((gu) =>
+								msg.channel.send({
+									embeds: embedIt(msg, u, gu)
+								})
+							)
+							.catch(() =>
+								msg.channel.send({
+									embeds: embedIt(msg, u)
+								})
+							);
+					})
+					.catch((err: Error) => msg.reply(err.message));
+			} else {
+				msg.react(msg.client.config.emojis.sad);
+				return msg.reply("your specified user wasn't found!");
+			}
+		} else {
+			msg.channel.send({
+				embeds: embedIt(msg, msg.author, msg.member)
+			});
+		}
+	}
+};
 /** Returns [Embed] for User command */
-function embedIt(msg:ExtendMessage ,user: User, member:GuildMember|null=null) {
-  let embed = new MessageEmbed({
-    color: 0x00bfff,
-    title: user.tag,
-    url: `https://discordapp.com/users/${user.id}`,
-    description: `>>> **Username** :\` ${user.username
-      } \`\n**ID** :\` ${user.id
-      } \`\n🖼️ | **Avatar** : [[png]](${user.displayAvatarURL({
-          format : 'png',
-          dynamic : true,
-          size : 4096
-        })
-      })\`|\`[[jpg]](${user
-        .displayAvatarURL({
-          format : 'jpg',
-          dynamic : true,
-          size : 4096
-        })
-      })\`|\`[[webp]](${user
-        .displayAvatarURL({
-          format : 'webp',
-          dynamic : true,
-          size : 4096
-        })
-      })\n**🤖 | Bot** :\` ${user.bot
-      }\`\n**⏳ | Created** : <t:${Math.ceil(+user.createdAt/1000)}:R>`,
-    thumbnail: {
-      url: user.displayAvatarURL({
-        format: 'png',
-        dynamic: true
-      })
-    },
-    fields: [],
-    footer: {
-      text: '| Requested by ' + msg.author.tag ,
-      icon_url: msg.author.avatarURL({ format: 'png' })??undefined
-    }
-  });
-  
-  // BADGES EmbedField
-  const badges = user.flags?.toArray().join(', ');
-  if(badges)embed.fields.push({
-    name: '🎗️| Badges : ',
-    value: `\`\`\`\n${badges}\`\`\``,
-    inline: false
-  });
+function embedIt(msg: ExtendMessage, user: User, member: GuildMember | null = null) {
+	let embed = new MessageEmbed({
+		color: 0x00bfff,
+		title: user.tag,
+		url: `https://discordapp.com/users/${user.id}`,
+		description: `>>> **Username** :\` ${user.username} \`\n**ID** :\` ${user.id} \`\n🖼️ | **Avatar** : [[png]](${user.displayAvatarURL({
+			format: 'png',
+			dynamic: true,
+			size: 4096
+		})})\`|\`[[jpg]](${user.displayAvatarURL({
+			format: 'jpg',
+			dynamic: true,
+			size: 4096
+		})})\`|\`[[webp]](${user.displayAvatarURL({
+			format: 'webp',
+			dynamic: true,
+			size: 4096
+		})})\n**🤖 | Bot** :\` ${user.bot}\`\n**⏳ | Created** : <t:${Math.ceil(+user.createdAt / 1000)}:R>`,
+		thumbnail: {
+			url: user.displayAvatarURL({
+				format: 'png',
+				dynamic: true
+			})
+		},
+		fields: [],
+		footer: {
+			text: '| Requested by ' + msg.author.tag,
+			icon_url: msg.author.avatarURL({ format: 'png' }) ?? undefined
+		}
+	});
 
-  if (member&&member.joinedAt) {
-    embed.description += `\n🍻 | **Joined** : <t:${Math.ceil(+member.joinedAt/1000)}:R>`;
-    
-    // ROLES EmbedField
-    const roles : string[]= member.roles.cache.filter((r) => r.id != member.guild.id).map(r => r.toString());
-    
-    if(roles.length)embed.fields.push({
-      name: `🪃| Roles [${roles.length}]: `,
-      value:roles.join(", "),
-      inline : false,
-    });
-    
-    // KEY PERMISSIONS EmbedField
-    const keyPerms :PermissionString[]= [
-      'KICK_MEMBERS', 'BAN_MEMBERS',
-      'MANAGE_CHANNELS', 'MANAGE_GUILD',
-      'MANAGE_MESSAGES', 'MENTION_EVERYONE',
-      'MANAGE_NICKNAMES', 'MANAGE_ROLES',
-      'MANAGE_WEBHOOKS', 'MANAGE_EMOJIS_AND_STICKERS',
-      'MANAGE_EVENTS', 'MANAGE_THREADS'
-    ];
+	// BADGES EmbedField
+	const badges = user.flags?.toArray().join(', ');
+	if (badges)
+		embed.fields.push({
+			name: '🎗️| Badges : ',
+			value: `\`\`\`\n${badges}\`\`\``,
+			inline: false
+		});
 
-    const permKeys = member.permissions.toArray();
-    let userKeyPerms:string|undefined;
-  
-    if (permKeys.includes('ADMINISTRATOR')) {
-      userKeyPerms = 'ALL_PERMISSIONS'
-    }
-    else if (keyPerms.every(p =>
-        permKeys.includes(p))) {
-      userKeyPerms = 'MODERATION_PRIVILEGE'
-    }
-    else if (keyPerms.some(p => permKeys.includes(p))) {
-      userKeyPerms = permKeys
-        .filter((perm:PermissionString) => keyPerms.includes(perm))
-        .join(', ');
-    }
-  
-    if (userKeyPerms) {
-      embed.fields.push({
-        name: `🥷| Key Permissions : `,
-        value: '```\n' + userKeyPerms + '```',
-        inline : false
-      })
-    }
-  
-  };
-  return [embed];
+	if (member && member.joinedAt) {
+		embed.description += `\n🍻 | **Joined** : <t:${Math.ceil(+member.joinedAt / 1000)}:R>`;
+
+		// ROLES EmbedField
+		const roles: string[] = member.roles.cache.filter((r) => r.id != member.guild.id).map((r) => r.toString());
+
+		if (roles.length)
+			embed.fields.push({
+				name: `🪃| Roles [${roles.length}]: `,
+				value: roles.join(', '),
+				inline: false
+			});
+
+		// KEY PERMISSIONS EmbedField
+		const keyPerms: PermissionString[] = [
+			'KICK_MEMBERS',
+			'BAN_MEMBERS',
+			'MANAGE_CHANNELS',
+			'MANAGE_GUILD',
+			'MANAGE_MESSAGES',
+			'MENTION_EVERYONE',
+			'MANAGE_NICKNAMES',
+			'MANAGE_ROLES',
+			'MANAGE_WEBHOOKS',
+			'MANAGE_EMOJIS_AND_STICKERS',
+			'MANAGE_EVENTS',
+			'MANAGE_THREADS'
+		];
+
+		const permKeys = member.permissions.toArray();
+		let userKeyPerms: string | undefined;
+
+		if (permKeys.includes('ADMINISTRATOR')) {
+			userKeyPerms = 'ALL_PERMISSIONS';
+		} else if (keyPerms.every((p) => permKeys.includes(p))) {
+			userKeyPerms = 'MODERATION_PRIVILEGE';
+		} else if (keyPerms.some((p) => permKeys.includes(p))) {
+			userKeyPerms = permKeys.filter((perm: PermissionString) => keyPerms.includes(perm)).join(', ');
+		}
+
+		if (userKeyPerms) {
+			embed.fields.push({
+				name: `🥷| Key Permissions : `,
+				value: '```\n' + userKeyPerms + '```',
+				inline: false
+			});
+		}
+	}
+	return [embed];
 }
-
