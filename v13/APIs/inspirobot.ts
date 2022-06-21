@@ -1,26 +1,23 @@
 import fetch from 'node-fetch';
-import {MessageEmbed} from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 const url = 'https://inspirobot.me/api?generate=true';
 
-export default async function (){
-  const value = await fetch(url).then(r=>r.text());
+export default async function () {
+  const value = await fetch(url).then((r) => r.text());
   return {
     value,
-    embedify(){
+    embedify() {
       return new MessageEmbed({
-        color : '#2f3136',
+        color: '#2f3136',
         author: {
-          name : 'InspiroBot.me',
-          iconURL : 'https://inspirobot.me/website/images/favicon.png'
+          name: 'InspiroBot.me',
+          iconURL: 'https://inspirobot.me/website/images/favicon.png',
         },
-        description : 'AI generated Inspiring Quotes.',
+        description: 'AI generated Inspiring Quotes.',
         url: 'https://inspirobot.me',
-        image : {url:this.value},
-        timestamp: new Date()
+        image: { url: this.value },
+        timestamp: new Date(),
       });
-    }
-  }
+    },
+  };
 }
-
-
-

@@ -4,25 +4,24 @@ type dictionaryapiResponse = {
 
   phonetics: {
     text: string;
-    audio ?: URL;
-    sourceUrl ?: URL;
-    license ?: { name: name, url: URL};
+    audio?: URL;
+    sourceUrl?: URL;
+    license?: { name: name; url: URL };
   }[];
 
   meanings: {
-    partOfSpeech: string; 
-    synonyms: string[]|[];
-    antonyms: string[]|[];
+    partOfSpeech: string;
+    synonyms: string[] | [];
+    antonyms: string[] | [];
 
     definitions: {
       definition: string;
-      synonyms: string[]|[];
-      antonyms: string[]|[];
-      example ?: string;
+      synonyms: string[] | [];
+      antonyms: string[] | [];
+      example?: string;
     }[];
-
   }[];
 
-  license: { name: string, url: URL };
-  sourceUrls: URL[],
+  license: { name: string; url: URL };
+  sourceUrls: URL[];
 }[];

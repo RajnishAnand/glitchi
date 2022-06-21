@@ -1,8 +1,12 @@
 declare module 'morse-node' {
-  export function create(version : 'ITU'){
+  export function create(version: 'ITU') {
     return {
-      encode(string){return string},
-      decode(string){return string}
+      encode(string) {
+        return string;
+      },
+      decode(string) {
+        return string;
+      },
     };
-  };
+  }
 }

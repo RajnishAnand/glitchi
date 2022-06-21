@@ -1,5 +1,5 @@
 declare module 'mathsteps' {
-  export function simplifyExpression(equation:string) {
+  export function simplifyExpression(equation: string) {
     return Steps;
   }
 }
@@ -7,10 +7,10 @@ declare module 'mathsteps' {
 type Steps = Status[];
 
 interface Status {
-  changeType : string;
+  changeType: string;
   oldEquation: Equation;
   newEquation: Equation;
-  stubsteps: Status[]|[];
+  stubsteps: Status[] | [];
 }
 
 interface Equation {
@@ -23,11 +23,11 @@ interface Node {
   implicit: boolean;
   op: string;
   fn: string;
-  args:[] // CHECK: 
+  args: []; // CHECK:
 
   //TODO: differenciate left right nodes
   value: string;
   valueType: string;
 
-  changeGroup: number| undefined;
+  changeGroup: number | undefined;
 }

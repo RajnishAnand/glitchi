@@ -1,11 +1,8 @@
 import validate from './validate';
-import Client from "./client"
+import Client from './client';
 
 const client = new Client();
 
-validate().then(()=>{
+validate().then(() => {
   client.init();
-})
-
-
-
+});
