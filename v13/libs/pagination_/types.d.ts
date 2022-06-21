@@ -1,17 +1,19 @@
-import {MessageEmbed} from "discord.js";
+import { MessageEmbed } from 'discord.js';
 
-export type PaginationArgument = string|MessageEmbed[]|{
-  [key: string]: string|MessageEmbed[]|undefined;
-}
+export type PaginationArgument =
+  | string
+  | MessageEmbed[]
+  | {
+      [key: string]: string | MessageEmbed[] | undefined;
+    };
 
-export interface PaginationOption<T>{
+export interface PaginationOption<T> {
   //stringPaginationOptions
-  code ?: T extends string ? string : never;
-  chunkSize ?: T extends string ? number : never;
-  title ?: T extends string ? string : never;
-  secondaryTitle ?: T extends string ? string : never;
-  timestamp ?: T extends string ? Date : never;
+  code?: T extends string ? string : never;
+  chunkSize?: T extends string ? number : never;
+  title?: T extends string ? string : never;
+  secondaryTitle?: T extends string ? string : never;
+  timestamp?: T extends string ? Date : never;
 
   //EmbedPaginationOption : no options
-
 }

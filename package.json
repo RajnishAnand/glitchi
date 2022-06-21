@@ -8,11 +8,13 @@
     "#api/*.js": "./build/APIs/*.js"
   },
   "scripts": {
+    "prepare": "husky install",
     "build": "tsc -b v13",
     "prestart": "npm run build",
     "start": "node build/index.js",
     "dev": "node build/index.js",
-    "protected": "PROTECTED=1 npm start"
+    "protected": "PROTECTED=1 npm start",
+    "format": "prettier --write --loglevel=warn \"v13/**/*.{js,ts,json}\""
   },
   "repository": {
     "type": "git",
@@ -44,6 +46,12 @@
     "@types/content-type": "^1.1.5",
     "@types/node": "^14.17.9",
     "@types/node-fetch": "^2.5.12",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.2",
+    "prettier": "^2.7.1"
+  },
+  "lint-staged": {
+    "**/*.{ts,md,json}": "prettier --write"
   }
 }

@@ -1,4 +1,4 @@
-import {Response} from "node-fetch";
+import { Response } from 'node-fetch';
 
 export interface RandomFilterOptions {
   /** The maximum Length in characters */
@@ -11,25 +11,24 @@ export interface RandomFilterOptions {
   author: string;
 }
 
-
 export interface QuoteResponse {
-  _id: string
+  _id: string;
   /** The quotation text */
-  content: string
+  content: string;
   /** The full name of the author */
-  author: string
+  author: string;
   /** The `slug` of the quote author */
-  authorSlug: string
+  authorSlug: string;
   /** The length of quote (number of characters) */
-  length: number
+  length: number;
   /** An array of tag names for this quote */
-  tags: string[]
+  tags: string[];
 }
 
 /** if any Error Occurs */
-export interface ErrorResponse{
+export interface ErrorResponse {
   statusCode: number;
   statusMessage: string;
 }
 
-type QuoteRoutes = "random"|"quotes"|"search"|"author"|"tags";
+type QuoteRoutes = 'random' | 'quotes' | 'search' | 'author' | 'tags';
