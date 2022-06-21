@@ -1,7 +1,10 @@
 import {Command} from 'Interfaces';
 
 const gifs:{[index:string]:string} = {
-  slap: "https://media.discordapp.net/attachments/906985861525155880/967325447354466335/BJ8o71tD-.gif"
+  slap: "https://media.discordapp.net/attachments/906985861525155880/967325447354466335/BJ8o71tD-.gif",
+  mustachedisguise : "https://c.tenor.com/wM7CU3pwFIsAAAAM/moustache-disguise.gifs",
+  sleeperattack: "https://c.tenor.com/NkCXPaCEdAgAAAAM/shoe-throw.gif",
+
 }
 
 export const command:Command = {
