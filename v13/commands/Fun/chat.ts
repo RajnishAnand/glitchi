@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { Message, MessageCollector } from 'discord.js';
 import { Command, CommandArgument } from 'Interfaces';
 

@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { embedPagination } from '#libs';
 import { Command } from 'Interfaces';
 import { MessageEmbed } from 'discord.js';

@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { MessageEmbed } from 'discord.js';
 const url = 'https://inspirobot.me/api?generate=true';
 

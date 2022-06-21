@@ -1,7 +1,5 @@
-import fetch from 'node-fetch';
 import { inspect } from 'util';
 import { parse } from 'content-type';
-import { Util } from 'discord.js';
 import { ask, select, stringPagination } from '#libs';
 import { Command, CommandArgument } from 'Interfaces';
 import { CBParser } from 'cbparser';

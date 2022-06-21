@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { MessageEmbed } from 'discord.js';
 import { RandomFilterOptions, QuoteResponse, ErrorResponse } from './types';
 

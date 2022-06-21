@@ -1,5 +1,4 @@
 import { MessageEmbed } from 'discord.js';
-import fetch from 'node-fetch';
 
 const url = 'https://rockyou.arnavkr.repl.co/';
 

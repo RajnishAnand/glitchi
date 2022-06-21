@@ -1,5 +1,3 @@
-import { Response } from 'node-fetch';
-
 export interface RandomFilterOptions {
   /** The maximum Length in characters */
   maxLength: number;

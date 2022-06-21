@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { MessageEmbed } from 'discord.js';
 import { unsplashApi } from '#types/unsplash-api';
 

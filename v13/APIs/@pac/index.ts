@@ -1,5 +1,4 @@
 import { MessageEmbed } from 'discord.js';
-import fetch from 'node-fetch';
 import { PacResponse } from './types';
 
 const pacUrl = 'https://archlinux.org/packages/search/json/';
