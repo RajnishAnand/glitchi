@@ -1,17 +1,17 @@
 {
-	"extends": "../tsconfig.base.json",
-	"compilerOptions": {
-		"baseUrl": ".",
-		"outDir": "../build",
-		"rootDir": ".",
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "../build",
+    "rootDir": ".",
 
-		"paths": {
-			"#api/*.js": ["APIs/*.js"],
-			"#api/*": ["APIs/*/index.js"],
-			"#libs": ["libs/index"],
-			"#types/*": ["typings/*"]
-		}
-	},
-	//"include":["./*"],
-	"exclude": ["./tsconfig.json"]
+    "paths": {
+      "#api/*.js": ["APIs/*.js"],
+      "#api/*": ["APIs/*/index.js"],
+      "#libs": ["libs/index"],
+      "#types/*": ["typings/*"]
+    }
+  },
+  //"include":["./*"],
+  "exclude": ["./tsconfig.json"]
 }

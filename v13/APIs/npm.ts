@@ -4,111 +4,119 @@ const search = 'https://registry.npmjs.org/-/v1/search?size=10&text=';
 
 /** Search for npm libs from npm_registry */
 export default async function npmSearch(query: string) {
-	let resp: npmSearchResponse = await fetch(search + encodeURI(query)).then((r) => r.json());
+  let resp: npmSearchResponse = await fetch(search + encodeURI(query)).then(
+    (r) => r.json(),
+  );
 
-	if (!resp.total) throw Error('Any relevant search result not found!');
+  if (!resp.total) throw Error('Any relevant search result not found!');
 
-	const embeds = resp.objects.map((r) => {
-		const author = `${
-			r.package.author
-				? `
+  const embeds = resp.objects.map((r) => {
+    const author = `${
+      r.package.author
+        ? `
 ‣ **Author :** ${
-						r.package.author.username
-							? `[${r.package.author.name}](https://www.npmjs.com/~${r.package.author.username})`
-							: r.package.author.name
-				  }`
-				: ''
-		}
+            r.package.author.username
+              ? `[${r.package.author.name}](https://www.npmjs.com/~${r.package.author.username})`
+              : r.package.author.name
+          }`
+        : ''
+    }
 `;
 
-		const publisher = `‣ **Publisher :** [${r.package.publisher.username}](https://www.npmjs.com/~${r.package.publisher.username})
+    const publisher = `‣ **Publisher :** [${r.package.publisher.username}](https://www.npmjs.com/~${r.package.publisher.username})
 `;
 
-		const large = r.package.maintainers.length > 15 && (r.package.maintainers.length = 15);
-		const maintainers = `‣ **Maintainer(s) :** 
-${r.package.maintainers.map((m) => `    ⌙ [${m.username}](https://www.npmjs.com/~${m.username})`).join('\n')}${large ? '...' : ''}`;
+    const large =
+      r.package.maintainers.length > 15 && (r.package.maintainers.length = 15);
+    const maintainers = `‣ **Maintainer(s) :** 
+${r.package.maintainers
+  .map((m) => `    ⌙ [${m.username}](https://www.npmjs.com/~${m.username})`)
+  .join('\n')}${large ? '...' : ''}`;
 
-		const keywords = `${
-			r.package.keywords
-				? `
+    const keywords = `${
+      r.package.keywords
+        ? `
 >>> **Keywords :** ${r.package.keywords.join(', ')}`
-				: ''
-		}`;
+        : ''
+    }`;
 
-		const scores = `>>> Quality: ${(r.score.detail.quality * 100).toFixed(2)}%
+    const scores = `>>> Quality: ${(r.score.detail.quality * 100).toFixed(2)}%
 Popularity: ${(r.score.detail.popularity * 100).toFixed(2)}%
 Maintenance: ${(r.score.detail.maintenance * 100).toFixed(2)}%
 Overall: ${(r.score.final * 100).toFixed(2)}%`;
 
-		return new MessageEmbed({
-			author: {
-				name: 'npm',
-				iconURL: 'https://static.npmjs.com/f1786e9b7cba9753ca7b9c40e8b98f67.png'
-			},
-			color: '#fa4704',
-			title: r.package.name,
-			url: r.package.links.npm,
-			description: r.package.description,
-			fields: [
-				{
-					name: 'About :',
-					value: `‣ **Version :** ${r.package.version}
-‣ **Last Publish :** <t:${Math.floor(+new Date(r.package.date) / 1000)}:R>${author}${publisher}${maintainers}${keywords}`
-				},
-				{
-					name: 'Score: ',
-					value: scores
-				}
-			],
-			timestamp: new Date()
-		});
-	});
+    return new MessageEmbed({
+      author: {
+        name: 'npm',
+        iconURL:
+          'https://static.npmjs.com/f1786e9b7cba9753ca7b9c40e8b98f67.png',
+      },
+      color: '#fa4704',
+      title: r.package.name,
+      url: r.package.links.npm,
+      description: r.package.description,
+      fields: [
+        {
+          name: 'About :',
+          value: `‣ **Version :** ${r.package.version}
+‣ **Last Publish :** <t:${Math.floor(
+            +new Date(r.package.date) / 1000,
+          )}:R>${author}${publisher}${maintainers}${keywords}`,
+        },
+        {
+          name: 'Score: ',
+          value: scores,
+        },
+      ],
+      timestamp: new Date(),
+    });
+  });
 
-	return embeds;
+  return embeds;
 }
 
 /** npm_registry api search response  */
 interface npmSearchResponse {
-	objects: {
-		package: {
-			name: string;
-			version: string;
-			description: string;
-			keywords: string[] | undefined;
-			date: Date;
-			links: {
-				npm: string;
-				homepage?: string;
-				repository: string;
-				bugs?: string;
-			};
-			author:
-				| undefined
-				| {
-						name: string;
-						username?: string;
-				  };
-			publisher: {
-				username: string;
-				email: string;
-			};
-			maintainers: {
-				username: string;
-				email: string;
-			}[];
-		};
-		score: {
-			final: number;
-			detail: {
-				quality: number;
-				popularity: number;
-				maintenance: number;
-			};
-		};
-		searchScore: number;
-	}[];
-	total: number;
-	time: string;
+  objects: {
+    package: {
+      name: string;
+      version: string;
+      description: string;
+      keywords: string[] | undefined;
+      date: Date;
+      links: {
+        npm: string;
+        homepage?: string;
+        repository: string;
+        bugs?: string;
+      };
+      author:
+        | undefined
+        | {
+            name: string;
+            username?: string;
+          };
+      publisher: {
+        username: string;
+        email: string;
+      };
+      maintainers: {
+        username: string;
+        email: string;
+      }[];
+    };
+    score: {
+      final: number;
+      detail: {
+        quality: number;
+        popularity: number;
+        maintenance: number;
+      };
+    };
+    searchScore: number;
+  }[];
+  total: number;
+  time: string;
 }
 
 /* TODO: addd single package fetch too

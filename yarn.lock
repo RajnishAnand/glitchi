@@ -57,13 +57,6 @@
   resolved "https://registry.yarnpkg.com/@sapphire/async-queue/-/async-queue-1.3.1.tgz#9d861e626dbffae02d808e13f823d4510e450a78"
   integrity sha512-FFTlPOWZX1kDj9xCAsRzH5xEJfawg1lNoYAA+ecOWJMHOfiZYb1uXOI3ne9U4UILSEPwfE68p3T9wUHwIQfR0g==
 
-"@sapphire/prettier-config@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@sapphire/prettier-config/-/prettier-config-1.4.3.tgz#a623e186048f6e080afd8db448c4318c1740084c"
-  integrity sha512-B0/SBL2x/R/DqF3cIY+f+1DzGI20SLyFBhvKnN9EndCow2feB5TWHvVArJKTDN7PMVgU1Gia2aCLyXO+/OM32w==
-  dependencies:
-    prettier "^2.6.2"
-
 "@sapphire/shapeshift@^3.1.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@sapphire/shapeshift/-/shapeshift-3.3.0.tgz#2d7c35daa1cecf93bd62683e7c4102844cf1a97e"
@@ -888,7 +881,7 @@ pidtree@^0.6.0:
   resolved "https://registry.yarnpkg.com/pidtree/-/pidtree-0.6.0.tgz#90ad7b6d42d5841e69e0a2419ef38f8883aa057c"
   integrity sha512-eG2dWTVw5bzqGRztnHExczNxt5VGsE6OwTeCG3fdUf9KBsZzO3R5OIIIzWR+iZA0NtZ+RDVdaoE2dK1cn6jH4g==
 
-prettier@^2.6.2, prettier@^2.7.1:
+prettier@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
   integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==

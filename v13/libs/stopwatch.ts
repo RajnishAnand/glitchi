@@ -1,15 +1,15 @@
 export class Stopwatch {
-	private declare startTime: [number, number];
-	private declare time: [number, number];
+  private declare startTime: [number, number];
+  private declare time: [number, number];
 
-	start() {
-		this.startTime = process.hrtime();
-	}
-	stop() {
-		this.time = process.hrtime(this.startTime);
-	}
+  start() {
+    this.startTime = process.hrtime();
+  }
+  stop() {
+    this.time = process.hrtime(this.startTime);
+  }
 
-	get elapsed() {
-		return (this.time[0] + this.time[1] / 1e9).toFixed(3);
-	}
+  get elapsed() {
+    return (this.time[0] + this.time[1] / 1e9).toFixed(3);
+  }
 }
