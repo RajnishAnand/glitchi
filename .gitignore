@@ -2,3 +2,6 @@
 node_modules/
 build/
 test/
+
+# for yarn log and other log files
+*.log
