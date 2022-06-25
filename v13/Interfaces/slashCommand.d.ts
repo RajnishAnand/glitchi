@@ -10,7 +10,6 @@ import {
   UserApplicationCommandData,
   PermissionResolvable,
 } from 'discord.js';
-import { ExtendInteraction } from 'Interfaces';
 
 import Client from '../client';
 
