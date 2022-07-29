@@ -8,6 +8,6 @@ export const command: Command = {
   examples: ['this is a suggestion!'],
 
   run(arg) {
-    arg.msg.client.commands.get('feedback')?.run(arg);
+    (arg.msg.client.commands.get('feedback') as typeof this)?.run(arg);
   },
 };
