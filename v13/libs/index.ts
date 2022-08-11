@@ -5,3 +5,6 @@ export { owoify } from './owoify';
 export { Stopwatch } from './stopwatch';
 export { PerlinNoise } from './noise';
 export { default as messageinfo } from './messageinfo';
+export { messageHandler } from './messageHandler';
+export { attachDeletable } from './attachDelete';
+export { toBeegoLang } from './beegolang';
