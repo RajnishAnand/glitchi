@@ -33,6 +33,8 @@ export default class ExtendClient extends Client {
           lifetime: 600000,
         },
       },
+      failIfNotExists: false,
+      allowedMentions: { repliedUser: false },
     });
   }
 
