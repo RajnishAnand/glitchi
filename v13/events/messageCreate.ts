@@ -1,6 +1,5 @@
 import { Event, ExtendMessage } from '../Interfaces';
 import { messageHandler } from '#libs';
-import ExtendClient from 'client';
 
 export const event: Event = {
   name: 'messageCreate',
