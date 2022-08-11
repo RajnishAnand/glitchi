@@ -14,10 +14,11 @@ export interface CommandArgument {
   // error?: (message: message, err: { message: string }) => null;
 }
 
-export interface Command<M = undefined> {
+export interface Command {
   name: string;
 
   description?: string;
+  detailedDescription?: string;
   aliases?: string[];
   usage?: string;
   examples?: string[];
@@ -27,9 +28,9 @@ export interface Command<M = undefined> {
   requiredPerms?: PermissionResolvable[];
   category?: string;
 
+  editable?: boolean;
   roleAccess?: 'betaTesters';
   devOnly?: boolean;
 
   run: (Options: CommandArgument) => any;
-  main?: M extends undefined ? never : M;
 }
