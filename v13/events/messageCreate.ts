@@ -13,6 +13,11 @@ export const event: Event = {
         embeds: [
           {
             title: `Error[${val.error}]`,
+            description: val.message,
+            color: '#fcc300',
+            footer: {
+              text: val.command?.name ? 'command: ' + val.command.name : '⌨',
+            },
           },
         ],
       });

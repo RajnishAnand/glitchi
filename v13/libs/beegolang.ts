@@ -100,13 +100,13 @@ export function toBeegoLang(txt: string) {
   return txt;
 }
 
-const text = `Welcome to SoloLearn Chat,
-Read the rules,
-maybe introduce yourself in introduction. 
-If you're good at a programming language, 
-go to roles to set yourself a language role.
-If no-one is around, 
-there are plenty of channels to explore.
-I hope you enjoy your stay!`;
+// const text = `Welcome to SoloLearn Chat,
+// Read the rules,
+// maybe introduce yourself in introduction.
+// If you're good at a programming language,
+// go to roles to set yourself a language role.
+// If no-one is around,
+// there are plenty of channels to explore.
+// I hope you enjoy your stay!`;
 
-console.log(toBeegoLang(text));
+// console.log(toBeegoLang(text));
