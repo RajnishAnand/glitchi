@@ -108,7 +108,7 @@ export async function messageHandler(
       return {
         command,
         error: 'PERMUMISS',
-        message: ` Permission(s) required to run this command :\n  └⊳ \` ${command.userPerms.join(
+        message: ` Permission(s) you required to run this command :\n  └⊳ \` ${command.userPerms.join(
           '`\n  └⊳ `',
         )} \``,
       };
