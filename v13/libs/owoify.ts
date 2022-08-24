@@ -27,7 +27,7 @@ const emotes = [
 export function owoify(txt: string) {
   const randE = emotes[Math.floor(Math.random() * emotes.length)];
 
-  txt = txt.replace(/@((here|everyone))/g, (match) => {
+  txt = txt.toLowerCase().replace(/@((here|everyone))/g, (match) => {
     return match.substring(1);
   });
 
