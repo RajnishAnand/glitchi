@@ -95,10 +95,10 @@ async function run({ msg, args, content }: CommandArgument) {
       response = inspect(JSON.parse(response), { depth: Infinity });
       langGuess = 'js';
     } catch (err) {}
-  } else
-    new stringPagination(msg, response, {
-      decoration: { lang: langGuess, title },
-    });
+  }
+  new stringPagination(msg, response, {
+    decoration: { lang: langGuess, title },
+  });
 }
 
 /////////////////////////////////////////////////
