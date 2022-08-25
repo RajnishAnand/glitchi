@@ -10,6 +10,7 @@ export interface CommandArgument {
   msg: ExtendMessage;
   args: string[];
   content: () => string;
+  fetchRef: () => Promise<Message> | false;
   commandName: string;
   // error?: (message: message, err: { message: string }) => null;
 }

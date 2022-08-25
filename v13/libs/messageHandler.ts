@@ -147,8 +147,12 @@ export async function messageHandler(
         .substring(client.config.prefix.length)
         .replace(/^[\s+]?/, '')
         .replace(commandName + ' ', '');
+    const fetchRef = () => {
+      if (!msg.reference?.messageId) return false;
+      return msg.channel.messages.fetch(msg.reference?.messageId);
+    };
     return {
-      args: { msg, args, content, commandName },
+      args: { msg, args, content, commandName, fetchRef },
       command,
       // error:this.err
     };
