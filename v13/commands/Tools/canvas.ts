@@ -163,7 +163,7 @@ export const command: Command = {
           allowedMentions: { repliedUser: false },
           failIfNotExists: false,
         })
-        .then((m) => attachDeletable(m, msg.id));
+        .then((m) => attachDeletable(m, msg.author.id));
     } catch (e: any | Error) {
       new stringPagination(msg, e.toString?.() || inspect(e), {
         decoration: {
