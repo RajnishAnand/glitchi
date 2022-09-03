@@ -16,7 +16,7 @@ export const command: SlashCommand = {
   run({ interaction }) {
     const txt = interaction.options.getString('text') as string;
     interaction.reply({
-      content: owoify(txt.toLowerCase()),
+      content: owoify(txt),
     });
   },
 };

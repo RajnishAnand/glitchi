@@ -1,5 +1,11 @@
-let block: { [index: string]: string | undefined } = {};
-let prefix = ['>>', '?:'][+(process.env.BETA ?? 0)];
+const block: { [index: string]: string | undefined } = {};
+const prefix = ['>>', '?:'][+(process.env.BETA ?? 0)];
+const editables: {
+  [index: string]: {
+    messageId: string;
+    timeout: ReturnType<typeof setTimeout>;
+  };
+} = {};
 
 export default {
   prefix,
@@ -17,6 +23,9 @@ export default {
     suggestion: '874308146728943636',
     serverLog: '857636955553398814',
   },
+
+  block,
+  editables,
 
   emojis: {
     thumbsup: '<:thumbsup:862862241136115732>',
@@ -59,6 +68,4 @@ export default {
     // cpp: "<:cpp:917730073312894986>",
     // c: "<:c_:917730189297995818>",
   },
-
-  block,
 };
