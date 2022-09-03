@@ -1,5 +1,5 @@
 import util from 'util';
-import { Stopwatch, stringPagination } from '#libs';
+import { attachDeletable, Stopwatch, stringPagination } from '#libs';
 import { Command } from 'Interfaces';
 
 export const command: Command = {
@@ -40,7 +40,9 @@ export const command: Command = {
         );
       }
     } catch (err: any) {
-      msg.channel.send('```\n' + err.message + '```');
+      msg.channel
+        .send('```\n' + err.message + '```')
+        .then((m) => attachDeletable(m, msg.author.id));
     }
   },
 };
