@@ -3,7 +3,12 @@ import { VM } from 'vm2';
 import { Canvas, Image, loadImage } from 'skia-canvas';
 import { inspect } from 'util';
 import { CBParser } from 'cbparser';
-import { Stopwatch, PerlinNoise, stringPagination } from '#libs';
+import {
+  Stopwatch,
+  PerlinNoise,
+  stringPagination,
+  attachDeletable,
+} from '#libs';
 
 export const command: Command = {
   name: 'canv',
@@ -151,12 +156,14 @@ export const command: Command = {
 
       stopwatch.stop();
 
-      await msg.reply({
-        content: `⏱️${stopwatch.elapsed}s | Canvas Output: :frame_photo:`,
-        files: [data],
-        allowedMentions: { repliedUser: false },
-        failIfNotExists: false,
-      });
+      await msg
+        .reply({
+          content: `⏱️${stopwatch.elapsed}s | Canvas Output: :frame_photo:`,
+          files: [data],
+          allowedMentions: { repliedUser: false },
+          failIfNotExists: false,
+        })
+        .then((m) => attachDeletable(m, msg.id));
     } catch (e: any | Error) {
       new stringPagination(msg, e.toString?.() || inspect(e), {
         decoration: {
