@@ -12,6 +12,12 @@ export const command: SlashCommand = {
       required: true,
       autocomplete: true,
     },
+    {
+      name: 'ephemeral',
+      description: 'Set to ephemeral to make it visible only to you.',
+      type: 'BOOLEAN',
+      required: false,
+    },
   ],
 
   run({ client, interaction }) {
@@ -19,6 +25,7 @@ export const command: SlashCommand = {
     mdnApi(q)
       .then((response) => {
         interaction.reply({
+          ephemeral: interaction.options.getBoolean('ephemeral') || false,
           embeds: [response[0].embedify()],
           components: [
             {
