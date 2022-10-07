@@ -88,7 +88,7 @@ export const command: Command = {
               emoji: m,
             })),
           }).catch(() => undefined);
-        else emojiUrl = matches[0];
+        else emojiUrl = emojiToUrl(matches[0]);
       }
       // feom ref attachment
       else if (ref.attachments.size)
@@ -147,7 +147,8 @@ export const command: Command = {
   },
 };
 
-function emojiToUrl(e: string) {
+function emojiToUrl(emo: string) {
   const ereg = /<(a)?:(\w{1,20}):(\d{1,32})>/g;
+  const e = [...emo.matchAll(new RegExp(ereg))][0];
   return `https://cdn.discordapp.com/emojis/${e[3]}.${e[1] ? 'gif' : 'png'}`;
 }
