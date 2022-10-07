@@ -26,7 +26,7 @@ async function run({ msg, args, content }: CommandArgument) {
   if (args[1] !== 'start') {
     let contents = content().replace(args[0], '');
     if (contents.replace(/\s+/g, '') != '') return channel.send(contents);
-    else channel.send('This Channel is Directly Connected to my Devloper.');
+    // else channel.send('This Channel is Directly Connected to my Devloper.');
   }
   if (msg.channel.id in msg.client.config.block)
     return msg.reply('This channel is already connected to a channel!');
@@ -82,7 +82,7 @@ async function run({ msg, args, content }: CommandArgument) {
     collector0.stop();
     delete msg.client.config.block[msg.channel.id];
     msg.channel.send('Channel disconnected!');
-    channel.send('Channel disconnected!');
+    // channel.send('Channel disconnected!');
   });
 
   msg.client.config.block[msg.channel.id] = msg.author.id;
