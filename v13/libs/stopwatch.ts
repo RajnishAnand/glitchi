@@ -7,6 +7,7 @@ export class Stopwatch {
   }
   stop() {
     this.time = process.hrtime(this.startTime);
+    return this.elapsed;
   }
 
   get elapsed() {
