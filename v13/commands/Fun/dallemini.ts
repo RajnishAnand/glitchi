@@ -6,7 +6,7 @@ import { Canvas, loadImage } from 'skia-canvas/lib';
 export const command: Command = {
   name: 'dallemini',
   description: 'Generate images from text',
-  aliases: ['crayon'],
+  aliases: ['craiyon'],
   args: true,
   usage: '...<prompt>',
   examples: ['harry potter with a sword'],
