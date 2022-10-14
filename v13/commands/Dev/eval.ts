@@ -11,7 +11,7 @@ export const command: Command = {
   // usage : string,
   // permissions : string,
   // permRequired : [string],
-  run({ msg, content }) {
+  run({ msg, content,fetchRef }) {
     const stopwatch = new Stopwatch();
     try {
       if (
@@ -19,6 +19,7 @@ export const command: Command = {
         msg.client.guilds.cache.get(msg.client.config.guildId)?.ownerId
       ) {
         const client = msg.client;
+        const ref = fetchRef;
         const send = (text: string, bool: boolean = false) => {
           if (bool) new stringPagination(msg, text);
           else
