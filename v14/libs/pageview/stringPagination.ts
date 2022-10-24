@@ -62,32 +62,36 @@ export class stringPagination extends basePagination {
       idle: 120000,
       componentType: ComponentType.Button,
       dispose: true,
-      filter: this.filter,
     });
 
-    // movement
+    // navigation
     collector.on('collect', async (interaction) => {
-      let i = this.page;
+      if (!this.filter(interaction)) {
+        interaction.reply({
+          ephemeral: true,
+          content: this.invalidClickWarning,
+        });
+        return;
+      }
+
       switch (interaction.customId) {
         case 'left':
-          i--;
+          this.page--;
           break;
         case 'right':
-          i++;
+          this.page++;
           break;
         case 'page':
           this.goto(interaction);
           break;
         case 'delete':
-          this.delete().catch(() => {});
+          await this.delete().catch(() => {});
           break;
       }
-      if (this.page == i) return;
-      this.page = i;
       interaction.update(this.value).catch(() => {});
     });
 
-    // remove components when idle
+    // disable components when idle
     collector.on('end', () => {
       this.msg.edit({ components: this.components(true) }).catch(() => {});
     });

@@ -89,12 +89,7 @@ export class objectPagination extends basePagination {
       if (!this.filter(interaction)) {
         interaction.reply({
           ephemeral: true,
-          content: [
-            "Don't click! <:youBad:888716976145461249>.",
-            "Don't click! <:youBad:888716976145461249>, I'll ban you!",
-            'Eat this chocolate Instead! 🍫',
-            "No, I'm responding to you!,👻",
-          ][Math.floor(Math.random() * 4)],
+          content: this.invalidClickWarning,
         });
         return;
       }
@@ -119,7 +114,7 @@ export class objectPagination extends basePagination {
       interaction.update(this.value).catch(() => {});
     });
 
-    // remove components when idle
+    // disable components when idle
     collector.on('end', () => {
       this.msg
         .edit({ components: this.objectComponents(true) })

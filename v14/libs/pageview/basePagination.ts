@@ -14,7 +14,7 @@ import {
   MessageComponentInteraction,
 } from 'discord.js';
 import EmbedHandler from './handlers/embed';
-import StringHandler, { StringHandlerOptions } from './handlers/string';
+import StringHandler from './handlers/string';
 
 export abstract class basePagination {
   abstract handler: StringHandler | EmbedHandler;
@@ -40,12 +40,21 @@ export abstract class basePagination {
   set page(x: number) {
     this.handler.page = x > 0 && x < this.length + 1 ? x : this.page;
   }
+  get invalidClickWarning() {
+    return [
+      "Don't click! <:youBad:888716976145461249>.",
+      "Don't click! <:youBad:888716976145461249>, I'll ban you!",
+      'Eat this chocolate Instead! 🍫',
+      "Nope, I'm not responding to you!,👻",
+    ][Math.floor(Math.random() * 4)];
+  }
 
   async delete() {
     return this.refMsg instanceof Message
       ? this.msg.delete()
       : this.refMsg.deleteReply();
   }
+
   // jump to page
   async goto(interaction: MessageComponentInteraction) {
     await interaction.showModal({
