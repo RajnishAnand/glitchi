@@ -4,7 +4,7 @@ import { TextCommand } from 'client/interface';
 
 export const command: TextCommand = {
   name: 'eval',
-  aliases: ['ev'],
+  aliases: ['ev', '>'],
   description: 'Evaluate',
   ownerOnly: true,
   args: true,
