@@ -1,25 +1,29 @@
-import { User } from 'discord.js';
-import { Command } from 'Interfaces';
+import { findUser } from '#libs';
+import { TextCommand } from 'client/interface';
+import { Guild, User } from 'discord.js';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'avatar',
   aliases: ['pfp', 'a'],
   description: 'User Avatar',
-  usage: '<@user||userID>',
   args: false,
+  argsHelp: ['?<@user||userID>'],
 
-  async run({ msg, args }) {
+  async run({ client, msg, args, content }) {
     let user: User | undefined;
     if (!args.length) user = msg.author;
     else {
       args[0] = args[0].replace(/^<@!?/, '').replace(/>$/, '');
 
       // is valid user
-      if (!/^\d*$/.test(args[0]))
-        msg.reply(
-          `Are you sure its a valid user ID. ${msg.client.config.emojis.knife}`,
-        );
-      else {
+      if (!/^\d*$/.test(args[0])) {
+        const u = await findUser(msg.guild as Guild, content());
+        if (u) user = u.user;
+        else
+          msg.reply(
+            'Specified User not found in this guild. Try Using userID instead.',
+          );
+      } else {
         await msg.client.users
           .fetch(args[0])
           .then((u) => {
@@ -28,7 +32,7 @@ export const command: Command = {
           .catch(() => {
             msg
               .reply(
-                `User with id \`${args[0]}\` not Found! ${msg.client.config.emojis.go}`,
+                `User with id \`${args[0]}\` not Found! ${client.config.emojis.go}`,
               )
               .catch(() => {});
           });
@@ -42,23 +46,23 @@ export const command: Command = {
           allowedMentions: { repliedUser: false },
           embeds: [
             {
-              color: `#00bfff`,
+              color: 0x2f3136,
               title: user.tag,
-              url: `${user.displayAvatarURL({
-                format: 'png',
-                dynamic: true,
-              })}?size=4096`,
+              url: user.displayAvatarURL({
+                extension: 'png',
+                size: 4096,
+              }),
               image: {
-                url: `${user.displayAvatarURL({
-                  format: 'png',
-                  dynamic: true,
-                })}?size=4096`,
+                url: user.displayAvatarURL({
+                  extension: 'png',
+                  size: 4096,
+                }),
               },
               footer: {
                 text: `Requested by ${msg.author.tag}`,
                 icon_url: msg.author.avatarURL() ?? undefined,
               },
-              timestamp: new Date(),
+              timestamp: new Date().toISOString(),
             },
           ],
         })
