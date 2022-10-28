@@ -1,20 +1,22 @@
-import { Message, MessageCollector, TextChannel } from 'discord.js';
-import { Command, CommandArgument } from 'Interfaces';
-//import pageView from '../../libs/pagination/index';
+import { TextCommand, TextCommandOptions } from 'client/interface';
+import {
+  ChannelType,
+  Message,
+  MessageCollector,
+  TextChannel,
+} from 'discord.js';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'connect',
   description: 'connect to a channel.',
   aliases: ['msg'],
   args: true,
-  // usage : string,
-  // permissions : string,
-  devOnly: true,
-  // permRequired : [string],
+  argsHelp: ['<channel|channelID>', '?<message>'],
+  ownerOnly: true,
   run,
 };
 
-async function run({ msg, args, content }: CommandArgument) {
+async function run({ client, msg, args, content }: TextCommandOptions) {
   const id = args[0].replace(/^<#/, '').replace(/>$/, '');
   const channel = await msg.client.channels
     .fetch(id)
@@ -28,7 +30,7 @@ async function run({ msg, args, content }: CommandArgument) {
     if (contents.replace(/\s+/g, '') != '') return channel.send(contents);
     // else channel.send('This Channel is Directly Connected to my Devloper.');
   }
-  if (msg.channel.id in msg.client.config.block)
+  if (msg.channel.id in client.config.block)
     return msg.reply('This channel is already connected to a channel!');
   const collector0: MessageCollector = channel.createMessageCollector({
     filter: (m) => m.author?.id != msg.client.user?.id,
@@ -36,14 +38,14 @@ async function run({ msg, args, content }: CommandArgument) {
 
   collector0.on('collect', async (m) => {
     try {
-      if (msg.channel.type != 'GUILD_TEXT') return;
+      if (msg.channel.type != ChannelType.GuildText) return;
       const webhooks = await msg.channel.fetchWebhooks();
       const webhook = webhooks.first();
       if (!webhook) {
         msg.channel.send({
           content: m.content,
           embeds: m.embeds,
-          attachments: m.attachments as any,
+          files: m.attachments.map((a) => a.url),
           components: m.components,
           stickers: m.stickers as any,
         });
@@ -52,6 +54,7 @@ async function run({ msg, args, content }: CommandArgument) {
       if (webhook) {
         await webhook.send({
           content: m.content == '' ? undefined : m.content,
+          files: m.attachments.map((a) => a.url),
           username: m.author.username,
           avatarURL: m.author.avatarURL() ?? '',
           embeds: m.embeds,
@@ -72,7 +75,7 @@ async function run({ msg, args, content }: CommandArgument) {
     channel.send({
       content: m.content,
       embeds: m.embeds,
-      attachments: m.attachments as any,
+      files: m.attachments.map((a) => a.url),
       components: m.components,
       stickers: m.stickers as any,
     });
@@ -80,11 +83,11 @@ async function run({ msg, args, content }: CommandArgument) {
 
   collector1.on('end', () => {
     collector0.stop();
-    delete msg.client.config.block[msg.channel.id];
+    delete client.config.block[msg.channel.id];
     msg.channel.send('Channel disconnected!');
     // channel.send('Channel disconnected!');
   });
 
-  msg.client.config.block[msg.channel.id] = msg.author.id;
+  client.config.block[msg.channel.id] = msg.author.id;
   msg.reply(`Connected to channel <#${id}>. Use '-s' to stop`);
 }
