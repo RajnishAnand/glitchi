@@ -21,7 +21,7 @@ export const event: Event = {
               guild.iconURL({ size: 4096 }) ??
               'https://discord.com/assets/ca03beabe94d8f97ba6fbf75cbb695c4.png',
           },
-          timestamp: new Date().toString(),
+          timestamp: new Date().toISOString(),
           color: 0xff5500,
         },
       ],
