@@ -8,3 +8,4 @@ export { default as messageinfo } from './messageinfo';
 export { messageHandler } from './messageHandler';
 export { attachDeletable } from './attachDelete';
 export { toBeegoLang } from './beegolang';
+export { findUser } from './findUser';
