@@ -85,34 +85,38 @@ export class objectPagination extends basePagination {
     });
 
     // movement
-    collector.on('collect', async (interaction) => {
-      if (!this.filter(interaction)) {
-        interaction.reply({
-          ephemeral: true,
-          content: this.invalidClickWarning,
-        });
-        return;
-      }
+    collector.on(
+      'collect',
+      async (interaction: MessageComponentInteraction) => {
+        if (!this.filter(interaction)) {
+          interaction.reply({
+            ephemeral: true,
+            content: this.invalidClickWarning,
+          });
+          return;
+        }
 
-      switch (interaction.customId) {
-        case 'left':
-          this.page--;
-          break;
-        case 'right':
-          this.page++;
-          break;
-        case 'page':
-          this.goto(interaction);
-          break;
-        case 'delete':
-          this.delete().catch(() => {});
-          break;
-        case 'select':
-          this.handlerIndex = +(interaction as SelectMenuInteraction).values[0];
-          break;
-      }
-      interaction.update(this.value).catch(() => {});
-    });
+        switch (interaction.customId) {
+          case 'left':
+            this.page--;
+            break;
+          case 'right':
+            this.page++;
+            break;
+          case 'page':
+            this.goto(interaction);
+            break;
+          case 'delete':
+            this.delete().catch(() => {});
+            break;
+          case 'select':
+            this.handlerIndex = +(interaction as SelectMenuInteraction)
+              .values[0];
+            break;
+        }
+        interaction.update(this.value).catch(() => {});
+      },
+    );
 
     // disable components when idle
     collector.on('end', () => {
