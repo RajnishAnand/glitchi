@@ -1,26 +1,30 @@
+import fetch from 'node-fetch';
+import ExtendClient from 'client';
+import { TextCommand, TextCommandOptions } from 'client/interface';
 import { Message, MessageCollector } from 'discord.js';
-import { Command, CommandArgument } from 'Interfaces';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'chat',
   description: 'Chat with another bot',
   aliases: ['ch'],
   args: true,
-  usage: '<start||...text>',
+  argsHelp: ['<start||...text>'],
   run(x) {
     new chat(x);
   },
 };
 
 class chat {
-  declare msg: CommandArgument['msg'];
-  constructor({ msg, args, content }: CommandArgument) {
+  declare msg: Message;
+  declare client: ExtendClient;
+  constructor({ client, msg, args, content }: TextCommandOptions) {
     this.msg = msg;
+    this.client = client;
     this.main(args, content());
   }
   async main(args: string[], content: string) {
     if (args[0] == 'start') {
-      if (this.msg.channel.id in this.msg.client.config.block) {
+      if (this.msg.channel.id in this.client.config.block) {
         this.msg.reply(
           'An instance of API interaction is already running! please wait for it to stop!',
         );
@@ -34,22 +38,22 @@ class chat {
       collector.on('collect', (m) => this.chat(m, collector));
 
       collector.on('end', () => {
-        delete this.msg.client.config.block[this.msg.channel.id];
+        delete this.client.config.block[this.msg.channel.id];
         this.msg.channel.send(
           'Chat API interaction started by ' + this.msg.author.tag + ' ended!',
         );
       });
 
-      this.msg.client.config.block[this.msg.channel.id] = this.msg.author.id;
+      this.client.config.block[this.msg.channel.id] = this.msg.author.id;
       this.msg.channel.send(
         "Chat API interaction started use `--stop` to stop or will automatically stop on inactivity! During this period you won't be able to use other commands.",
       );
     } else if (
-      this.msg.author.id == this.msg.client.config.ownerId &&
+      this.msg.author.id == this.client.config.ownerId &&
       args[0] == 'train'
     ) {
       const collector = this.msg.channel.createMessageCollector({
-        filter: (m) => m.author.id == this.msg.client.config.ownerId,
+        filter: (m) => m.author.id == this.client.config.ownerId,
         max: 2,
       });
       let arr: string[] = new Array();
@@ -76,7 +80,9 @@ class chat {
       });
       this.msg.channel.send('training started!');
     } else {
-      this.pipe(content).then((d: string) => this.msg.channel.send(d));
+      this.pipe(content).then((d: string) => {
+        this.msg.channel.send(d);
+      });
     }
   }
 
