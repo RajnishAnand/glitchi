@@ -1,19 +1,19 @@
 import dallemini from '#api/dalle-mini.js';
 import { Stopwatch } from '#libs';
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
 import { Canvas, loadImage } from 'skia-canvas/lib';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'dallemini',
   description: 'Generate images from text',
   aliases: ['craiyon'],
   args: true,
-  usage: '...<prompt>',
+  argsHelp: ['...<prompt>'],
   examples: ['harry potter with a sword'],
   roleAccess: 'betaTesters',
-  async run({ msg, content }) {
+  async run({ client, msg, content }) {
     const m = await msg.reply(
-      `${msg.client.config.emojis.rollCat} Fetching...\n*it may take a while. Sit back, will ping you when its done.*`,
+      `${client.config.emojis.rollCat} Fetching...\n*it may take a while. Sit back, will ping you when its done.*`,
     );
     const stopwatch = new Stopwatch();
     stopwatch.start();
