@@ -1,12 +1,13 @@
 import imgQuote from '#api/imageQuote.js';
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'imgquote',
   description: 'Quotes with image',
   aliases: ['insp', 'imagequote', 'inspire'],
+  args: false,
   roleAccess: 'betaTesters',
-  run({ msg }) {
+  run({ client, msg }) {
     imgQuote()
       .then((t) =>
         msg.reply({
@@ -16,7 +17,7 @@ export const command: Command = {
       )
       .catch(() =>
         msg.reply(
-          msg.client.config.emojis.sad +
+          client.config.emojis.sad +
             ' An Unknown Error Occurred while fetching from api.',
         ),
       );
