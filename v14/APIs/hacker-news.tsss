@@ -1,0 +1,5 @@
+const url = 'https://hackernews.api-docs.io/v0';
+
+export default function (size:number){
+  fetch(url+'/topstories.json')
+}
