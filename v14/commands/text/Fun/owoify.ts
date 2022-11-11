@@ -1,18 +1,18 @@
 import { owoify } from '#libs';
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'owoify',
   description: 'convert to text to owoLang',
   aliases: ['owo'],
   args: true,
   examples: ['hello'],
 
-  run({ msg, commandName }) {
+  run({ client, msg, commandName }) {
     msg.reply(
       owoify(
         msg.cleanContent
-          .slice(msg.client.config.prefix.length)
+          .slice(client.config.prefix.length)
           .trim()
           .replace(commandName + ' ', ''),
       ),
