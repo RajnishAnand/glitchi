@@ -14,7 +14,7 @@ export interface TextCommand {
 
   args: boolean;
   argsRegex?: RegExp[];
-  argsHelp: string[];
+  argsHelp?: string[];
   examples?: string[];
 
   userPerms?: PermissionResolvable[];
