@@ -1,7 +1,9 @@
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
+import { ButtonStyle, ComponentType } from 'discord.js';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'invite',
+  aliases: ['repo', 'support'],
   description: 'invite glitchi to your server!',
   args: false,
 
@@ -9,7 +11,7 @@ export const command: Command = {
     msg.channel.send({
       embeds: [
         {
-          color: '#00bfff',
+          color: 0x00bfff,
           author: {
             name: 'Glitchi',
             icon_url:
@@ -20,24 +22,30 @@ export const command: Command = {
           image: {
             url: 'https://media.discordapp.net/attachments/906985861525155880/934092437473886288/2022-01-21-19-45-37.jpg',
           },
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
         },
       ],
       components: [
         {
-          type: 'ACTION_ROW',
+          type: ComponentType.ActionRow,
           components: [
             {
-              type: 'BUTTON',
+              type: ComponentType.Button,
               label: 'Invite',
-              style: 'LINK',
+              style: ButtonStyle.Link,
               url: 'https://discord.com/oauth2/authorize?client_id=852227150455373906&scope=bot%20applications.commands&permissions=413927861313',
             },
             {
-              type: 'BUTTON',
-              style: 'LINK',
+              type: ComponentType.Button,
+              style: ButtonStyle.Link,
               label: 'Join Support Server',
               url: 'https://discord.gg/EuShUmJrZR',
+            },
+            {
+              type: ComponentType.Button,
+              style: ButtonStyle.Link,
+              label: 'Github',
+              url: 'http://github.com/rajnishanand/glitchi',
             },
           ],
         },

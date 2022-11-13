@@ -1,28 +1,28 @@
-import { MessageEmbed, TextChannel } from 'discord.js';
-import { Command } from 'Interfaces';
+import { EmbedBuilder } from '@discordjs/builders';
+import { TextCommand } from 'client/interface';
+import { TextChannel } from 'discord.js';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'feedback',
   description: 'Send feedback',
   examples: ['testing feedback command'],
   aliases: ['fd'],
-  usage: '<..feedbackText>',
   args: true,
+  argsHelp: ['<..feedbackText>'],
 
-  run({ msg, args, commandName }) {
+  run({ client, msg, args, commandName }) {
     const text = args
       .join(' ')
       //.replace(/\n+/,'\n');
       .replace(/\n{2,}/g, '\n');
     const suggest = commandName == 'suggest';
-    const embed = new MessageEmbed({
+    const embed = new EmbedBuilder({
       title: `📮| ${suggest ? 'Suggestion' : 'Feedback'} : `,
-      color: '#1ac95d',
+      color: 0x1ac95d,
       description: '>>> ' + text,
       thumbnail: {
         url: msg.author.displayAvatarURL({
-          format: 'png',
-          dynamic: true,
+          extension: 'png',
           size: 4096,
         }),
       },
@@ -35,21 +35,21 @@ export const command: Command = {
             '```',
         },
       ],
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     });
     //msg.delete();
     (
       msg.client.channels.cache.get(
         suggest
-          ? msg.client.config.channels.suggestion
-          : msg.client.config.channels.feedback,
+          ? client.config.channels.suggestion
+          : client.config.channels.feedback,
       ) as TextChannel
     )
       .send({ embeds: [embed] })
       .then((m) => {
         if (suggest) {
-          m.react(msg.client.config.emojis.thumbsup);
-          m.react(msg.client.config.emojis.thumbsdown);
+          m.react(client.config.emojis.thumbsup);
+          m.react(client.config.emojis.thumbsdown);
         }
       })
       .catch(() => {
@@ -58,12 +58,12 @@ export const command: Command = {
         );
         // this.error(msg,err);
       })
-      .then(() =>
+      .then(() => {
         msg.channel.send(
           `Thank you for your ${suggest ? 'Suggestion' : 'Feedback'}! Your ${
             suggest ? 'Suggestion' : 'Feedback'
           } was successfully sent to support server.\😊`,
-        ),
-      );
+        );
+      });
   },
 };
