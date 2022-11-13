@@ -31,6 +31,6 @@ export interface TextCommandOptions {
   msg: Message;
   args: string[];
   commandName: string;
-  ref: () => Promise<Message> | Promise<boolean>;
+  ref: () => Promise<Message> | Promise<undefined>;
   content: () => string;
 }

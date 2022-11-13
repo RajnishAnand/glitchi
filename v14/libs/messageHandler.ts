@@ -149,7 +149,7 @@ export async function messageHandler(
         .replace(/^[\s+]?/, '')
         .replace(commandName + ' ', '');
     const ref = () => {
-      if (!msg.reference?.messageId) return Promise.resolve(false);
+      if (!msg.reference?.messageId) return Promise.resolve(undefined);
       return msg.channel.messages.fetch(msg.reference?.messageId);
     };
     return {
