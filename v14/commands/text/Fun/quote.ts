@@ -1,13 +1,15 @@
-import { MessageEmbed } from 'discord.js';
-import { Command } from 'Interfaces';
-import { quoteById, randomQuote } from '../../APIs/@quotes';
+import { TextCommand } from 'client/interface';
+import { quoteById, randomQuote } from '#api/@quotes';
+import { EmbedBuilder } from '@discordjs/builders';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'quote',
   aliases: ['quotable'],
   description: 'Get quotes from qoutable API',
+  args: false,
+  argsHelp: ['?:id'],
   async run({ msg, args }) {
-    let quote: MessageEmbed | undefined;
+    let quote: EmbedBuilder | undefined;
     try {
       if (!args.length || args[0].toLowerCase() == 'random')
         quote = await randomQuote().then((q) => q.embedify());
