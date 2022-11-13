@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "imports": {
     "#libs": "./build/libs/index.js",
+    "#api/@*": "./build/APIs/@*/index.js",
     "#api/*.js": "./build/APIs/*.js"
   },
   "scripts": {
