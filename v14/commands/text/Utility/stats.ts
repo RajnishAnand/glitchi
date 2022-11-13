@@ -1,11 +1,12 @@
 import prettyMs from 'pretty-ms';
 import os from 'os';
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'stats',
   description: 'statistics of bot',
   aliases: ['statistics', 'sts'],
+  args: false,
 
   run({ msg }) {
     let stats = new Array();
@@ -62,7 +63,7 @@ export const command: Command = {
         .send({
           embeds: [
             {
-              color: '#00bfff',
+              color: 0x00bfff,
               fields: [
                 {
                   name: 'Statistics',
@@ -77,10 +78,10 @@ export const command: Command = {
                   value: '• ' + sysInfo.join('\n• '),
                 },
               ],
-              timestamp: new Date(),
+              timestamp: new Date().toISOString(),
               footer: {
                 text: 'Requested by ' + msg.author.username,
-                icon_url: msg.author.avatarURL({ format: 'png' }) ?? undefined,
+                icon_url: msg.author.avatarURL({ extension: 'png' }) ?? undefined,
               },
             },
           ],
