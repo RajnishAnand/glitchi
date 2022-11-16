@@ -1,12 +1,12 @@
-import { MessageAttachment } from 'discord.js';
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
+import { AttachmentBuilder } from 'discord.js';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'qrcode',
   aliases: ['qr'],
   description: 'QR code Generator',
   args: true,
-  usage: '<text...>',
+  argsHelp: ['<text...>'],
   examples: ['Hello World!'],
   roleAccess: 'betaTesters',
 
@@ -16,7 +16,7 @@ export const command: Command = {
     )}`;
     msg
       .reply({
-        files: [new MessageAttachment(url, 'QRCode.png')],
+        files: [new AttachmentBuilder(url, { name: 'QRCode.png' })],
         allowedMentions: { repliedUser: false },
       })
       .catch(() => {

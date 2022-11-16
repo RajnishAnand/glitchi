@@ -1,7 +1,7 @@
 import { rockYou } from '#api/rockyou.js';
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'passcheck',
   description: 'checks if text is on dictionary attack list',
   args: true,
