@@ -1,13 +1,15 @@
+import fetch from 'node-fetch';
+import type { AbortSignal } from 'node-fetch/externals';
 import { inspect } from 'util';
 import { parse } from 'content-type';
 import { ask, select, stringPagination } from '#libs';
-import { Command, CommandArgument } from 'Interfaces';
 import { CBParser } from 'cbparser';
+import { TextCommand, TextCommandOptions } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'fetch',
   description: 'To fetch any URL .',
-  usage: '<url> ?<--get||--post||--headers> ?<post_text>',
+  argsHelp: ['<url>', '?<--get||--post||--headers>', '?<post_text>'],
   args: true,
   examples: ['http://example.com/'],
   run,
@@ -20,7 +22,7 @@ const types = [
   'application/x-www-form-urlencoded',
 ];
 
-async function run({ msg, args, content }: CommandArgument) {
+async function run({ msg, args, content }: TextCommandOptions) {
   let response = '';
   let title: string | undefined;
   if (!args[1] || !args[1].startsWith('-')) args.splice(1, 0, '-g');
@@ -118,7 +120,7 @@ async function GET(url: string) {
   setTimeout(() => controller.abort(), 6000);
 
   const response = await fetch(url, {
-    signal: controller.signal,
+    signal: controller.signal as AbortSignal,
   })
     .then(async (r) => [await r.text(), r.headers.get('content-type')])
     .catch((err) => {

@@ -1,16 +1,17 @@
-import { stringPagination } from '#libs';
+import { attachDeletable, stringPagination } from '#libs';
+import { TextCommand } from 'client/interface';
 import morseNode from 'morse-node';
-import { Command } from 'Interfaces';
 
 const morse = morseNode.create('ITU');
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'morse',
   description: 'a morse convertor',
-  usage: '?<encode||decode> ...<text>',
   args: true,
+  argsHelp: ['?<encode||decode>', '...<text>'],
   examples: ['encode', 'decode'],
-  run({ msg, args, content }) {
+
+  async run({ msg, args, content, ref }) {
     let text: string;
 
     if (
@@ -22,9 +23,16 @@ export const command: Command = {
       text = content().replace(args[0].toLowerCase(), '');
     else text = content();
 
-    if (args[0].toLowerCase() == 'decode' || args[0].toLowerCase() == 'de')
+    if (text == '') text = (await ref().then((m) => m?.content)) ?? '';
+    if (text == '')
+      return msg
+        .reply('You probably forgot to add text you want to encode/decode.')
+        .then((m) => attachDeletable(m, msg.author.id));
+
+    if (args[0].toLowerCase() == 'decode' || args[0].toLowerCase() == 'de') {
+      text = text.replaceAll('\n', '\n ');
       new stringPagination(msg, morse.decode(text));
-    else
+    } else
       new stringPagination(msg, morse.encode(text), {
         decoration: { lang: 'morse', title: 'MORSE [ITU Standard]' },
       });

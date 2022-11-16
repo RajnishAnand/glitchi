@@ -1,21 +1,22 @@
 import { stringPagination } from '#libs';
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
+import { ChannelType } from 'discord.js';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'content',
   description: 'content of message',
   aliases: ['c'],
-  usage: '<#channel|channelID|messageID> ?<messageID>',
+  args: false,
+  argsHelp: ['<#channel|channelID|messageID>', '?<messageID>'],
 
-  async run({ msg, args }) {
+  async run({ client, msg, args }) {
     let channel: typeof msg.channel | undefined;
     let messageID: string | undefined;
 
     //warn if messages has no reference
     if (!msg.reference?.messageId && !args.length) {
       msg.reply(
-        msg.client.config.emojis.aha +
-          ' Looks like you forgot to enter Message Id',
+        client.config.emojis.aha + ' Looks like you forgot to enter Message Id',
       );
       return;
     }
@@ -35,7 +36,7 @@ export const command: Command = {
       if (!/^\d+$/.test(messageID))
         return msg.reply(`unable to resolve \`${args[1]}\` as messageID`);
       msg.client.channels.fetch(chID).then((c) => {
-        if (c?.isText && c.type == 'GUILD_TEXT') channel = c;
+        if (c?.type == ChannelType.GuildText) channel = c;
       });
       if (!channel) return msg.reply('unable to resolve channel.');
     }

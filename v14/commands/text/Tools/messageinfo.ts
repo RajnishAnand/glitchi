@@ -1,15 +1,16 @@
 import { TextChannel } from 'discord.js';
-import { Command } from 'Interfaces';
 import { messageinfo, objectPagination } from '#libs';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'messageinfo',
   description: 'detailed information about message.',
   aliases: ['minfo', 'mi', 'msginfo'],
-  usage: '?<channelID> <messageID>',
+  args: false,
+  argsHelp: ['?<channelID>', '?<messageID>'],
   roleAccess: 'betaTesters',
 
-  async run({ msg, args }) {
+  async run({ client, msg, args }) {
     let messageId: string | undefined;
     let channelId: string | undefined;
 
@@ -25,7 +26,7 @@ export const command: Command = {
         }
       } else
         return msg.reply({
-          content: `${msg.client.config.emojis.knife} are you sure its a valid message ID.`,
+          content: `${client.config.emojis.knife} are you sure its a valid message ID.`,
           allowedMentions: { repliedUser: false },
         });
     }
@@ -39,7 +40,7 @@ export const command: Command = {
     // warn if forgot to enter messageId
     else {
       return msg.reply({
-        content: `${msg.client.config.emojis.aha} looks like you forgot to enter MESSAGE ID.`,
+        content: `${client.config.emojis.aha} looks like you forgot to enter MESSAGE ID.`,
         allowedMentions: { repliedUser: false },
       });
     }

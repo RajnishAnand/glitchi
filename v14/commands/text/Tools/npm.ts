@@ -1,20 +1,20 @@
 import { embedPagination } from '#libs';
 import npmSearch from '#api/npm.js';
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'npm',
   description: 'search for npm packages',
-  usage: '...<query>',
   args: true,
+  argsHelp: ['...<query>'],
   examples: ['react', 'discord.js'],
-  run({ msg, content }) {
+
+  run({ client, msg, content }) {
     npmSearch(content())
       .then((t) => new embedPagination(msg, t))
       .catch(() =>
         msg.reply(
-          msg.client.config.emojis.sad +
-            ' Any relevant search result not found!',
+          client.config.emojis.sad + ' Any relevant search result not found!',
         ),
       );
   },

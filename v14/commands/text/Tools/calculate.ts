@@ -1,14 +1,14 @@
 import { inspect } from 'util';
 import { compile } from 'mathjs';
-import { Command } from 'Interfaces';
 import { Stopwatch, stringPagination } from '#libs';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'calculate',
   aliases: ['calc'],
   description: 'a calculator',
-  usage: '<...text>',
   args: true,
+  argsHelp: ['<...text>'],
 
   async run({ msg, content }) {
     const stopwatch = new Stopwatch();

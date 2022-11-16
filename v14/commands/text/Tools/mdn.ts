@@ -1,17 +1,14 @@
-import { Command } from 'Interfaces';
 import { embedPagination } from '#libs';
 import mdnSearch from '#api/mdn.js';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'mdn',
   description: 'search from mdn',
-  usage: '...<query>',
+  argsHelp: ['...<query>'],
   args: true,
-  // permissions : string,
-  // devOnly : true,
-  // permRequired : [string],
   examples: ['AJAX', 'fetch'],
-  run({ msg, content }) {
+  run({ client, msg, content }) {
     mdnSearch(content())
       .then(
         (t) =>
@@ -22,8 +19,7 @@ export const command: Command = {
       )
       .catch(() =>
         msg.reply(
-          msg.client.config.emojis.sad +
-            ' Any relevant search result not found!',
+          client.config.emojis.sad + ' Any relevant search result not found!',
         ),
       );
   },
