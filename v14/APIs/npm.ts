@@ -1,3 +1,4 @@
+import config from '../client/config';
 import { EmbedBuilder } from '@discordjs/builders';
 import fetch from 'node-fetch';
 const search = 'https://registry.npmjs.org/-/v1/search?size=10&text=';
@@ -30,7 +31,7 @@ export default async function npmSearch(query: string) {
       r.package.maintainers.length > 15 && (r.package.maintainers.length = 15);
     const maintainers = `‣ **Maintainer(s) :** 
 ${r.package.maintainers
-  .map((m) => `    ⌙ [${m.username}](https://www.npmjs.com/~${m.username})`)
+  .map((m) => `​    → [${m.username}](https://www.npmjs.com/~${m.username})`)
   .join('\n')}${large ? '...' : ''}`;
 
     const keywords = `${
