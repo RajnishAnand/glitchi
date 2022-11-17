@@ -1,20 +1,20 @@
 import { embedPagination } from '#libs';
-import { MessageEmbedOptions } from 'discord.js';
-import { MessageEmbed } from 'discord.js';
-import { Command, CommandArgument } from 'Interfaces';
+import { EmbedBuilder } from '@discordjs/builders';
+import { TextCommand, TextCommandOptions } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'help',
   description: 'List of all Commands!',
   aliases: ['commands', 'list'],
-  usage: '?<command_name>',
+  args: false,
+  argsHelp: ['?<command_name>'],
   examples: ['emoji', 'fetch'],
   run,
 };
 
-async function run({ msg, args }: CommandArgument) {
+async function run({ client, msg, args }: TextCommandOptions) {
   if (!args.length) {
-    let cmnds = msg.client.commands.filter((cmd) => !cmd.devOnly);
+    let cmnds = client.textCommands.filter((cmd) => !cmd.ownerOnly);
     let data: { [key: string]: string } = {};
     cmnds.forEach((cmd) => {
       if (cmd.category == undefined) return;
@@ -27,79 +27,79 @@ async function run({ msg, args }: CommandArgument) {
     Object.keys(data).forEach((c) => {
       data[
         c
-      ] += `>>> Use \`${msg.client.config.prefix}help <CommandName>\` to get more help on it.`;
+      ] += `>>> Use \`${client.config.prefix}help <CommandName>\` to get more help on it.`;
     });
 
     new embedPagination(
       msg,
       Object.keys(data).map((m: string) => {
-        return new MessageEmbed({
+        return new EmbedBuilder({
           title: `Help >> Category: ${m}`,
           description: data[m],
-          color: '#00bfff',
+          color: 0x00bfff,
         });
       }),
     );
   } else {
-    const command: Command | undefined =
-      msg.client.commands.get(args[0]) || msg.client.aliases.get(args[0]);
+    const command: TextCommand | undefined =
+      client.textCommands.get(args[0]) || client.aliases.get(args[0]);
 
     if (!command)
       return msg.reply({
         content:
-          msg.client.config.emojis.sad +
+          client.config.emojis.sad +
           'There is no such command as `' +
           args[0] +
           '`',
         allowedMentions: { repliedUser: false },
       });
 
-    const embed: MessageEmbedOptions = {
+    const embed = new EmbedBuilder({
       color: 0x00bfff,
-      title: `${msg.client.config.emojis.yus}|Help >> Command: ${command.name}`,
+      title: `${client.config.emojis.yus}|Help >> Command: ${command.name}`,
       description: '🔹 **Description** : ' + command.description,
       fields: [],
-    };
-
+    });
+    let description = '';
     // Aliases
     if (command.aliases)
-      embed.description += `\n🔹 **Aliases** : ${command.aliases.join(', ')}`;
+      description += `\n🔹 **Aliases** : ${command.aliases.join(', ')}`;
 
     // Arguments
-    if (command.args)
-      embed.description += '\n🔹 **Arguments required** : `true`';
+    if (command.args) description += '\n🔹 **Arguments required** : `true`';
 
     // Usage
-    if (command.usage)
-      embed.description += '\n🔹 **Usage** : `' + command.usage + '`';
+    if (command.argsHelp)
+      description += '\n🔹 **Usage** : `' + command.argsHelp.join(' ') + '`';
 
     // Permission
     if (command.userPerms)
-      embed.description +=
+      description +=
         '\n🔹 **Permission Required** : ' + command.userPerms.join(', ');
 
     // RoleAccess
     if (command.roleAccess)
-      embed.description += `\n🔸 **RoleAccess** : \`${command.roleAccess}\``;
+      description += `\n🔸 **RoleAccess** : \`${command.roleAccess}\``;
 
     // DevOnly
-    if (command.devOnly)
-      embed.description += '\n🔹 **Bot Devlopers Only** : `true`';
+    if (command.ownerOnly) description += '\n🔹 **Bot Owner Only** : `true`';
+
+    embed.setDescription(description);
 
     // Exemples
     if (command.examples || !command.args) {
       const cmdNames = [...(command.aliases ?? ''), command.name];
-      embed.fields?.push({
+      embed.addFields({
         name: '**Examples** :',
         value: `>>> ${
-          command.args ? '' : `\`${msg.client.config.prefix}${command.name}\`\n`
+          command.args ? '' : `\`${client.config.prefix}${command.name}\`\n`
         }${
           command.examples?.length
             ? command.examples
                 .map(
                   (e) =>
                     '`' +
-                    msg.client.config.prefix +
+                    client.config.prefix +
                     cmdNames[~~(Math.random() * cmdNames.length)] +
                     ' ' +
                     e +
@@ -112,7 +112,7 @@ async function run({ msg, args }: CommandArgument) {
     }
 
     msg.reply({
-      embeds: [new MessageEmbed(embed)],
+      embeds: [embed],
       allowedMentions: { repliedUser: false },
     });
   }

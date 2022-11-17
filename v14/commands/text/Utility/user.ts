@@ -1,14 +1,21 @@
-import { User, GuildMember, PermissionString, MessageEmbed } from 'discord.js';
-import { Command, ExtendMessage } from 'Interfaces';
+import { TextCommand } from 'client/interface';
+import {
+  User,
+  GuildMember,
+  Message,
+  EmbedBuilder,
+  PermissionsString,
+} from 'discord.js';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'user',
   aliases: ['whois', 'userinfo'],
   description: 'user details.',
-  usage: '?<@mention||id>',
+  args: false,
+  argsHelp: ['?<@mention||id>'],
   examples: ['@glitchi'],
 
-  run({ msg, args }) {
+  run({ client, msg, args }) {
     if (args[0]) {
       let id = args[0].replace(/^<@!?/, '').replace(/>$/, '');
       if (/^\d+$/.test(id)) {
@@ -17,20 +24,20 @@ export const command: Command = {
           .then((u) => {
             msg.guild?.members
               .fetch(u.id)
-              .then((gu) =>
+              .then((gu) => {
                 msg.channel.send({
                   embeds: embedIt(msg, u, gu),
-                }),
-              )
-              .catch(() =>
+                });
+              })
+              .catch(() => {
                 msg.channel.send({
                   embeds: embedIt(msg, u),
-                }),
-              );
+                });
+              });
           })
           .catch((err: Error) => msg.reply(err.message));
       } else {
-        msg.react(msg.client.config.emojis.sad);
+        msg.react(client.config.emojis.sad);
         return msg.reply("your specified user wasn't found!");
       }
     } else {
@@ -41,56 +48,49 @@ export const command: Command = {
   },
 };
 /** Returns [Embed] for User command */
-function embedIt(
-  msg: ExtendMessage,
-  user: User,
-  member: GuildMember | null = null,
-) {
-  let embed = new MessageEmbed({
+function embedIt(msg: Message, user: User, member: GuildMember | null = null) {
+  let embed = new EmbedBuilder({
     color: 0x00bfff,
     title: user.tag,
     url: `https://discordapp.com/users/${user.id}`,
-    description: `>>> **Username** :\` ${user.username} \`\n**ID** :\` ${
-      user.id
-    } \`\n🖼️ | **Avatar** : [[png]](${user.displayAvatarURL({
-      format: 'png',
-      dynamic: true,
-      size: 4096,
-    })})\`|\`[[jpg]](${user.displayAvatarURL({
-      format: 'jpg',
-      dynamic: true,
-      size: 4096,
-    })})\`|\`[[webp]](${user.displayAvatarURL({
-      format: 'webp',
-      dynamic: true,
-      size: 4096,
-    })})\n**🤖 | Bot** :\` ${user.bot}\`\n**⏳ | Created** : <t:${Math.ceil(
-      +user.createdAt / 1000,
-    )}:R>`,
     thumbnail: {
       url: user.displayAvatarURL({
-        format: 'png',
-        dynamic: true,
+        extension: 'png',
       }),
     },
     fields: [],
     footer: {
       text: '| Requested by ' + msg.author.tag,
-      icon_url: msg.author.avatarURL({ format: 'png' }) ?? undefined,
+      icon_url: msg.author.avatarURL({ extension: 'png' }) ?? undefined,
     },
   });
+
+  let description = `>>> **Username** :\` ${user.username} \`\n**ID** :\` ${
+    user.id
+  } \`\n🖼️ | **Avatar** : [[png]](${user.displayAvatarURL({
+    extension: 'png',
+    size: 4096,
+  })})\`|\`[[jpg]](${user.displayAvatarURL({
+    extension: 'jpg',
+    size: 4096,
+  })})\`|\`[[webp]](${user.displayAvatarURL({
+    extension: 'webp',
+    size: 4096,
+  })})\n**🤖 | Bot** :\` ${user.bot}\`\n**⏳ | Created** : <t:${Math.ceil(
+    +user.createdAt / 1000,
+  )}:R>`;
 
   // BADGES EmbedField
   const badges = user.flags?.toArray().join(', ');
   if (badges)
-    embed.fields.push({
+    embed.addFields({
       name: '🎗️| Badges : ',
       value: `\`\`\`\n${badges}\`\`\``,
       inline: false,
     });
 
   if (member && member.joinedAt) {
-    embed.description += `\n🍻 | **Joined** : <t:${Math.ceil(
+    description += `\n🍻 | **Joined** : <t:${Math.ceil(
       +member.joinedAt / 1000,
     )}:R>`;
 
@@ -100,48 +100,50 @@ function embedIt(
       .map((r) => r.toString());
 
     if (roles.length)
-      embed.fields.push({
+      embed.addFields({
         name: `🪃| Roles [${roles.length}]: `,
         value: roles.join(', '),
         inline: false,
       });
 
     // KEY PERMISSIONS EmbedField
-    const keyPerms: PermissionString[] = [
-      'KICK_MEMBERS',
-      'BAN_MEMBERS',
-      'MANAGE_CHANNELS',
-      'MANAGE_GUILD',
-      'MANAGE_MESSAGES',
-      'MENTION_EVERYONE',
-      'MANAGE_NICKNAMES',
-      'MANAGE_ROLES',
-      'MANAGE_WEBHOOKS',
-      'MANAGE_EMOJIS_AND_STICKERS',
-      'MANAGE_EVENTS',
-      'MANAGE_THREADS',
+    const keyPerms: PermissionsString[] = [
+      'KickMembers',
+      'BanMembers',
+      'ManageChannels',
+      'ManageGuild',
+      'ManageMessages',
+      'MentionEveryone',
+      'ManageNicknames',
+      'ManageRoles',
+      'ManageWebhooks',
+      'ManageEmojisAndStickers',
+      'ManageEvents',
+      'ManageThreads',
     ];
 
     const permKeys = member.permissions.toArray();
     let userKeyPerms: string | undefined;
 
-    if (permKeys.includes('ADMINISTRATOR')) {
+    if (permKeys.includes('Administrator')) {
       userKeyPerms = 'ALL_PERMISSIONS';
     } else if (keyPerms.every((p) => permKeys.includes(p))) {
       userKeyPerms = 'MODERATION_PRIVILEGE';
     } else if (keyPerms.some((p) => permKeys.includes(p))) {
       userKeyPerms = permKeys
-        .filter((perm: PermissionString) => keyPerms.includes(perm))
+        .filter((perm: PermissionsString) => keyPerms.includes(perm))
         .join(', ');
     }
 
     if (userKeyPerms) {
-      embed.fields.push({
+      embed.addFields({
         name: `🥷| Key Permissions : `,
         value: '```\n' + userKeyPerms + '```',
         inline: false,
       });
     }
   }
+  embed.setDescription(description);
+
   return [embed];
 }
