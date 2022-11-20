@@ -5,16 +5,17 @@
   "main": "build/index.js",
   "imports": {
     "#libs": "./build/libs/index.js",
+    "#api/@*": "./build/APIs/@*/index.js",
     "#api/*.js": "./build/APIs/*.js"
   },
   "scripts": {
     "prepare": "husky install",
-    "build": "tsc -b v13",
-    "prestart": "npm run build",
+    "build": "tsc -b v14",
+    "prestart": "yarn build",
     "start": "node build/index.js",
     "dev": "node build/index.js",
     "protected": "PROTECTED=1 npm start",
-    "format": "prettier --write --loglevel=warn \"v13/**/*.{js,ts,json}\""
+    "format": "prettier --write --loglevel=warn \"v14/**/*.{js,ts,json}\""
   },
   "repository": {
     "type": "git",
@@ -32,17 +33,19 @@
   "dependencies": {
     "cbparser": "^1.0.4",
     "content-type": "^1.0.4",
-    "discord.js": "^13.7.0",
-    "mathjs": "^9.4.4",
+    "discord.js": "^14.3.0",
+    "mathjs": "^11.1.0",
     "morse-node": "^0.1.1",
+    "node-fetch": "2",
     "pretty-ms": "^7.0.1",
-    "skia-canvas": "^0.9.30",
+    "skia-canvas": "^1.0.0",
     "typescript": "^4.3.5",
     "vm2": "^3.9.11"
   },
   "devDependencies": {
     "@types/content-type": "^1.1.5",
-    "@types/node": "^14.17.9",
+    "@types/node": "^18.11.7",
+    "@types/node-fetch": "^2.6.2",
     "dotenv": "^10.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.2",

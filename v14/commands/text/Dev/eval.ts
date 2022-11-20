@@ -1,25 +1,24 @@
 import util from 'util';
-import { attachDeletable, Stopwatch, stringPagination } from '#libs';
-import { Command } from 'Interfaces';
+import { Stopwatch, stringPagination } from '#libs';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'eval',
-  aliases: ['ev'],
+  aliases: ['ev', '>'],
   description: 'Evaluate',
-  devOnly: true,
+  ownerOnly: true,
   args: true,
-  // usage : string,
-  // permissions : string,
-  // permRequired : [string],
-  run({ msg, content,fetchRef }) {
+  argsHelp: ['...<code>'],
+
+  run({ client, msg, content, ref }) {
     const stopwatch = new Stopwatch();
     try {
       if (
         msg.author.id ===
-        msg.client.guilds.cache.get(msg.client.config.guildId)?.ownerId
+        msg.client.guilds.cache.get(client.config.guildId)?.ownerId
       ) {
         const client = msg.client;
-        const ref = fetchRef;
+        const fetchRef = ref;
         const send = (text: string, bool: boolean = false) => {
           if (bool) new stringPagination(msg, text);
           else
@@ -41,9 +40,7 @@ export const command: Command = {
         );
       }
     } catch (err: any) {
-      msg.channel
-        .send('```\n' + err.message + '```')
-        .then((m) => attachDeletable(m, msg.author.id));
+      msg.channel.send('```\n' + err.message + '```');
     }
   },
 };

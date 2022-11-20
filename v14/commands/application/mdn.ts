@@ -1,21 +1,27 @@
-import { SlashCommand } from 'Interfaces';
-import mdnApi from '../APIs/mdn';
+import {
+  ApplicationCommandOptionType,
+  ButtonStyle,
+  ComponentType,
+} from 'discord.js';
+import { ApplicationCommand } from 'client/interface';
+import mdnApi from '#api/mdn.js';
 
-export const command: SlashCommand = {
+export const command: ApplicationCommand = {
   name: 'mdn',
   description: 'Search from mdn docs',
+  global: true,
   options: [
     {
       name: 'query',
       description: 'text to query for :',
-      type: 'STRING',
+      type: ApplicationCommandOptionType.String,
       required: true,
       autocomplete: true,
     },
     {
       name: 'ephemeral',
       description: 'Set to ephemeral to make it visible only to you.',
-      type: 'BOOLEAN',
+      type: ApplicationCommandOptionType.Boolean,
       required: false,
     },
   ],
@@ -29,11 +35,11 @@ export const command: SlashCommand = {
           embeds: [response[0].embedify()],
           components: [
             {
-              type: 'ACTION_ROW',
+              type: ComponentType.ActionRow,
               components: [
                 {
-                  type: 'BUTTON',
-                  style: 'LINK',
+                  type: ComponentType.Button,
+                  style: ButtonStyle.Link,
                   url: response[0].value.mdn_url,
                   label: 'Open in Browser',
                 },

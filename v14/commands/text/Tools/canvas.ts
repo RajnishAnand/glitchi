@@ -1,30 +1,26 @@
-import { Command } from 'Interfaces';
 import { VM } from 'vm2';
 import { Canvas, Image, loadImage } from 'skia-canvas';
 import { inspect } from 'util';
 import { CBParser } from 'cbparser';
-import {
-  Stopwatch,
-  PerlinNoise,
-  stringPagination,
-  attachDeletable,
-} from '#libs';
+import { Stopwatch, PerlinNoise, stringPagination } from '#libs';
+import { TextCommand } from 'client/interface';
+import { ButtonStyle, ComponentType } from 'discord.js';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'canv',
   description: 'canvas sandbox',
-  usage: '<code...>',
   aliases: ['canvas', 'draw'],
   args: true,
+  argsHelp: ['<code...>'],
   // roleAccess: "betaTesters",
 
-  async run({ msg, args, content }) {
+  async run({ client, msg, args, content }) {
     if (args[0].toLowerCase() == '--cheatsheet') {
       return msg.reply({
         embeds: [
           {
             title: 'Cheatsheet',
-            color: '#00bfff',
+            color: 0x2f3136,
             url: 'http://www.cheat-sheets.org',
             description: 'Canvas Cheatsheet Preview: ',
             image: {
@@ -34,18 +30,18 @@ export const command: Command = {
         ],
         components: [
           {
-            type: 'ACTION_ROW',
+            type: ComponentType.ActionRow,
             components: [
               {
-                style: 'LINK',
+                type: ComponentType.Button,
+                style: ButtonStyle.Link,
                 label: 'PDF',
-                type: 'BUTTON',
                 url: 'https://cdn.discordapp.com/attachments/864517432026333184/864518194445287454/HTML5_Canvas_Cheat_Sheet.pdf',
               },
               {
-                style: 'LINK',
+                type: ComponentType.Button,
+                style: ButtonStyle.Link,
                 label: 'PNG',
-                type: 'BUTTON',
                 url: 'http://www.cheat-sheets.org/saved-copy/HTML5_Canvas_Cheat_Sheet.png',
               },
             ],
@@ -89,13 +85,13 @@ export const command: Command = {
           let url: string | null | undefined;
           const str = each[2].replace('user#', '').toLowerCase();
           if (str == 'me')
-            url = msg.author.avatarURL({ size: 4096, format: 'png' });
+            url = msg.author.avatarURL({ size: 4096, extension: 'png' });
           else if (str == 'you')
-            url = msg.client.user?.avatarURL({ size: 4096, format: 'png' });
+            url = client.user?.avatarURL({ size: 4096, extension: 'png' });
           else if (/^\d+$/.test(str))
             url = (await msg.client.users.fetch(str)).avatarURL({
               size: 4096,
-              format: 'png',
+              extension: 'png',
             });
           else throw new Error(`${each[1]}:user ->${str}<- is not a userID.`);
           if (!url)
@@ -121,7 +117,7 @@ export const command: Command = {
           if (/^\d+$/.test(key))
             each[2] = `https://cdn.discordapp.com/emojis/${key}.png`;
           else {
-            const url = msg.client.searchEmoji(key.split('#')[0])[key]?.url;
+            const url = client.searchEmoji(key.split('#')[0])[key]?.url;
             if (!url)
               throw new Error(`${each[1]}:${each[2]} returned null|undefined.`);
             each[2] = url;
@@ -156,14 +152,12 @@ export const command: Command = {
 
       stopwatch.stop();
 
-      await msg
-        .reply({
-          content: `⏱️${stopwatch.elapsed}s | Canvas Output: :frame_photo:`,
-          files: [data],
-          allowedMentions: { repliedUser: false },
-          failIfNotExists: false,
-        })
-        .then((m) => attachDeletable(m, msg.author.id));
+      await msg.reply({
+        content: `⏱️${stopwatch.elapsed}s | Canvas Output: :frame_photo:`,
+        files: [data],
+        allowedMentions: { repliedUser: false },
+        failIfNotExists: false,
+      });
     } catch (e: any | Error) {
       new stringPagination(msg, e.toString?.() || inspect(e), {
         decoration: {
