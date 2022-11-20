@@ -50,6 +50,10 @@ export default class ExtendClient extends Client {
     this.loadApplicationCommands();
     this.loadTextCommands();
     this.loadEvents();
+
+    this.registerGlobalSlashCommand([
+      ...this.applicationCommands.filter((c) => c.global).values(),
+    ]);
   }
 
   // events
@@ -114,7 +118,7 @@ export default class ExtendClient extends Client {
   async registerGlobalSlashCommand(
     commands: ApplicationCommandDataResolvable[],
   ) {
-    this.application?.commands
+    return this.application?.commands
       .set(commands)
       .then((_) => true)
       .catch((_) => false);

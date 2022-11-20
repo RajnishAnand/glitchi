@@ -1,7 +1,6 @@
 import {
   Interaction,
   AutocompleteInteraction,
-  CommandInteraction,
   UserContextMenuCommandInteraction,
   MessageContextMenuCommandInteraction,
   ApplicationCommandData,
@@ -9,24 +8,23 @@ import {
   MessageApplicationCommandData,
   UserApplicationCommandData,
   PermissionResolvable,
+  ChatInputCommandInteraction,
 } from 'discord.js';
 
 import Client from '..';
 
-export type ExtendInteraction<I = Interaction> = { client: Client } & I;
-
 type RunOptions<I> = {
   client: Client;
-  interaction: ExtendInteraction<I>;
+  interaction: I;
 };
 
 type RunFunction<I> = (Options: RunOptions<I>) => any;
 
 type ApplicationCommandType<C extends ApplicationCommandData> = {
   userPermissions?: PermissionResolvable[];
-
+  global: boolean;
   run: C extends ChatInputApplicationCommandData
-    ? RunFunction<CommandInteraction>
+    ? RunFunction<ChatInputCommandInteraction>
     : C extends UserApplicationCommandData
     ? RunFunction<UserContextMenuCommandInteraction>
     : C extends MessageApplicationCommandData
