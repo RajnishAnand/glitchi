@@ -1,15 +1,17 @@
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
+import { ButtonStyle, ComponentType } from 'discord.js';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'emoji',
   aliases: ['e', 'emo'],
   description: 'sends emoji for you!',
-  usage: '<emoji_name>',
+  args: false,
+  argsHelp: ['?<emoji_name>'],
   examples: ['hi', 'youbad'],
 
-  async run({ msg, args }) {
+  async run({ client, msg, args }) {
     if (args.length) {
-      const e = Object.values(msg.client.searchEmoji(args[0]))[0];
+      const e = Object.values(client.searchEmoji(args[0]))[0];
       if (!e) return msg.reply('Specified Emoji not Found!');
       msg.reply({
         content: e.toString(),
@@ -29,12 +31,12 @@ export const command: Command = {
         allowedMentions: { repliedUser: false },
         components: [
           {
-            type: 'ACTION_ROW',
+            type: ComponentType.ActionRow,
             components: [
               {
-                type: 'BUTTON',
-                style: 'SECONDARY',
-                emoji: msg.client.config.emojis.rollCat,
+                type: ComponentType.Button,
+                style: ButtonStyle.Secondary,
+                emoji: client.config.emojis.rollCat,
                 customId: 'primary',
                 label: 'Refresh',
               },
@@ -44,7 +46,7 @@ export const command: Command = {
       });
 
       const collector = message.createMessageComponentCollector({
-        componentType: 'BUTTON',
+        componentType: ComponentType.Button,
         idle: 120000,
         dispose: true,
         filter(interaction) {

@@ -6,7 +6,7 @@ import { Stopwatch, PerlinNoise, stringPagination } from '#libs';
 import { TextCommand } from 'client/interface';
 import { ButtonStyle, ComponentType } from 'discord.js';
 
-export const command: TextCommand= {
+export const command: TextCommand = {
   name: 'canv',
   description: 'canvas sandbox',
   aliases: ['canvas', 'draw'],
@@ -20,7 +20,7 @@ export const command: TextCommand= {
         embeds: [
           {
             title: 'Cheatsheet',
-            color: 0x00bfff,
+            color: 0x2f3136,
             url: 'http://www.cheat-sheets.org',
             description: 'Canvas Cheatsheet Preview: ',
             image: {
@@ -34,7 +34,7 @@ export const command: TextCommand= {
             components: [
               {
                 type: ComponentType.Button,
-                style: ButtonStyle.Link, 
+                style: ButtonStyle.Link,
                 label: 'PDF',
                 url: 'https://cdn.discordapp.com/attachments/864517432026333184/864518194445287454/HTML5_Canvas_Cheat_Sheet.pdf',
               },

@@ -1,26 +1,29 @@
 import { attachDeletable, select, stringPagination } from '#libs';
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'addemoji',
   aliases: ['ae', 'adde'],
   description: 'adds emoji',
-  requiredPerms: ['MANAGE_EMOJIS_AND_STICKERS'],
-  userPerms: ['MANAGE_EMOJIS_AND_STICKERS'],
-  usage: '?<name> ?<url|emoji>',
+  requiredPerms: ['ManageEmojisAndStickers'],
+  userPerms: ['ManageEmojisAndStickers'],
+  args: true,
+  argsHelp: ['<name>', '?<url|emoji>'],
 
-  async run({ msg, args, fetchRef }) {
+  async run({ msg, args, ref }) {
     let emojiName: undefined | string;
     let emojiUrl: undefined | string;
     const ereg = /<(a)?:(\w{1,20}):(\d{1,32})>/g;
     const ureg = /https\:\/\/\S+/g;
-    const ref = await fetchRef();
+    const referance = await ref();
 
     // no reference or argument
     if (!args.length && !ref) {
       return msg
         .reply({
-          content: `Arguments or Reference Missing!\n\`\`\`\n${this.usage}\`\`\``,
+          content: `Arguments or Reference Missing!\n\`\`\`\n${this.argsHelp?.join(
+            ' ',
+          )}\`\`\``,
         })
         .then((m) => attachDeletable(m, msg.author.id));
     }
@@ -42,7 +45,9 @@ export const command: Command = {
       else
         return msg
           .reply({
-            content: `Unable to recognise Second argument as URL or Emoji!\`\`\`\n${this.usage}\`\`\``,
+            content: `Unable to recognise Second argument as URL or Emoji!\`\`\`\n${this.argsHelp?.join(
+              ' ',
+            )}\`\`\``,
           })
           .then((m) => attachDeletable(m, msg.author.id));
     }
@@ -54,14 +59,13 @@ export const command: Command = {
     }
 
     // all from reference message
-    else if (ref) {
+    else if (referance) {
       emojiName = args[0];
       // from ref url
-      if (new RegExp(ureg).test(ref.content)) {
-        const matches = [...ref.content.matchAll(new RegExp(ureg))].reduce(
-          (a, e) => (a.includes(e[0]) ? a : [...a, e[0]]),
-          [],
-        );
+      if (new RegExp(ureg).test(referance.content)) {
+        const matches = [
+          ...referance.content.matchAll(new RegExp(ureg)),
+        ].reduce((a, e) => (a.includes(e[0]) ? a : [...a, e[0]]), []);
         if (matches.length > 1)
           emojiUrl = await select(msg, {
             title: 'Select URL',
@@ -74,11 +78,10 @@ export const command: Command = {
         else emojiUrl = matches[0];
       }
       // from ref emojis
-      else if (new RegExp(ereg).test(ref.content)) {
-        const matches = [...ref.content.matchAll(new RegExp(ereg))].reduce(
-          (a, e) => (a.includes(e[0]) ? a : [...a, e[0]]),
-          [],
-        );
+      else if (new RegExp(ereg).test(referance.content)) {
+        const matches = [
+          ...referance.content.matchAll(new RegExp(ereg)),
+        ].reduce((a, e) => (a.includes(e[0]) ? a : [...a, e[0]]), []);
         if (matches.length > 1)
           emojiUrl = await select(msg, {
             title: 'Select Emoji',
@@ -91,10 +94,10 @@ export const command: Command = {
         else emojiUrl = emojiToUrl(matches[0]);
       }
       // feom ref attachment
-      else if (ref.attachments.size)
-        emojiUrl = ref.attachments.first()?.url as string;
+      else if (referance.attachments.size)
+        emojiUrl = referance.attachments.first()?.url as string;
       // from ref imo command
-      else if (ref.embeds[0]?.url) emojiUrl = ref.embeds[0].url;
+      else if (referance.embeds[0]?.url) emojiUrl = referance.embeds[0].url;
       if (emojiUrl == undefined)
         return msg
           .reply({
@@ -105,7 +108,9 @@ export const command: Command = {
     } else
       return msg
         .reply({
-          content: `Unable to recognise Second argument as URL or Emoji!\`\`\`\n${this.usage}\`\`\``,
+          content: `Unable to recognise Second argument as URL or Emoji!\`\`\`\n${this.argsHelp?.join(
+            ' ',
+          )}\`\`\``,
         })
         .then((m) => attachDeletable(m, msg.author.id));
 
@@ -129,7 +134,9 @@ export const command: Command = {
 
     // add Emoji
     msg.guild?.emojis
-      .create(emojiUrl, emojiName, {
+      .create({
+        name: emojiName,
+        attachment: emojiUrl,
         reason: `requested by ${msg.author.tag}`,
       })
       .then((e) => {

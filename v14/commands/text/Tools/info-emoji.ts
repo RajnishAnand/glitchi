@@ -1,22 +1,23 @@
 import { embedPagination } from '#libs';
-import { Command } from 'Interfaces';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from '@discordjs/builders';
+import { TextCommand } from 'client/interface';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'info-emoji',
   aliases: ['infomoji', 'imo'],
   description: 'emoji image with details',
-  usage: '<id||querry||emoji>',
+  args: false,
+  argsHelp: ['<id||querry||emoji>'],
   examples: ['hi', 'youbad'],
 
-  run({ msg, args, content }) {
+  run({ client, msg, args, content }) {
     const contents = content().substring(0, 500);
     let emoList: emoji[] = [];
     let emojiReg = /<a?:\w{1,20}:\d{1,32}>/g;
 
     if (!args.length && !msg.reference) {
       msg.channel.send(
-        msg.client.config.emojis.aha +
+        client.config.emojis.aha +
           ' You were supposed to reference a message or pass emojiName as an argument to query.',
       );
       return;
@@ -111,8 +112,8 @@ export const command: Command = {
 };
 
 function embedIt(emote: emoji) {
-  return new MessageEmbed({
-    color: '#000000',
+  return new EmbedBuilder({
+    color: 0x2f3136,
     title: `Emoji ${emote.name || emote.id}.${emote.animated ? 'gif' : 'png'}`,
     url: `https://cdn.discordapp.com/emojis/${emote.id}.${
       emote.animated ? 'gif' : 'png'
