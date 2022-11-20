@@ -40,7 +40,11 @@ export class stringPagination extends basePagination {
     // message initialize
     (this.refMsg instanceof Message
       ? this.refMsg.channel.send(this.value)
-      : this.refMsg.reply({ ...this.value, ephemeral: true, fetchReply: true })
+      : this.refMsg.reply({
+          ...this.value,
+          ephemeral: options?.ephemeral,
+          fetchReply: true,
+        })
     ).then((m) => {
       if (m instanceof Message) this.msg = m;
       this.init();
