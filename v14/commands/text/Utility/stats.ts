@@ -16,7 +16,7 @@ export const command: TextCommand = {
     try {
       stats.push(`**Node.js** : v${process.versions.node}`);
       stats.push(
-        `**Discord.js** : v${require('../../../package.json').dependencies[
+        `**Discord.js** : v${require('../../../../package.json').dependencies[
           'discord.js'
         ].substr(1)}`,
       );
@@ -81,7 +81,8 @@ export const command: TextCommand = {
               timestamp: new Date().toISOString(),
               footer: {
                 text: 'Requested by ' + msg.author.username,
-                icon_url: msg.author.avatarURL({ extension: 'png' }) ?? undefined,
+                icon_url:
+                  msg.author.avatarURL({ extension: 'png' }) ?? undefined,
               },
             },
           ],
