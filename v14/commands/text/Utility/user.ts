@@ -1,3 +1,4 @@
+import { findUser } from '#libs';
 import { TextCommand } from 'client/interface';
 import {
   User,
@@ -5,6 +6,7 @@ import {
   Message,
   EmbedBuilder,
   PermissionsString,
+  Guild,
 } from 'discord.js';
 
 export const command: TextCommand = {
@@ -15,9 +17,9 @@ export const command: TextCommand = {
   argsHelp: ['?<@mention||id>'],
   examples: ['@glitchi'],
 
-  run({ client, msg, args }) {
+  async run({ msg, args, content }) {
     if (args[0]) {
-      let id = args[0].replace(/^<@!?/, '').replace(/>$/, '');
+      let id = content().replace(/^<@!?/, '').replace(/>$/, '');
       if (/^\d+$/.test(id)) {
         msg.client.users
           .fetch(id)
@@ -37,8 +39,10 @@ export const command: TextCommand = {
           })
           .catch((err: Error) => msg.reply(err.message));
       } else {
-        msg.react(client.config.emojis.sad);
-        return msg.reply("your specified user wasn't found!");
+        const user = await findUser(msg.guild as Guild, id).catch(() => {});
+        if (!user) return msg.reply("your specified user wasn't found!");
+
+        msg.reply({ embeds: embedIt(msg, user.user, user) });
       }
     } else {
       msg.channel.send({
