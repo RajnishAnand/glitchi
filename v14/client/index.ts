@@ -3,6 +3,7 @@ import {
   ApplicationCommandDataResolvable,
   Client,
   Collection,
+  Emoji,
   GatewayIntentBits,
 } from 'discord.js';
 import { readdirSync } from 'fs';
@@ -128,5 +129,28 @@ export default class ExtendClient extends Client {
         },
       ],
     });
+  }
+
+  public searchEmoji(q: string) {
+    let emojis = this.emojis.cache.filter((f) =>
+      new RegExp(q, 'i').test(`${f.name}`),
+    );
+
+    const result: { [index: string]: Emoji } = {};
+    for (let [_, e] of emojis) {
+      if (Object.keys(result).length > 24) return result;
+      if (!e.name) continue;
+      if (!(e.name in result)) {
+        result[`${e.name}`] = e;
+        continue;
+      }
+      for (let i = 1; i < 25; i++) {
+        if (!(`${e.name}#${i}` in result)) {
+          result[`${e.name}#${i}`] = e;
+          break;
+        }
+      }
+    }
+    return result;
   }
 }

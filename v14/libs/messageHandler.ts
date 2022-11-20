@@ -132,7 +132,7 @@ export async function messageHandler(
       command,
       error: 'ARGSMISSING',
       message: `${
-        command.argsHelp ? '```\n' + command.argsHelp + ' ``` ' : ''
+        command.argsHelp ? '```\n' + command.argsHelp.join(' ') + ' ``` ' : ''
       }Command : \` ${command.name} \` requires argument! ${
         client.config.emojis.sneak
       }.\nType \`${client.config.prefix}help ${
