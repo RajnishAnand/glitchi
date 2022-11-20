@@ -1,16 +1,14 @@
 import { Event, ExtendInteraction } from 'client/interface';
-import { ApplicationCommandType } from 'discord.js';
+import { ApplicationCommandType, Interaction } from 'discord.js';
 
 export const event: Event = {
   name: 'interactionCreate',
-  execute(client, interaction: ExtendInteraction) {
+  execute(client, interaction: Interaction) {
     if (!(interaction.isAutocomplete() || interaction.isCommand())) return;
 
     const cmnd = client.applicationCommands.get(interaction.commandName);
     // lient.applicationCommands.get(interaction.commandName);
-    if (!(cmnd && interaction.guildId)) {
-      return;
-    }
+    if (!(cmnd && interaction.guildId)) return;
 
     // AutocompleteInteraction
     if (
@@ -21,8 +19,9 @@ export const event: Event = {
       cmnd.autocompleteRun({ client, interaction });
     // CommandInteraction
     else if (
-      interaction.isCommand() &&
-      cmnd.type == ApplicationCommandType.ChatInput &&
+      interaction.isChatInputCommand() &&
+      (cmnd.type == ApplicationCommandType.ChatInput ||
+        cmnd.type == undefined) &&
       !interaction.replied
     )
       cmnd.run({ client, interaction });
