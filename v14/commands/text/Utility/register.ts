@@ -1,17 +1,20 @@
 import { TextCommand } from 'client/interface';
-import { ApplicationCommandDataResolvable, ApplicationCommandType } from 'discord.js';
+import {
+  ApplicationCommandDataResolvable,
+  ApplicationCommandType,
+} from 'discord.js';
 
 export const command: TextCommand = {
   name: 'register',
   description: 'deploy slash commands',
-  aliases: ['applicationcommnads','appc'],
+  aliases: ['applicationcommnads', 'appc'],
   args: true,
-  argsHelp: ['?<add|rm|update|set|list>','?<commandName>|<...commanName>'],
+  argsHelp: ['?<add|rm|update|set|list>', '?<commandName>|<...commanName>'],
   examples: ['add ping', 'update', 'list'],
   // userPerms: ['Administrator'],
   ownerOnly: true,
 
-  async run({client, msg, args }) {
+  async run({ client, msg, args }) {
     if (!msg.guild) return;
     args = args.map((a) => a.toLowerCase());
     const subCommand = args.shift();
@@ -38,13 +41,16 @@ export const command: TextCommand = {
             },
             title: 'Avaliable Slash Commands : ',
             description: client.applicationCommands
+              .filter((c) => !c.global)
               .map((c) => {
                 return `${c.name} : ${
-                  !c.type || c.type == ApplicationCommandType.ChatInput ? c.description : c.type
+                  !c.type || c.type == ApplicationCommandType.ChatInput
+                    ? c.description
+                    : c.type
                 }`;
               })
               .join('\n'),
-            timestamp: new Date().toDateString(),
+            timestamp: new Date().toISOString(),
           },
         ],
       });
@@ -137,10 +143,9 @@ export const command: TextCommand = {
           'Please also provide names slash command to register!',
         );
 
-      const commands: ApplicationCommandDataResolvable[] =
-        client.applicationCommands
-          .filter((c) => args.includes(c.name) || args[0] == 'all')
-          .map((c) => c);
+      const commands = client.applicationCommands
+        .filter((c) => args.includes(c.name) || args[0] == 'all')
+        .map((c) => c);
 
       if (!commands.length)
         return msg.reply({
@@ -153,12 +158,12 @@ export const command: TextCommand = {
 
       msg
         .guild!.commands.set(commands)
-        .then(() =>{
+        .then(() => {
           msg.channel.send(
             `Commands: ${commands.map((c) => c.name)}\n${
               client.config.emojis.salute
             }Successfully registered.`,
-          )
+          );
         })
         .catch(() => {
           msg.reply('Failed to register requested slash commands.');

@@ -1,18 +1,19 @@
-import { Command } from 'Interfaces';
+import { TextCommand } from 'client/interface';
 import { Canvas, loadImage } from 'skia-canvas';
 
-export const command: Command = {
+export const command: TextCommand = {
   name: 'profile',
   description: 'profile Image Card',
   roleAccess: 'betaTesters',
+  args: false,
 
   async run({ msg }) {
     const canvas = new Canvas(800, 400);
     const img = await loadImage(
-      `${msg.author.displayAvatarURL({
-        format: 'png',
-        dynamic: true,
-      })}?size=4096`,
+      msg.author.displayAvatarURL({
+        extension: 'png',
+        size: 4096,
+      }),
     );
 
     const ctx = canvas.getContext('2d');
