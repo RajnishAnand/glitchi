@@ -1,11 +1,11 @@
 import { ApplicationCommand } from 'client/interface';
 
 export const command: ApplicationCommand = {
-  name: 'poing',
+  name: 'ping',
   description: 'ping pong!',
+  global: false,
+
   run({ interaction }) {
-    interaction.reply({
-      content: 'pong!',
-    });
+    interaction.reply({ content: 'ping pong!', ephemeral: true });
   },
 };
