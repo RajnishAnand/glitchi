@@ -3,6 +3,7 @@
 # commands to run simultaneously
 cmmmnd1="tsc -b -w v14"
 cmmmnd2="nodemon --watch build -e js"
+PROTECTED=1
 ##########################################
 
 
