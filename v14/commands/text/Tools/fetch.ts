@@ -9,7 +9,7 @@ import { TextCommand, TextCommandOptions } from 'client/interface';
 export const command: TextCommand = {
   name: 'fetch',
   description: 'To fetch any URL .',
-  argsHelp: ['<url>', '?<--get||--post||--headers>', '?<post_text>'],
+  argsHelp: ['<url>', '?<--get||--post||--headers>', '?<post_text> <?headers>'],
   args: true,
   examples: ['http://example.com/'],
   run,
@@ -24,23 +24,40 @@ const types = [
 
 async function run({ msg, args, content }: TextCommandOptions) {
   let response = '';
+  let headers: { [index: string]: string } = {};
   let title: string | undefined;
   if (!args[1] || !args[1].startsWith('-')) args.splice(1, 0, '-g');
 
   if (args[1].toLowerCase() == '-g' || args[1].toLowerCase() == '--get') {
-    [response, title] = await GET(args[0]);
+    let [head] = CBParser(content().replace(/[­ ]/g, ''));
+    if (head) {
+      try {
+        headers = JSON.parse(head.code);
+      } catch (err: any) {
+        return msg.reply('Error while parsing Headers:' + err.message);
+      }
+    }
+    [response, title] = await GET(args[0], headers);
   } else if (
     args[1].toLowerCase() == '-p' ||
     args[1].toLowerCase() == '--post'
   ) {
-    let { code, lang } = CBParser(content().replace(/[­ ]/g, ''))[0];
+    let [{ code, lang }, head] = CBParser(content().replace(/[­ ]/g, ''));
+    //post body requirement
     if (!code) {
       return msg.reply(
         'Please also include body/text you wanna POST in a codeBlock !',
       );
     }
-    if (lang == 'json') {
-      lang = 'application/json';
+    // headers
+    if (head) {
+      try {
+        headers = JSON.parse(head.code);
+      } catch (err: any) {
+        return msg.reply('Error while parsing Headers:' + err.message);
+      }
+    } else if (lang == 'json') {
+      headers = { 'Content-Type': 'application/json' };
       try {
         JSON.parse(code);
       } catch (err: any) {
@@ -48,25 +65,27 @@ async function run({ msg, args, content }: TextCommandOptions) {
       }
     } else if (!lang || !types.includes(lang)) {
       try {
-        lang = await select(msg, {
-          content: 'Please pick a supported content type:',
-          title: 'Select content-type',
-          options: [
-            ...types.map((z) => {
-              return {
-                label: z,
-                description: `set request body format as ${z}`,
-                value: z,
-              };
-            }),
-            {
-              label: 'Other',
-              description: 'custom content type',
-              value: 'none',
-            },
-          ],
-        });
-        if (lang == 'none') {
+        headers = {
+          'Content-Type': await select(msg, {
+            content: 'Please pick a supported content type:',
+            title: 'Select content-type',
+            options: [
+              ...types.map((z) => {
+                return {
+                  label: z,
+                  description: `set request body format as ${z}`,
+                  value: z,
+                };
+              }),
+              {
+                label: 'Other',
+                description: 'custom content type',
+                value: 'none',
+              },
+            ],
+          }),
+        };
+        if (headers['Content-Type'] == 'none') {
           const ans = await ask(msg, 'Enter your custom content type :');
           if (!ans) return msg.channel.send('Time Out! Command Cancelled.');
           lang = ans;
@@ -76,7 +95,7 @@ async function run({ msg, args, content }: TextCommandOptions) {
       }
     }
 
-    [response, title] = await POST(args[0], code, lang);
+    [response, title] = await POST(args[0], code, headers);
   } else if (
     args[1].toLowerCase() == '-h' ||
     args[1].toLowerCase() == '--headers'
@@ -115,12 +134,16 @@ async function Headers(url: string) {
 }
 
 /**fetch GET request*/
-async function GET(url: string) {
+async function GET(
+  url: string,
+  headers: { [index: string]: string } | undefined,
+) {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 6000);
 
   const response = await fetch(url, {
     signal: controller.signal as AbortSignal,
+    headers,
   })
     .then(async (r) => [await r.text(), r.headers.get('content-type')])
     .catch((err) => {
@@ -136,10 +159,14 @@ async function GET(url: string) {
 }
 
 /**fetch POST request*/
-async function POST(url: string, data: string, type: string) {
+async function POST(
+  url: string,
+  data: string,
+  headers: { [index: string]: string },
+) {
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE,
-    headers: { 'Content-Type': type },
+    headers: headers,
     redirect: 'follow',
     body: data,
   })
