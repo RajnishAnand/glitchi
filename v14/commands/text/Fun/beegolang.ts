@@ -3,20 +3,13 @@ import { TextCommand } from 'client/interface';
 
 export const command: TextCommand = {
   name: 'beegolang',
-  description: 'convert to text to owoLang',
+  description: 'convert to text to BeegoLang',
   aliases: ['beeg'],
   args: true,
   roleAccess: 'betaTesters',
-  examples: ['hello'],
+  examples: ['politics'],
 
-  run({ client, msg, commandName }) {
-    msg.reply(
-      toBeegoLang(
-        msg.cleanContent
-          .slice(client.config.prefix.length)
-          .trim()
-          .replace(commandName + ' ', ''),
-      ),
-    );
+  run({ msg, content }) {
+    msg.reply(toBeegoLang(content()),);
   },
 };
