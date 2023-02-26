@@ -65,7 +65,7 @@ export const command: TextCommand = {
       if (new RegExp(ureg).test(referance.content)) {
         const matches = [
           ...referance.content.matchAll(new RegExp(ureg)),
-        ].reduce((a, e) => (a.includes(e[0]) ? a : [...a, e[0]]), []);
+        ].reduce((a: string[], e) => (a.includes(e[0]) ? a : [...a, e[0]]), []);
         if (matches.length > 1)
           emojiUrl = await select(msg, {
             title: 'Select URL',
@@ -81,7 +81,7 @@ export const command: TextCommand = {
       else if (new RegExp(ereg).test(referance.content)) {
         const matches = [
           ...referance.content.matchAll(new RegExp(ereg)),
-        ].reduce((a, e) => (a.includes(e[0]) ? a : [...a, e[0]]), []);
+        ].reduce((a: string[], e) => (a.includes(e[0]) ? a : [...a, e[0]]), []);
         if (matches.length > 1)
           emojiUrl = await select(msg, {
             title: 'Select Emoji',

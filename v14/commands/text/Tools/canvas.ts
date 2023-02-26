@@ -104,7 +104,7 @@ export const command: TextCommand = {
         // loading image from attachments
         else if (each[2].startsWith('attachment#')) {
           const key = +each[2].replace('attachment#', '');
-          if (key === NaN)
+          if (Number.isNaN(key))
             throw new Error(`${each[1]}:${each[2]} is probably undefined.`);
           const url = msg.attachments.at(key)?.url;
           if (!url) throw new Error(`${each[1]}:${each[2]} is undefined.`);
