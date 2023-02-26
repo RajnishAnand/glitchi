@@ -10,14 +10,13 @@ ARG PORT
 ENV PORT=$PORT
 
 # Build the bot
-ENV NODE_ENV='production'
-
+ENV NODE_ENV='development'
 COPY package*.json ./
 COPY yarn.lock  ./
 
 RUN yarn install --immutable
 
 # run the bot
-
+ENV NODE_ENV='production'
 COPY . .
 CMD ["yarn", "start"]
