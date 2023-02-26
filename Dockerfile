@@ -13,6 +13,7 @@ ENV PORT=$PORT
 ENV NODE_ENV='production'
 
 COPY package*.json ./
+COPY yarn.lock  ./
 
 RUN yarn install --immutable
 
