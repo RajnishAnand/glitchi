@@ -97,13 +97,13 @@ class chat {
     else collector.stop();
   }
 
-  async pipe(txt: string) {
+  async pipe(txt: string): Promise<string> {
     txt = encodeURIComponent(txt.replace(/\\/g, ''));
     try {
       const url = `http://api.brainshop.ai/get?bid=158846&key=${process.env.ACOKEY}&uid=${this.msg.author.id}&msg=${txt}`;
 
-      const data = await fetch(url).then((r) => r.json() || r.text());
-      return data.cnt.replace(/"/g, '" ') || data;
+      const data: any = await fetch(url).then((r) => r.json() || r.text());
+      return data?.cnt?.replace(/"/g, '" ') || data;
     } catch (err) {
       return 'Opps! API returned an error. Try out few minutes later.';
     }
