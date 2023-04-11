@@ -1,5 +1,6 @@
 import { VM } from 'vm2';
-import { Canvas, Image, loadImage } from 'skia-canvas';
+// import { Canvas, Image, loadImage } from 'skia-canvas';
+import { Canvas, Image, loadImage } from '@napi-rs/canvas';
 import { inspect } from 'util';
 import { CBParser } from 'cbparser';
 import { Stopwatch, PerlinNoise, stringPagination } from '#libs';
@@ -174,6 +175,6 @@ function wrap(txt: string) {
   (function(){
     let canvas = new Canvas(600, 600);
     ${txt}
-    return canvas.toBuffer("png");
+    return canvas.toBuffer("image/png");
   })();`;
 }

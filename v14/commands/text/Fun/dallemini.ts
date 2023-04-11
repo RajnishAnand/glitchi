@@ -1,7 +1,6 @@
 import dallemini from '#api/dalle-mini.js';
 import { Stopwatch } from '#libs';
 import { TextCommand } from 'client/interface';
-// import { Canvas } from 'skia-canvas';
 import { Canvas, loadImage } from '@napi-rs/canvas';
 
 export const command: TextCommand = {
