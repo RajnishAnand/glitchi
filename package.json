@@ -31,13 +31,14 @@
   "author": "Rajnish Anand",
   "license": "ISC",
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.40",
     "cbparser": "^1.0.4",
     "content-type": "^1.0.4",
     "discord.js": "^14.3.0",
     "mathjs": "^11.1.0",
     "morse-node": "^0.1.1",
-    "node-fetch": "3.3.1",
-    "pretty-ms": "^8.0.0",
+    "node-fetch": "2.6.9",
+    "pretty-ms": "^7.0.1",
     "skia-canvas": "^1.0.0",
     "typescript": "^5.0.4",
     "vm2": "^3.9.11"
