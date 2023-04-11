@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 const url = 'https://developer.mozilla.org/api/v1/search?q=';
 
 export default async function mdn(query: string) {
-  const resp = await fetch(url + encodeURI(query)).then((r) => r.json());
+  const resp = await fetch(url + encodeURI(query)).then((r) => r.json() as any);
   if (!resp.documents.length)
     throw Error('Any relevant search result not found!');
 
