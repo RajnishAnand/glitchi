@@ -5,8 +5,8 @@ const search = 'https://registry.npmjs.org/-/v1/search?size=10&text=';
 
 /** Search for npm libs from npm_registry */
 export default async function npmSearch(query: string) {
-  let resp: npmSearchResponse = await fetch(search + encodeURI(query)).then(
-    (r) => r.json(),
+  let resp = await fetch(search + encodeURI(query)).then(
+    (r) => r.json() as Promise<npmSearchResponse>,
   );
 
   if (!resp.total) throw Error('Any relevant search result not found!');

@@ -17,9 +17,9 @@ export async function randomQuote(filters?: RandomFilterOptions) {
       filters.minLength ? `minLength=${filters.minLength}&` : ''
     }${filters.tags ? `tags=${encodeURI(filters.tags)}` : ''}`;
 
-  const value: QuoteResponse | ErrorResponse = await fetch(
-    `${URL}/random/${options ?? ''}`,
-  ).then((r) => r.json());
+  const value = await fetch(`${URL}/random/${options ?? ''}`).then(
+    (r) => r.json() as Promise<QuoteResponse | ErrorResponse>,
+  );
   if (!('_id' in value)) throw new Error(value.statusMessage);
   return {
     value,
@@ -31,9 +31,9 @@ export async function randomQuote(filters?: RandomFilterOptions) {
 
 /** Returns a Quote with id id found*/
 export async function quoteById(id: string) {
-  const value: QuoteResponse | ErrorResponse = await fetch(
-    `${URL}/quotes/${id}`,
-  ).then((r) => r.json());
+  const value = await fetch(`${URL}/quotes/${id}`).then(
+    (r) => r.json() as Promise<QuoteResponse | ErrorResponse>,
+  );
   if (!('_id' in value)) throw new Error(value.statusMessage);
 
   return {
