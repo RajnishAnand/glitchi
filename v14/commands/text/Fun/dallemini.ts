@@ -1,7 +1,8 @@
 import dallemini from '#api/dalle-mini.js';
 import { Stopwatch } from '#libs';
 import { TextCommand } from 'client/interface';
-import { Canvas, loadImage } from 'skia-canvas/lib';
+// import { Canvas } from 'skia-canvas';
+import { Canvas, loadImage } from '@napi-rs/canvas';
 
 export const command: TextCommand = {
   name: 'dallemini',
@@ -33,7 +34,7 @@ export const command: TextCommand = {
   },
 };
 
-async function imageToGrid(images: Buffer[]) {
+async function imageToGrid(images: string[] | Buffer[]) {
   const canvas = new Canvas(620, 620);
   const ctx = canvas.getContext('2d');
 
@@ -43,5 +44,5 @@ async function imageToGrid(images: Buffer[]) {
       ctx.drawImage(img, i * 205 + 5, ii * 205 + 5, 200, 200);
     }
 
-  return canvas.toBufferSync('png');
+  return await canvas.toBuffer('image/png');
 }

@@ -5,8 +5,13 @@ export default async function dallemini(prompt: string) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt }),
   })
-    .then((r) => r.json())
-    .then((r: { images: string[] }) => {
-      return r.images.map((i) => Buffer.from(i, 'base64'));
+    .then((r) => r.json() as Promise<dalleResponse>)
+    .then((r) => {
+      return r.images.map((i) => 'data:image/png;base64,' + i);
     });
 }
+
+type dalleResponse = {
+  images: string[];
+  version: string;
+};
