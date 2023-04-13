@@ -5,7 +5,7 @@ import {
   Message,
   MessageComponentInteraction,
   MessageEditOptions,
-  SelectMenuInteraction,
+  StringSelectMenuInteraction,
 } from 'discord.js';
 import { basePagination } from './basePagination';
 import EmbedHandler from './handlers/embed';
@@ -110,7 +110,7 @@ export class objectPagination extends basePagination {
             this.delete().catch(() => {});
             break;
           case 'select':
-            this.handlerIndex = +(interaction as SelectMenuInteraction)
+            this.handlerIndex = +(interaction as StringSelectMenuInteraction)
               .values[0];
             break;
         }
@@ -134,7 +134,7 @@ export class objectPagination extends basePagination {
         type: ComponentType.ActionRow,
         components: [
           {
-            type: ComponentType.SelectMenu,
+            type: ComponentType.StringSelect,
             customId: 'select',
             disabled,
             options: this.details.map((t, i) => ({

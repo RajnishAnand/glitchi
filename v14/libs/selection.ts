@@ -15,7 +15,7 @@ export default async function select(
         type: ComponentType.ActionRow,
         components: [
           {
-            type: ComponentType.SelectMenu,
+            type: ComponentType.StringSelect,
             options: input.options,
             placeholder: input.title,
             customId: id,
@@ -27,7 +27,7 @@ export default async function select(
   });
   return await msg
     .awaitMessageComponent({
-      componentType: ComponentType.SelectMenu,
+      componentType: ComponentType.StringSelect,
       time: 60000,
       filter(interaction) {
         return interaction.customId == id && filter(interaction);
