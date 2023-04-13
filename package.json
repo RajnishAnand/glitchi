@@ -32,6 +32,7 @@
   "license": "ISC",
   "dependencies": {
     "@napi-rs/canvas": "^0.1.40",
+    "bad-words": "^3.0.4",
     "cbparser": "^1.0.4",
     "content-type": "^1.0.4",
     "discord.js": "^14.3.0",
@@ -44,6 +45,7 @@
     "vm2": "^3.9.11"
   },
   "devDependencies": {
+    "@types/bad-words": "^3.0.1",
     "@types/content-type": "^1.1.5",
     "@types/node": "^18.11.7",
     "@types/node-fetch": "^2.6.2",
