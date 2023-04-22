@@ -42,7 +42,7 @@
     "pretty-ms": "7.0.1",
     "skia-canvas": "^1.0.0",
     "typescript": "^5.0.4",
-    "vm2": "^3.9.16"
+    "vm2": "^3.9.17"
   },
   "devDependencies": {
     "@types/bad-words": "^3.0.1",
