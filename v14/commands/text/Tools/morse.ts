@@ -30,7 +30,7 @@ export const command: TextCommand = {
         .then((m) => attachDeletable(m, msg.author.id));
 
     if (args[0].toLowerCase() == 'decode' || args[0].toLowerCase() == 'de') {
-      text = text.replaceAll('\n', '\n ').replaceAll('  +', ' / ');
+      text = text.replaceAll('\n', '\n ').replaceAll(/  +/g, ' / ');
       new stringPagination(msg, morse.decode(text));
     } else
       new stringPagination(msg, morse.encode(text), {
