@@ -1,4 +1,4 @@
-import { EmbedBuilder } from '@discordjs/builders';
+import { EmbedBuilder } from 'discord.js';
 import fetch from 'node-fetch';
 const url = 'https://developer.mozilla.org/api/v1/search?q=';
 
