@@ -72,7 +72,7 @@ export const command: ApplicationCommand = {
         ephemeral: false,
         decoration: {
           lang: block.lang,
-          title: 'Godbolt[clangformat]',
+          title: 'Godbolt[' + value + ']',
           secondaryTitle: 'requested by @' + interaction.user.username,
         },
         filter(int) {
