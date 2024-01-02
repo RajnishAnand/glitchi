@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import Filter from 'bad-words';
 import { dictionaryapiResponse } from './types';
-import { EmbedBuilder } from '@discordjs/builders';
+import { EmbedBuilder } from 'discord.js';
 
 const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
 const filter = new Filter({ placeHolder: '\\*' });

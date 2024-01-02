@@ -1,8 +1,8 @@
 import validate from './validate';
-import Client from './client';
 
-const client = new Client();
-
-validate().then(() => {
+// check for required Environmental variables
+validate().then(async () => {
+  const Client = await import('./client').then((e) => e.default);
+  const client = new Client();
   client.init();
 });

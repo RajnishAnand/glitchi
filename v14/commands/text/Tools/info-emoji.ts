@@ -1,5 +1,5 @@
 import { embedPagination } from '#libs';
-import { EmbedBuilder } from '@discordjs/builders';
+import { EmbedBuilder } from 'discord.js';
 import { TextCommand } from 'client/interface';
 
 export const command: TextCommand = {
