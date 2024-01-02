@@ -2,10 +2,10 @@ import formatCode, { formats } from '#api/formatCode.js';
 import { stringPagination } from '#libs';
 import { CBParser } from 'cbparser';
 import { ApplicationCommand } from 'client/interface';
-import { ApplicationCommandType, ComponentType, Message } from 'discord.js';
+import { ApplicationCommandType, ComponentType } from 'discord.js';
 
 export const command: ApplicationCommand = {
-  name: 'format',
+  name: 'codeformat',
   type: ApplicationCommandType.Message,
   global: true,
 
@@ -43,7 +43,7 @@ export const command: ApplicationCommand = {
         },
       ],
       fetchReply: true,
-      ephemeral: true,
+      // ephemeral: true,
     });
 
     const { value, i } = await msg
@@ -55,18 +55,29 @@ export const command: ApplicationCommand = {
       .catch(() => ({ value: false, i: undefined }));
 
     if (!value || !i) return;
+    msg.delete().catch(() => {});
 
     try {
-      const formattedCode = await formatCode(value as typeof formats[number], {
-        base: 'Google',
-        source: block.code,
-        tabWidth: 2,
-        useSpaces: true,
-      });
+      const formattedCode = await formatCode(
+        value as (typeof formats)[number],
+        {
+          base: 'Google',
+          source: block.code,
+          tabWidth: 2,
+          useSpaces: true,
+        },
+      );
 
-      new stringPagination(i as unknown as typeof interaction, formattedCode, {
+      new stringPagination(interaction.targetMessage, formattedCode, {
         ephemeral: false,
-        decoration: { lang: block.lang, title: 'Godbolt[clangformat]' },
+        decoration: {
+          lang: block.lang,
+          title: 'Godbolt[clangformat]',
+          secondaryTitle: 'requested by @' + interaction.user.username,
+        },
+        filter(int) {
+          return int.user.id == interaction.user.id;
+        },
       });
     } catch (_) {
       return interaction.reply({
