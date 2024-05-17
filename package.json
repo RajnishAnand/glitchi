@@ -31,28 +31,28 @@
   "author": "Rajnish Anand",
   "license": "ISC",
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.44",
+    "@napi-rs/canvas": "^0.1.52",
     "bad-words": "^3.0.4",
     "cbparser": "^1.0.4",
     "content-type": "^1.0.4",
-    "discord.js": "14.14.1",
-    "mathjs": "^12.2.1",
+    "discord.js": "14.15.2",
+    "mathjs": "^12.4.2",
     "morse-node": "^0.1.1",
     "node-fetch": "2.7.0",
-    "pretty-ms": "7.0.1",
+    "pretty-ms": "^7",
     "skia-canvas": "^1.0.0",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.5",
     "vm2": "^3.9.18"
   },
   "devDependencies": {
     "@types/bad-words": "^3.0.1",
     "@types/content-type": "^1.1.5",
-    "@types/node": "^18.11.7",
-    "@types/node-fetch": "^2.6.2",
-    "dotenv": "^16.0.3",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.2",
-    "prettier": "^2.7.1"
+    "@types/node": "^20.12.12",
+    "@types/node-fetch": "^2.6.11",
+    "dotenv": "^16.4.5",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5"
   },
   "lint-staged": {
     "**/*.{ts,md,json}": "prettier --write"
