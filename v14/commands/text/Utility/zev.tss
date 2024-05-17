@@ -1,0 +1,24 @@
+import { TextCommand } from "client/interface";
+
+export const command: TextCommand= {
+  name: "zev",
+  description: "linker command",
+  aliases: ["z"],
+  args: true,
+  examples: ["getAvatar"],
+
+  run({client, msg, content, commandName}){
+    const zcommands:string[] = content().split(">").map(z=>z.trim());
+
+  }
+}
+
+class zEv {
+  
+  declare commands: string[];
+  constructor(){
+    
+  }
+
+  
+}

@@ -1,0 +1,10 @@
+import { zLink, zType } from "client/interface/zlinks"
+
+export const zlink: zLink = {
+  name: "user",
+  description: "returns User",
+  argumentType: zType.Text,
+  returnType: zType.User,
+  run(){}
+
+}

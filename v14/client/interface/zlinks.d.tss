@@ -1,0 +1,13 @@
+export interface zLink{
+  name: string,
+  description: string,
+  argumentType: zType,
+  returnType: zType
+  exec()
+} 
+
+export enum zType{
+  User,
+  Image,
+  Text
+}
