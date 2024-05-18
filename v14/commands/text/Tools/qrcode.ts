@@ -11,9 +11,7 @@ export const command: TextCommand = {
   roleAccess: 'betaTesters',
 
   run({ msg, content }) {
-    const url = `https://chart.googleapis.com/chart?chs=512x512&cht=qr&choe=UTF-8&chld=l|0&chl=${encodeURIComponent(
-      content(),
-    )}`;
+    const url = `https://qrcode.tec-it.com/API/QRCode?data=${encodeURIComponent(content())}&color=%23d3d6fd&backcolor=%232b2d31&size=small`;
     msg
       .reply({
         files: [new AttachmentBuilder(url, { name: 'QRCode.png' })],

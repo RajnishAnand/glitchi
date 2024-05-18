@@ -12,7 +12,7 @@ export const command: TextCommand = {
   description: 'canvas sandbox',
   aliases: ['canvas', 'draw'],
   args: true,
-  argsHelp: ['<code...>'],
+  argsHelp: ['<code...> || --cheatsheet'],
   // roleAccess: "betaTesters",
 
   async run({ client, msg, args, content }) {
