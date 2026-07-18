@@ -1,0 +1,41 @@
+import { TextCommand } from 'client/interface';
+import {gemini} from "#api/gemini.js";
+import { Stopwatch, stringPagination } from '#libs';
+
+export const command: TextCommand = {
+  name: 'gemini',
+  description: 'interact with gemini',
+  roleAccess: "betaTesters",
+  aliases: ['ai', 'assist'],
+  args: true,
+  argsHelp: ['<start||...text>'],
+  async run({msg, content, client}) {
+
+    // TODO: update this
+    // let refContent = await ref().then(x=>x?.content);
+    // refContent= refContent? `referencedMessage: ${refContent}; input:`:'';
+    
+    // const pageviewOptions = {
+    //   split:{
+    //     with: '\n',
+    //     min: 700,
+    //     max: 1500,
+    //   },
+    //   decoration:{ 
+    //     title: "gemini-2.5-flash",
+    //     codeblock: false
+    //   }
+    // };
+    //
+    // const pageview = new stringPagination(msg, client.config.emojis.rollCat , pageviewOptions);
+
+    const prompt = content() + (msg.embeds.length?JSON.stringify(msg.embeds):"");
+    console.log(prompt);
+    const result = await gemini(prompt);
+    msg.reply({content: result, allowedMentions: {repliedUser: false}})
+  
+    // pageview.update(result, pageviewOptions);
+    
+  },
+};
+

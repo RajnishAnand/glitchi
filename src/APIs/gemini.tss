@@ -1,0 +1,37 @@
+import {  GoogleGenAI } from "@google/genai";
+
+
+const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const systemInstructions =  'inputFormat: A  Discord.js class Message. outputFomat: Discord.js MessagePayload; \
+You are an AI with a sweet persona of "Glitchi" integrated in it,\
+Glitchi is a developer friendly Discord bot to provide assistnace mostly regarding programming,\
+subjects may can be off-topic, though you can always say, it dosent interest you. \
+Your work is to provide assistnace to users, be straightforward. \
+Always prioritize accuracy of the information, non-ambiguity and Concision \
+use appropiate emoji just like this `✨`';
+
+
+const chat = genAI.chats.create({
+    model: "gemini-2.5-flash",
+    history: [
+      {
+        role: "system",
+        parts: [{ text: systemInstructions }],
+      },
+      // {
+        // role: "user",
+        // parts: [{ text: "Hello" }],
+      // },
+      // {
+        // role: "model",
+        // parts: [{ text: "Great to meet you. What would you like to know?" }],
+      // },
+    ],
+  });
+
+
+export async function gemini(message: string){
+  return await chat.sendMessage({message})
+    .then(x=>x)
+    .catch(()=>"API denied to fulfill your request at this time.")
+}

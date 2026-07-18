@@ -1,0 +1,24 @@
+import { TextCommand } from "client/interface";
+
+export const command: TextCommand= {
+  name: "zev",
+  description: "linker command",
+  aliases: ["z"],
+  args: true,
+  examples: ["getAvatar"],
+
+  run({content, client, msg, args, ref, cmd}){
+    msg.reply("splitted commands: "+ zcommands.join("."))
+
+
+    function zevaluate(){
+      let x;
+      for (let commands in zcommands){
+        const command = client.zLinkCommands.find(c=>c.name==commands);
+        if(command) x = command.run({client, msg, args:zcommands.slice(1)});
+        return x
+      }
+    }
+  }
+}
+

@@ -1,7 +1,7 @@
 {
   "name": "discord-bot-glitchi",
-  "version": "1.0.0",
-  "description": "An open source Discord bot",
+  "version": "2.0.0",
+  "description": "An open source Discord utility bot.",
   "main": "build/index.js",
   "imports": {
     "#libs": "./build/libs/index.js",
@@ -9,52 +9,23 @@
     "#api/*.js": "./build/APIs/*.js"
   },
   "scripts": {
-    "build": "tsc -b v14",
-    "prestart": "npm run build",
+    "build": "tsc -b src",
     "start": "node build/index.js",
-    "dev": "node build/index.js",
-    "protected": "PROTECTED=1 npm start",
-    "format": "prettier --write --loglevel=warn \"v14/**/*.{js,ts,json}\"",
-    "prepare": "husky"
+    "dev": "concurrently 'tsc -w' 'nodemon build'"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RajnishAnand/discord-bot-glitchi"
   },
-  "keywords": [
-    "discord",
-    "bot",
-    "glitchi",
-    "node",
-    "typescript"
-  ],
+  "keywords": [],
   "author": "Rajnish Anand",
   "license": "ISC",
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.52",
-    "bad-words": "^3.0.4",
-    "cbparser": "^1.0.4",
-    "content-type": "^1.0.4",
-    "discord.js": "14.15.2",
-    "mathjs": "^12.4.2",
-    "morse-node": "^0.1.1",
-    "node-fetch": "2.7.0",
-    "pretty-ms": "^7",
-    "skia-canvas": "^1.0.0",
-    "typescript": "^5.4.5",
-    "vm2": "^3.9.18"
+    "discord.js": "^14.27.0",
+    "dotenv": "^17.4.2"
   },
   "devDependencies": {
-    "@types/bad-words": "^3.0.1",
-    "@types/content-type": "^1.1.5",
-    "@types/node": "^20.12.12",
-    "@types/node-fetch": "^2.6.11",
-    "dotenv": "^16.4.5",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
-    "prettier": "3.2.5"
-  },
-  "lint-staged": {
-    "**/*.{ts,md,json}": "prettier --write --ignore-unknown"
+    "concurrently": "^10.0.3",
+    "typescript": "^7.0.2"
   }
 }
