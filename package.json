@@ -12,7 +12,6 @@
     "clean-build": "rm ./build/ -r; npm run build",
     "build": "tsc -b",
 
-    "prestart": "npm run build",
     "start": "node build/index.js",
     "dev": "concurrently 'tsc -w' 'nodemon build'",
 
