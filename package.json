@@ -9,9 +9,13 @@
     "#api/*.js": "./build/APIs/*.js"
   },
   "scripts": {
-    "build": "tsc -b src",
+    "clean-build": "rm ./build/ -r; npm run build",
+    "build": "tsc -b",
     "start": "node build/index.js",
-    "dev": "concurrently 'tsc -w' 'nodemon build'"
+    "dev": "concurrently 'tsc -w' 'nodemon build'",
+
+    "prepare-deploy":"npm run clean-build && cp package.json build/ && cp package-lock.json build/",
+    "deploy": "npm run prepare-deploy && push-dir --dir=build --branch=production"
   },
   "repository": {
     "type": "git",
@@ -26,6 +30,7 @@
   },
   "devDependencies": {
     "concurrently": "^10.0.3",
+    "push-dir": "^0.4.1",
     "typescript": "^7.0.2"
   }
 }

@@ -6,9 +6,5 @@ test/
 # for yarn log and other log files
 *.log
 
-# Added by cargo
-/target
-.shuttle-storage
-Secrets*.toml
-!Secrets.example.toml
-.shuttle*
+
+tsconfig.tsbuildinfo
