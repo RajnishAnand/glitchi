@@ -4,18 +4,21 @@
   "description": "An open source Discord utility bot.",
   "main": "build/index.js",
   "imports": {
-    "#libs": "./build/libs/index.js",
-    "#api/@*": "./build/APIs/@*/index.js",
-    "#api/*.js": "./build/APIs/*.js"
+      "#libs": "./build/libs/index.js",
+      "#api/@*": "./build/APIs/@*/index.js",
+      "#api/*.js": "./build/APIs/*.js"
   },
   "scripts": {
     "clean-build": "rm ./build/ -r; npm run build",
     "build": "tsc -b",
+
+    "prestart": "npm run build",
     "start": "node build/index.js",
     "dev": "concurrently 'tsc -w' 'nodemon build'",
 
-    "prepare-deploy":"npm run clean-build && cp package.json build/ && cp package-lock.json build/",
-    "deploy": "npm run prepare-deploy && push-dir --dir=build --branch=production"
+    "prepare-deploy":"npm run clean-build && npm run deploy-cleanup && mkdir target && cp package.json target/ && cp package-lock.json target/ && cp build/ target/ -r",
+    "deploy": "npm run prepare-deploy && push-dir --dir=target --branch=production && npm run deploy-cleanup",
+    "deploy-cleanup": "rm target -r"
   },
   "repository": {
     "type": "git",
