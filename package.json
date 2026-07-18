@@ -15,7 +15,7 @@
     "start": "node build/index.js",
     "dev": "concurrently 'tsc -w' 'nodemon build'",
 
-    "prepare-deploy":"npm run clean-build && npm run deploy-cleanup && mkdir target && cp package.json target/ && cp package-lock.json target/ && cp build/ target/ -r",
+    "prepare-deploy":"npm run deploy-cleanup; npm run clean-build  && mkdir target && cp package.json target/ && cp package-lock.json target/ && cp build/ target/ -r",
     "deploy": "npm run prepare-deploy && push-dir --dir=target --branch=production && npm run deploy-cleanup",
     "deploy-cleanup": "rm target -r"
   },
