@@ -1,6 +1,6 @@
 import { inspect } from 'util';
 import { compile } from 'mathjs';
-import { Stopwatch, stringPagination } from '#libs';
+import { Stopwatch, createStringPagination } from '#libs';
 import { TextCommand } from 'client/interface';
 
 export const command: TextCommand = {
@@ -18,7 +18,7 @@ export const command: TextCommand = {
       const txt = compile(content()).evaluate();
       stopwatch.stop();
 
-      new stringPagination(msg, inspect(txt, { depth: 10 }), {
+      createStringPagination(msg, inspect(txt, { depth: 10 }), {
         split: { with: ',' },
         decoration: {
           lang: 'js',
@@ -27,7 +27,7 @@ export const command: TextCommand = {
         },
       });
     } catch (err: any) {
-      new stringPagination(msg, err.message ?? ' ', {
+      createStringPagination(msg, err.message ?? ' ', {
         decoration: {
           lang: 'js',
           title: 'MATH.JS[ERROR]',

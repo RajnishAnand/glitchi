@@ -25,7 +25,7 @@ export interface TextCommand {
   ownerOnly?: boolean;
   category?: string;
 
-  run: (params: TextCommandOptions) => MsgPayload | void ;
+  run: (params: TextCommandOptions) => any ;
 }
 
 

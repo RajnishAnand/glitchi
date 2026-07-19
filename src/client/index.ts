@@ -150,7 +150,7 @@ export default class ExtendClient extends Client {
     this.user?.setPresence({
       activities: [
         {
-          name: `${this.config.prefix} commands in ${this.guilds.cache.size} servers`,
+          name: `@${this.user.username} in ${this.guilds.cache.size} servers`,
           type: ActivityType.Listening,
         },
       ],

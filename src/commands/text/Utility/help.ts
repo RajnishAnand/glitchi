@@ -1,4 +1,4 @@
-import { embedPagination } from '#libs';
+import { createEmbedPagination } from '#libs';
 import { EmbedBuilder } from 'discord.js';
 import { TextCommand, TextCommandOptions } from 'client/interface';
 
@@ -30,7 +30,7 @@ async function run({ client, msg, args }: TextCommandOptions) {
       ] += `>>> Use \`${client.config.prefix}help <CommandName>\` to get more help on it.`;
     });
 
-    new embedPagination(
+    createEmbedPagination(
       msg,
       Object.keys(data).map((m: string) => {
         return new EmbedBuilder({
