@@ -1,0 +1,51 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.dictionary = dictionary;
+const bad_words_1 = require("bad-words");
+const discord_js_1 = require("discord.js");
+const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
+const filter = new bad_words_1.Filter({ placeHolder: '\\*' });
+async function dictionary(word) {
+    return fetch(url + encodeURIComponent(word))
+        .then((r) => r.json())
+        .then((raw) => ({
+        raw,
+        embed() {
+            if ('title' in raw) {
+                return [
+                    new discord_js_1.EmbedBuilder({
+                        author: {
+                            name: 'Dictionary',
+                            icon_url: 'https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/128/Dictionary-icon.png',
+                        },
+                        title: 'Word: ' + word,
+                        description: raw.title + (raw.title == 'No Definitions Found')
+                            ? '\n\nThe word you were looking is not avaliable in dictionary. Perhaps try serching on web.'
+                            : '',
+                        color: 3092790,
+                    }),
+                ];
+            }
+            return raw.map((e) => new discord_js_1.EmbedBuilder({
+                author: {
+                    name: 'Dictionary',
+                    icon_url: 'https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/128/Dictionary-icon.png',
+                },
+                color: 3092790,
+                title: `word: ${e.word} ${e.phonetic ?? ''}`,
+                url: e.sourceUrls[0],
+                fields: e.meanings
+                    .map((m) => ({
+                    name: `${m.partOfSpeech} :`,
+                    value: filter.clean(`​ ⤍ ` +
+                        truncate(m.definitions.map((d) => d.definition).join('\n ⤍ ')) +
+                        '\n​'),
+                }))
+                    .slice(0, 24),
+            }));
+        },
+    }));
+}
+function truncate(str) {
+    return str.length > 1000 ? str.slice(0, 999) + '...' : str;
+}
