@@ -1,5 +1,5 @@
 import formatCode, { formats } from '#api/formatCode.js';
-import { stringPagination } from '#libs';
+import { createStringPagination } from '#libs';
 import { CBParser } from 'cbparser';
 import { ApplicationCommand } from 'client/interface';
 import { ApplicationCommandType, ComponentType } from 'discord.js';
@@ -33,7 +33,7 @@ export const command: ApplicationCommand = {
             {
               type: ComponentType.StringSelect,
               customId: 'format',
-              options: formats.map((e, i) => ({
+              options: formats.map((e:string, i:number) => ({
                 label: e,
                 value: e,
                 description: descriptions[i],
@@ -68,7 +68,7 @@ export const command: ApplicationCommand = {
         },
       );
 
-      new stringPagination(interaction.targetMessage, formattedCode, {
+      createStringPagination(interaction.targetMessage, formattedCode, {
         ephemeral: false,
         decoration: {
           lang: block.lang,

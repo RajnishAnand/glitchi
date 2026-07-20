@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 const URL = 'https://godbolt.org/api/format/';
 
 export default async function (

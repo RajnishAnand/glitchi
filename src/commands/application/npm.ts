@@ -1,5 +1,5 @@
 import npmSearch from '#api/npm.js';
-import { embedPagination } from '#libs';
+import { createEmbedPagination } from '#libs';
 import { ApplicationCommand } from 'client/interface';
 import { ApplicationCommandOptionType } from 'discord.js';
 
@@ -20,7 +20,7 @@ export const command: ApplicationCommand = {
     const p = interaction.options.getString('query') as string;
     npmSearch(p)
       .then((results) => {
-        new embedPagination(interaction, results);
+        createEmbedPagination(interaction, results);
       })
       .catch(() => {
         interaction.reply({

@@ -49,7 +49,7 @@ export default class ExtendClient extends Client {
     console.log('logging in..\n');
     await this.login(process.env.TOKEN);
 
-    // this.loadApplicationCommands();
+    this.loadApplicationCommands();
     this.loadTextCommands();
     // this.loadZlinkCommands();
     this.loadEvents();

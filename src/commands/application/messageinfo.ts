@@ -1,4 +1,4 @@
-import { messageinfo, objectPagination } from '#libs';
+import { createObjectPagination, messageinfo } from '#libs';
 import { ApplicationCommand } from 'client/interface';
 import { ApplicationCommandType, Message } from 'discord.js';
 
@@ -9,7 +9,7 @@ export const command: ApplicationCommand = {
 
   run({ interaction }) {
     try {
-      new objectPagination(interaction, messageinfo(interaction.targetMessage));
+      createObjectPagination(interaction, messageinfo(interaction.targetMessage));
     } catch (_) {}
   },
 };
