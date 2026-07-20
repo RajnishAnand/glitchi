@@ -24,7 +24,7 @@ export default class StringHandler implements PageProvider {
   private decorate(texts: string[], options?: DecorationOption) {
     return texts.map((str) => {
       let s = str + '\n';
-      if (options?.codeblock)
+      if (options?.codeblock != false)
         s = '```' + (options?.lang || '') + '\n' + str.replaceAll('`', '\\`') + ' ```';
       if (this.length > 1) s += `\` ⠪ Page : ${texts.indexOf(str) + 1}/${this.length} \` `;
       if (options?.title) s += `\`‣ ${options.title} \` `;
