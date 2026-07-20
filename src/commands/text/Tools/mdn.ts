@@ -1,4 +1,4 @@
-import { embedPagination } from '#libs';
+import { createEmbedPagination } from '#libs';
 import mdnSearch from '#api/mdn.js';
 import { TextCommand } from 'client/interface';
 
@@ -12,7 +12,7 @@ export const command: TextCommand = {
     mdnSearch(content())
       .then(
         (t) =>
-          new embedPagination(
+          createEmbedPagination(
             msg,
             t.map((k) => k.embedify()),
           ),

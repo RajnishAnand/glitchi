@@ -1,6 +1,4 @@
-// import config from '../client/config';
 import { EmbedBuilder } from 'discord.js';
-import fetch from 'node-fetch';
 const search = 'https://registry.npmjs.org/-/v1/search?size=10&text=';
 
 /** Search for npm libs from npm_registry */

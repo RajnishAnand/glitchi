@@ -1,4 +1,4 @@
-import { attachDeletable, stringPagination } from '#libs';
+import { attachDeletable, createStringPagination, } from '#libs';
 import { TextCommand } from 'client/interface';
 import morseNode from 'morse-node';
 
@@ -31,9 +31,9 @@ export const command: TextCommand = {
 
     if (args[0].toLowerCase() == 'decode' || args[0].toLowerCase() == 'de') {
       text = text.replaceAll('\n', '\n ').replaceAll(/  +/g, ' / ');
-      new stringPagination(msg, morse.decode(text));
+      createStringPagination(msg, morse.decode(text));
     } else
-      new stringPagination(msg, morse.encode(text), {
+      createStringPagination(msg, morse.encode(text), {
         decoration: { lang: 'morse', title: 'MORSE [ITU Standard]' },
       });
   },

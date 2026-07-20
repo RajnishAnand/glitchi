@@ -1,8 +1,6 @@
-import fetch from 'node-fetch';
-import type { AbortSignal } from 'node-fetch/externals';
 import { inspect } from 'util';
 import { parse } from 'content-type';
-import { ask, select, stringPagination } from '#libs';
+import { ask, select, createStringPagination } from '#libs';
 import { CBParser } from 'cbparser';
 import { TextCommand, TextCommandOptions } from 'client/interface';
 
@@ -117,7 +115,7 @@ async function run({ msg, args, content }: TextCommandOptions) {
       langGuess = 'js';
     } catch (err) {}
   }
-  new stringPagination(msg, response, {
+  createStringPagination(msg, response, {
     decoration: { lang: langGuess, title },
   });
 }

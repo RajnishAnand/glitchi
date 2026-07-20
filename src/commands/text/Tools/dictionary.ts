@@ -1,5 +1,5 @@
 import { dictionary } from '#api/@dictionary';
-import { embedPagination } from '#libs';
+import { createEmbedPagination } from '#libs';
 import { TextCommand } from 'client/interface';
 
 export const command: TextCommand = {
@@ -12,7 +12,7 @@ export const command: TextCommand = {
 
   async run({ msg, content }) {
     dictionary(content())
-      .then((response) => new embedPagination(msg, response.embed()))
+      .then((response) => {createEmbedPagination(msg, response.embed())})
       .catch(() => msg.reply('ERR: Failed to fetch requested defination.'));
   },
 };

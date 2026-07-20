@@ -1,12 +1,11 @@
-import fetch from 'node-fetch';
-import Filter from 'bad-words';
+import {Filter} from 'bad-words';
 import { dictionaryapiResponse } from './types';
 import { EmbedBuilder } from 'discord.js';
 
 const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
 const filter = new Filter({ placeHolder: '\\*' });
 
-export function dictionary(word: string) {
+export async function dictionary(word: string) {
   return fetch(url + encodeURIComponent(word))
     .then((r) => r.json() as Promise<dictionaryapiResponse>)
     .then((raw) => ({

@@ -1,4 +1,4 @@
-import { attachDeletable, select, stringPagination } from '#libs';
+import { attachDeletable, select, createStringPagination } from '#libs';
 import { TextCommand } from 'client/interface';
 
 export const command: TextCommand = {
@@ -146,7 +146,7 @@ export const command: TextCommand = {
         });
       })
       .catch((e) => {
-        new stringPagination(msg, e.message, {
+        createStringPagination(msg, e.message, {
           split: { with: ',' },
           decoration: { lang: 'js', title: 'ERROR' },
         });

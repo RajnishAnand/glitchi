@@ -1,4 +1,4 @@
-import { embedPagination } from '#libs';
+import { createEmbedPagination } from '#libs';
 import { EmbedBuilder } from 'discord.js';
 import { TextCommand } from 'client/interface';
 
@@ -32,7 +32,7 @@ export const command: TextCommand = {
             ?.name,
         });
       });
-      new embedPagination(
+      createEmbedPagination(
         msg,
         emoList.map((e) => embedIt(e)),
       );
@@ -102,7 +102,7 @@ export const command: TextCommand = {
           );
           return;
         }
-        new embedPagination(
+        createEmbedPagination(
           msg,
           emoList.map((e) => embedIt(e)),
         );

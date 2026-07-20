@@ -1,4 +1,4 @@
-import { stringPagination } from '#libs';
+import { createStringPagination } from '#libs';
 import { TextCommand } from 'client/interface';
 import { ChannelType } from 'discord.js';
 
@@ -58,7 +58,7 @@ export const command: TextCommand = {
     // fetch & send content
     if (messages) {
       messages.fetch(messageID).then((m0) => {
-        if (m0.content.length) new stringPagination(msg, m0.content);
+        if (m0.content.length) createStringPagination(msg, m0.content);
         else
           msg.reply({
             content:

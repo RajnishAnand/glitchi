@@ -1,7 +1,7 @@
-import { Message } from 'discord.js';
+import { Message, OmitPartialGroupDMChannel } from 'discord.js';
 
 export default async function ask(
-  msg: Message,
+  msg: OmitPartialGroupDMChannel<Message>,
   question: string,
   filter: (mm: Message) => boolean = (mm) => mm.author.id == msg.author.id,
 ) {

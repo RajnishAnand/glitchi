@@ -1,5 +1,5 @@
 import { TextChannel } from 'discord.js';
-import { messageinfo, objectPagination } from '#libs';
+import { createObjectPagination, messageinfo } from '#libs';
 import { TextCommand } from 'client/interface';
 
 export const command: TextCommand = {
@@ -52,7 +52,7 @@ export const command: TextCommand = {
       if (channel && channel instanceof TextChannel && messageId) {
         const message = await channel.messages.fetch(messageId);
 
-        new objectPagination(msg, messageinfo(message));
+        createObjectPagination(msg, messageinfo(message));
       } else {
         msg.reply({
           content: 'Failed to resolve into TextChannel!',

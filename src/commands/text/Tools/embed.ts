@@ -1,4 +1,4 @@
-import { attachDeletable, stringPagination } from '#libs';
+import { attachDeletable, createStringPagination, } from '#libs';
 import { CBParser } from 'cbparser';
 import { TextCommand } from 'client/interface';
 import { EmbedBuilder } from 'discord.js';
@@ -33,12 +33,12 @@ export const command: TextCommand = {
               : typeof e?.message == 'string'
               ? e.message
               : 'Unknown Error';
-          new stringPagination(msg, e.message, {
+          createStringPagination(msg, e.message, {
             decoration: { lang: 'js', title: 'EmbedError' },
           });
         });
     } catch (err: any) {
-      new stringPagination(msg, err.message, {
+      createStringPagination(msg, err.message, {
         decoration: { lang: 'JSON_ERROR' },
       });
     }
